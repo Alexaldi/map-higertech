@@ -38,13 +38,17 @@
             <div class="site-branding__start">
                 <button
                     id="drawer-toggle"
-                    class="site-icon-button lg:hidden"
+                    class="site-icon-button station-drawer-toggle lg:hidden"
                     type="button"
-                    aria-label="Buka filter station"
+                    aria-label="Buka pencarian, filter, dan daftar pos"
                     aria-controls="station-sidebar"
                     aria-expanded="false"
                 >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="M4 6h10M18 6h2M4 12h2m4 0h10M4 18h7m4 0h5" />
+                        <circle cx="16" cy="6" r="2" /><circle cx="8" cy="12" r="2" /><circle cx="13" cy="18" r="2" />
+                    </svg>
+                    <span class="station-drawer-toggle__label">Pos</span>
                 </button>
 
                 <a class="site-brand" href="{{ url('/map') }}" aria-label="Higertech Live Monitoring">

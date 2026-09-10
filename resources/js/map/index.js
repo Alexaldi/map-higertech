@@ -22,6 +22,7 @@ function initialize(rootElement) {
         results: document.querySelector('#station-results'),
         resultStatus: document.querySelector('#station-result-status'),
         search: document.querySelector('#station-search'),
+        searchForm: document.querySelector('#station-search-form'),
         searchSuggestions: document.querySelector('#station-search-suggestions'),
         organization: document.querySelector('#organization-filter'),
         typeFilters: document.querySelector('[data-type-filters]'),
@@ -258,6 +259,17 @@ function bindFilters(elements, state, fetchStations) {
         }, 300);
     });
 
+    elements.searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        window.clearTimeout(state.searchTimer);
+        state.searchTimer = null;
+        state.filters.search = elements.search.value;
+        elements.searchSuggestions.dataset.selected = 'true';
+        elements.searchSuggestions.hidden = true;
+        elements.search.setAttribute('aria-expanded', 'false');
+        fetchStations();
+    });
+
     elements.typeFilters.addEventListener('click', (event) => {
         const button = event.target.closest('[data-type]');
         if (!button) return;
@@ -390,24 +402,29 @@ function bindStationNavigation(elements, state, map, closeStationPanel) {
 
 function bindStationPanel(elements) {
     const mobile = window.matchMedia('(max-width: 1023px)');
+    const mobileNav = document.querySelector('.site-mobile-nav');
     const controls = {
         panel: elements.sidebar,
         launchers: [elements.panelLauncher, elements.drawerToggle],
         backdrop: elements.drawerBackdrop,
     };
+    const setOpen = (open) => {
+        if (open && mobileNav) mobileNav.open = false;
+        setStationPanelOpen(controls, open);
+    };
     const close = () => setStationPanelOpen(controls, false);
     const toggle = () => {
         const open = !elements.sidebar.classList.contains('is-open');
         if (open) document.querySelector('.basemap-gallery__toggle[aria-expanded="true"]')?.click();
-        setStationPanelOpen(controls, open);
+        setOpen(open);
     };
 
     elements.panelLauncher.addEventListener('click', toggle);
     elements.drawerToggle.addEventListener('click', toggle);
     elements.drawerBackdrop.addEventListener('click', close);
     elements.panelClose.addEventListener('click', close);
-    mobile.addEventListener('change', () => setStationPanelOpen(controls, !mobile.matches));
-    setStationPanelOpen(controls, !mobile.matches);
+    mobile.addEventListener('change', () => setOpen(!mobile.matches));
+    setOpen(!mobile.matches);
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') close();

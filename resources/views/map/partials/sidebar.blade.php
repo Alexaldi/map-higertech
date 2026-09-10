@@ -27,13 +27,14 @@
         <div class="sidebar-controls p-3">
             <div>
                 <label for="station-search" class="mb-1.5 block text-[11px] font-bold text-slate-700">Cari pos</label>
-                <div class="station-search-field relative">
+                <form id="station-search-form" class="station-search-field relative">
                     <svg class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" stroke-linecap="round" />
                     </svg>
-                    <input id="station-search" class="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-[13px] outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-3 focus:ring-blue-100" type="search" placeholder="Cari nama pos..." autocomplete="off" role="combobox" aria-controls="station-search-suggestions" aria-expanded="false">
+                    <input id="station-search" class="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-20 text-[13px] outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-3 focus:ring-blue-100" type="search" placeholder="Cari nama pos..." autocomplete="off" role="combobox" aria-controls="station-search-suggestions" aria-expanded="false">
+                    <button id="station-search-submit" class="station-search-submit" type="submit">Search</button>
                     <div id="station-search-suggestions" class="station-search-suggestions" role="listbox" aria-label="Rekomendasi nama pos" hidden></div>
-                </div>
+                </form>
             </div>
 
             <details id="station-filter-panel" class="station-filter-panel">
