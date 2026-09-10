@@ -1,6 +1,6 @@
 # Higertech Live Monitoring Map
 
-Prototype WebGIS monitoring telemetry seluruh Indonesia. Project ini merecreate fungsi live map sebagai MVP menggunakan data dummy lokal—bukan data atau asset milik Higertech.
+Prototype WebGIS monitoring telemetry seluruh Indonesia. Project ini merecreate fungsi live map sebagai MVP menggunakan data dummy lokal.
 
 ## Stack
 
