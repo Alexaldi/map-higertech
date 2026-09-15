@@ -155,5 +155,17 @@ return [
         'search' => 'Cari artikel atau panduan...'
     ],
     'article_desc1' => 'Tulis dengan tujuan.',
-    'article_desc2' => 'Terbitkan dengan dampak.'
+    'article_desc2' => 'Terbitkan dengan dampak.',
+
+    //tutorials
+    'tutorials_label' => 'Panduan',
+    'tutorials_title' => 'Panduan yang Jelas.',
+    'tutorials_title_highlight' => 'Kuasai dengan Pengalaman',
+    'tutorials_title_desc' => 'Temukan tutorial langkah demi langkah untuk teknologi monitoring, hidrologi, IoT, dan perangkat pendukung agar solusi dapat diterapkan secara efektif.',
+    'tutorials_placeholder' => [
+        'search' => 'Cari tutorial atau panduan...'
+    ],
+    'tutorials_title1' => 'Belajar dengan Percaya Diri.',
+    'tutorials_title2' => 'Bangun Solusinya.',
+    'tutorials_not_found' => 'Tutorial tidak ditemukan.',
 ];

@@ -81,62 +81,11 @@ function initScrollReveal() {
     reveals.forEach(el => revealObserver.observe(el));
 }
 
-// Active navigation indicator on scroll (Scrollspy)
-function initScrollSpy() {
-    const navItems = document.querySelectorAll('[data-nav-target]');
-    if (!navItems.length) return;
-
-    // If on /map page, map link is permanently marked active
-    if (document.querySelector('[data-live-map]')) return;
-
-    const targetIds = ['hero', 'workstation', 'map-section', 'articles', 'contact', 'internship'];
-    const sections = targetIds
-        .map(id => document.getElementById(id))
-        .filter(Boolean);
-
-    if (!sections.length) return;
-
-    function setActiveNav(activeId) {
-        navItems.forEach(item => {
-            const target = item.getAttribute('data-nav-target');
-            const isActive = target === activeId;
-            item.classList.toggle('is-active', isActive);
-            if (item.tagName === 'A') {
-                if (isActive) {
-                    item.setAttribute('aria-current', 'page');
-                } else {
-                    item.removeAttribute('aria-current');
-                }
-            }
-        });
-    }
-
-    const spyObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                setActiveNav(entry.target.id);
-            }
-        });
-    }, {
-        rootMargin: '-20% 0px -65% 0px',
-        threshold: 0
-    });
-
-    sections.forEach(sec => spyObserver.observe(sec));
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY < 120) {
-            setActiveNav('hero');
-        }
-    }, { passive: true });
-}
-
 function initPageBehaviors() {
     updateTopbarHeight();
     window.addEventListener('resize', updateTopbarHeight, { passive: true });
     initBackToTop();
     initScrollReveal();
-    initScrollSpy();
 }
 
 if (document.readyState === 'loading') {

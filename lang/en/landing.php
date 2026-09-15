@@ -156,4 +156,16 @@ return [
     'articles_label' => 'Articles',
     'article_desc1' => 'Write with Purpose.',
     'article_desc2' => 'Publish with Impact.',
+
+    //tutorials
+    'tutorials_label' => 'Tutorials',
+    'tutorials_title' => 'Clear Guides.',
+    'tutorials_title_highlight' => 'Master with Experience',
+    'tutorials_title_desc' => 'Find step-by-step tutorials for monitoring technology, hydrology, IoT, and supporting devices to implement solutions effectively.',
+    'tutorials_placeholder' => [
+        'search' => 'Search tutorials or guides...'
+    ],
+    'tutorials_title1' => 'Learn with Confidence.',
+    'tutorials_title2' => 'Build Your Solutions.',
+    'tutorials_not_found' => 'Tutorials not found.',
 ];
