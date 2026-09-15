@@ -16,6 +16,10 @@ if (document.querySelector('[data-preview-map]')) {
 
 // Measure topbar height for native sticky offset (zero-jitter, GPU-accelerated)
 function updateTopbarHeight() {
+    if (document.querySelector('[data-live-map]')) {
+        document.documentElement.style.setProperty('--topbar-height', '0px');
+        return;
+    }
     const topbar = document.querySelector('.site-topbar');
     if (topbar) {
         document.documentElement.style.setProperty('--topbar-height', `${topbar.offsetHeight}px`);

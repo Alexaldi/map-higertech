@@ -7,7 +7,6 @@
         @include('landing.partials.hero')
         @include('landing.partials.workstation')
         @include('landing.partials.pillars')
-        @include('landing.partials.internship')
         @include('landing.partials.map-section')
         @include('landing.partials.clients')
         @include('landing.partials.articles')

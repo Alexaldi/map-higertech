@@ -56,9 +56,20 @@ export function initMapPreview() {
 
     clusters.addTo(map);
 
+    const dismissSkeleton = () => {
+        const skeleton = document.getElementById('map-preview-skeleton');
+        if (skeleton) {
+            skeleton.classList.add('opacity-0');
+            setTimeout(() => skeleton.remove(), 500);
+        }
+    };
+
+    tileLayer.once('load', dismissSkeleton);
+
     fetch(STATIONS_URL)
         .then(res => res.json())
         .then(res => {
+            dismissSkeleton();
             const stations = res.data || [];
             const countBadge = document.getElementById('preview-station-count');
             if (countBadge) {
@@ -89,6 +100,7 @@ export function initMapPreview() {
             });
         })
         .catch(err => {
+            dismissSkeleton();
             console.warn('Map preview stations error:', err);
         });
 

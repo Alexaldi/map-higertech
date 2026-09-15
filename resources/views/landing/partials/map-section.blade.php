@@ -14,21 +14,22 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {{-- GIS Map Canvas with Real Live Map Preview --}}
             <div
-                class="lg:col-span-7 bg-slate-100 dark:bg-[#0c1626] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl relative min-h-[440px] sm:min-h-[530px] flex flex-col justify-between">
+                class="lg:col-span-7 bg-slate-100 dark:bg-[#0c1626] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl relative isolate z-10 min-h-[440px] sm:min-h-[530px] flex flex-col justify-between">
                 {{-- Top Overlay Bar --}}
                 <div
-                    class="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-[1001] flex items-center justify-between gap-1.5 sm:gap-2 pointer-events-auto">
+                    class="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-30 flex items-center justify-between gap-1 sm:gap-2 pointer-events-auto">
                     <div
-                        class="flex items-center gap-1.5 sm:gap-2 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-200/90 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 shadow-md flex-shrink-0">
-                        <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        class="flex items-center gap-1 sm:gap-2 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-200/90 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 shadow-md min-w-0 shrink">
                         <span
-                            class="hidden md:inline font-medium font-mono text-xs">{{ __('landing.map_live_label') }}</span>
+                            class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0"></span>
+                        <span
+                            class="hidden md:inline font-medium font-mono text-xs truncate">{{ __('landing.map_live_label') }}</span>
                         <span class="hidden md:inline text-slate-300 dark:text-slate-600">|</span>
                         <span id="preview-station-count"
-                            class="text-blue-600 dark:text-cyan-300 font-mono font-bold text-[11px]">Memuat
+                            class="text-blue-600 dark:text-cyan-300 font-mono font-bold text-[10px] sm:text-[11px] whitespace-nowrap">Memuat
                             pos...</span>
                     </div>
-                    <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
+                    <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
                         <button id="preview-zoom-in" type="button"
                             class="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg sm:rounded-xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/90 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-300 transition shadow-xs"
                             title="Perbesar" aria-label="Zoom in">
@@ -76,11 +77,12 @@
                 </div>
 
                 {{-- Real Interactive Leaflet Map --}}
-                <div id="preview-station-map" class="w-full h-[440px] sm:h-[530px] rounded-3xl" data-preview-map></div>
+                <div id="preview-station-map" class="w-full h-[440px] sm:h-[530px] rounded-3xl relative z-0"
+                    data-preview-map></div>
 
                 {{-- Bottom Overlay Legend Bar --}}
                 <div
-                    class="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-[1001] pointer-events-none flex items-center justify-between gap-2 text-xs text-slate-700 dark:text-slate-300 font-mono bg-white/95 dark:bg-slate-950/85 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xl">
+                    class="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-30 pointer-events-none flex items-center justify-between gap-2 text-xs text-slate-700 dark:text-slate-300 font-mono bg-white/95 dark:bg-slate-950/85 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xl">
                     <div class="flex items-center gap-2.5 sm:gap-4 text-[10px] sm:text-xs">
                         <span class="flex items-center gap-1"><span
                                 class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-cyan-500"></span> AWLR</span>
