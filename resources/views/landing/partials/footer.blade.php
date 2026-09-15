@@ -78,7 +78,7 @@
                     <li><a href="{{ route('map') }}"
                             class="hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.footer_projects') }}</a>
                     </li>
-                    <li><a href="#articles"
+                    <li><a href="{{ route('articles') }}"
                             class="hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.footer_articles') }}</a>
                     </li>
                     <li><a href="https://e-katalog.lkpp.go.id" target="_blank"

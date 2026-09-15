@@ -1,6 +1,8 @@
 @php
     $isMap = request()->is('map*') || request()->routeIs('map');
     $isHome = request()->routeIs('home') || request()->is('/');
+    $isArticles = request()->routeIs('articles') || request()->is('articles*');
+    $isTutorials = request()->routeIs('tutorials') || request()->is('tutorials*');
     $isProducts = request()->routeIs('products*') || request()->is('products*');
     $isInternship = request()->routeIs('internship*') || request()->is('internship*');
     $locale = app()->getLocale();
@@ -217,13 +219,13 @@
                     @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_projects') }}</a>
 
-                <a href="{{ $isHome ? '#articles' : 'https://higertech.com/Article' }}"
-                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
-                    class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_articles') }}</a>
+                <a href="{{ route('articles') }}" data-nav-target="articles"
+                    class="nav-link {{ $isArticles ? 'is-active text-blue-600 dark:text-cyan-400 font-bold' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
+                    @if ($isArticles) aria-current="page" @endif>{{ __('landing.nav_articles') }}</a>
 
-                <a href="{{ $isHome ? '#contact' : 'https://higertech.com/Tutorial' }}"
-                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
-                    class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_download') }}</a>
+                <a href="{{ route('tutorials') }}" data-nav-target="contact"
+                    class="nav-link {{ $isTutorials ? 'is-active text-blue-600 dark:text-cyan-400 font-bold' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
+                    @if ($isTutorials) aria-current="page" @endif>Tutorials</a>
 
                 {{-- Peta link with Active Indicator when on /map --}}
                 <a href="{{ route('map') }}"
