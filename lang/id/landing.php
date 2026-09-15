@@ -91,7 +91,7 @@ return [
     'intern_role3_title' => 'Web SCADA & GIS Telemetry Developer',
     'intern_role3_desc' => 'Pembangunan visualisasi map GIS interaktif, agregasi database time-series PostgreSQL/InfluxDB, serta REST API/MQTT broker untuk sistem peringatan banjir terpadu.',
     'intern_benefit_label' => 'Fasilitas & Benefit Program:',
-    'intern_benefit_1' => 'Uang Saku Bulanan',
+    'intern_benefit_1' => 'Pengalaman Industri Nyata',
     'intern_benefit_2' => 'Mentoring Engineer Senior',
     'intern_benefit_3' => 'Sertifikat Industri Resmi',
     'intern_benefit_4' => 'Peluang Fast-Track Karyawan',

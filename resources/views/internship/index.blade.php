@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Pusat Layanan Magang & PKL - PT Higertech Karya Sinergi')
-@section('description',
-    'Pusat layanan pendaftaran Praktik Kerja Lapangan (PKL SMK/MAK) dan program Internship R&D
-    mahasiswa PT Higertech Karya Sinergi.')
+@section('title', __('internship.meta_title'))
+@section('description', __('internship.meta_description'))
 
 @section('content')
     <main class="flex-1">
@@ -14,25 +12,21 @@
                 <div
                     class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono font-bold tracking-wide bg-[#e0f2fe] text-[#0369a1] dark:bg-blue-950/70 dark:text-cyan-300 mb-6 shadow-xs border border-sky-200 dark:border-blue-800">
                     <span class="w-2 h-2 rounded-full bg-[#0284c7] dark:bg-cyan-400 animate-pulse"></span>
-                    <span>DIVISI LITBANG & PENGEMBANGAN TALENTA VOKASI - PT HIGERTECH KARYA SINERGI</span>
+                    <span>{{ __('internship.hero_badge') }}</span>
                 </div>
 
                 <!-- Headline -->
                 <h1
                     class="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold tracking-tight text-[#0f172a] dark:text-white mb-5 leading-tight">
-                    Membangun Talenta Instrumentasi &
+                    {{ __('internship.hero_title_prefix') }}
                     <span
-                        class="bg-gradient-to-r from-[#0284c7] to-[#0ea5e9] dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent">Telemetri
-                        Nasional</span>
+                        class="bg-gradient-to-r from-[#0284c7] to-[#0ea5e9] dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent">{{ __('internship.hero_title_highlight') }}</span>
                 </h1>
 
                 <!-- Subheadline -->
                 <p
                     class="text-base sm:text-lg text-[#334155] dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal mb-8">
-                    Program magang terstruktur yang melibatkan siswa SMK/MAK dan mahasiswa dari
-                    <strong class="text-[#0f172a] dark:text-white font-bold">SEMUA JURUSAN</strong>
-                    (Teknik, IT, Administrasi, Bisnis, Desain, & lainnya) langsung dalam perakitan perangkat keras RTU,
-                    kalibrasi sensor hidrometeorologi, dan implementasi sistem SCADA.
+                    {{ __('internship.hero_desc') }}
                 </p>
 
                 <!-- Action Bar -->
@@ -40,18 +34,18 @@
                     <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white bg-[#0ea5e9] hover:bg-[#0284c7] dark:bg-cyan-500 dark:hover:bg-cyan-400 dark:text-slate-950 shadow-md transition-all duration-150 cursor-pointer"
                         href="#komparasi-jalur"
                         onclick="event.preventDefault(); document.getElementById('komparasi-jalur').scrollIntoView({ behavior: 'smooth', block: 'start' });">
-                        <span>Ajukan Pendaftaran Magang / PKL</span>
+                        <span>{{ __('internship.hero_cta_apply') }}</span>
                         <span class="text-base leading-none">→</span>
                     </a>
                     <button
                         class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-[#0f172a] dark:text-slate-100 bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-700 border border-[#cbd5e1] dark:border-slate-700 shadow-sm transition-all duration-150 font-mono cursor-pointer"
                         onclick="openModal('modal-lacak-status')" type="button">
-                        <span>Lacak Status Berkas & Kelulusan</span>
+                        <span>{{ __('internship.hero_cta_track') }}</span>
                         <span class="text-sm">🔍</span>
                     </button>
                 </div>
 
-                <!-- Technical Telemetry Metatags -->
+                <!-- Technical Metatags -->
                 <div
                     class="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs font-mono text-[#1e293b] dark:text-slate-300">
                     <span
@@ -61,7 +55,7 @@
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                                 fill-rule="evenodd"></path>
                         </svg>
-                        Batch Ganjil 2025/2026
+                        {{ __('internship.hero_meta_batch') }}
                     </span>
                     <span
                         class="inline-flex items-center gap-1.5 bg-white dark:bg-slate-800/80 px-3.5 py-1.5 rounded-lg shadow-sm border border-[#e2e8f0] dark:border-slate-700/80 font-medium">
@@ -71,7 +65,7 @@
                                 d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                                 fill-rule="evenodd"></path>
                         </svg>
-                        Lab R&D Bandung (WFO)
+                        {{ __('internship.hero_meta_location') }}
                     </span>
                     <span
                         class="inline-flex items-center gap-1.5 bg-white dark:bg-slate-800/80 px-3.5 py-1.5 rounded-lg shadow-sm border border-[#e2e8f0] dark:border-slate-700/80 font-medium">
@@ -81,7 +75,7 @@
                                 d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
                                 fill-rule="evenodd"></path>
                         </svg>
-                        Sertifikasi Industri Resmi
+                        {{ __('internship.hero_meta_cert') }}
                     </span>
                 </div>
             </div>
@@ -94,13 +88,12 @@
             <div class="max-w-6xl mx-auto">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                     <span
-                        class="text-xs font-mono uppercase tracking-widest text-[#0284c7] dark:text-cyan-400 font-bold">STANDAR
-                        KUALIFIKASI VOKASI</span>
+                        class="text-xs font-mono uppercase tracking-widest text-[#0284c7] dark:text-cyan-400 font-bold">{{ __('internship.comp_badge') }}</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0f172a] dark:text-white mt-1">
-                        Komparasi Jalur Program & Persyaratan Teknis
+                        {{ __('internship.comp_title') }}
                     </h2>
                     <p class="text-sm text-[#475569] dark:text-slate-300 mt-2 font-medium">
-                        Pilih jalur magang yang selaras dengan jenjang studi dan kurikulum institusi pendidikan Anda.
+                        {{ __('internship.comp_subtitle') }}
                     </p>
                 </div>
 
@@ -114,11 +107,11 @@
                                 <div class="flex items-center space-x-2">
                                     <span
                                         class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider bg-blue-50 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 border border-blue-100 dark:border-blue-800/60">
-                                        JALUR VOKASI MENENGAH
+                                        {{ __('internship.smk_track') }}
                                     </span>
                                     <span
                                         class="px-2 py-1 rounded-md text-[11px] font-mono font-semibold bg-slate-100 text-[#0f172a] dark:bg-slate-800 dark:text-slate-200">
-                                        SMK / MAK
+                                        {{ __('internship.smk_level') }}
                                     </span>
                                 </div>
                                 <div
@@ -136,38 +129,36 @@
                             </div>
 
                             <h3 class="text-xl font-bold text-[#0f172a] dark:text-white mb-2">
-                                Praktik Kerja Lapangan (PKL SMK/MAK)
+                                {{ __('internship.smk_title') }}
                             </h3>
                             <p class="text-xs text-[#475569] dark:text-slate-300 mb-6 leading-relaxed font-normal">
-                                Fokus pada standardisasi instalasi perkabelan RTU, soldering mikrokomponen, kalibrasi
-                                mekanik sensor, dan penyiapan instrumen telemetry hidrologi di lapangan.
+                                {{ __('internship.smk_desc') }}
                             </p>
 
-                            <!-- Technical Spec Details -->
+                            <!-- Spec Details -->
                             <div class="space-y-4 text-xs">
                                 <!-- Durasi -->
                                 <div
                                     class="p-3.5 bg-[#f1f5f9] dark:bg-[#0c1626] rounded-xl border border-slate-200/70 dark:border-slate-800">
                                     <span
-                                        class="font-mono text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wide block mb-1">Durasi
-                                        & Lokasi Kerja</span>
+                                        class="font-mono text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wide block mb-1">{{ __('internship.smk_duration_label') }}</span>
                                     <div
                                         class="flex items-center justify-between text-[#0f172a] dark:text-slate-200 font-semibold">
                                         <span class="flex items-center gap-1.5">
                                             <span class="w-2 h-2 rounded-full bg-[#0284c7]"></span>
-                                            Durasi:
-                                            <strong class="font-bold text-[#0f172a] dark:text-white">3 - 6 Bulan</strong>
+                                            <span>{{ __('internship.smk_duration_label') }}:</span>
+                                            <strong
+                                                class="font-bold text-[#0f172a] dark:text-white">{{ __('internship.smk_duration_val') }}</strong>
                                         </span>
-                                        <span class="font-mono text-[#0284c7] dark:text-cyan-400 font-bold">WFO Lab
-                                            Bandung</span>
+                                        <span
+                                            class="font-mono text-[#0284c7] dark:text-cyan-400 font-bold">{{ __('internship.smk_location_val') }}</span>
                                     </div>
                                 </div>
 
                                 <!-- Syarat Umum -->
                                 <div>
                                     <span
-                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">Syarat
-                                        Umum Kualifikasi:</span>
+                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">{{ __('internship.smk_req_title') }}</span>
                                     <ul class="space-y-2 text-[#1e293b] dark:text-slate-300">
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-[#0284c7] dark:text-cyan-400 mt-0.5 flex-shrink-0"
@@ -175,9 +166,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Terbuka untuk siswa aktif SMK / MAK dari <strong
-                                                    class="text-[#0f172a] dark:text-white font-bold">SEMUA jurusan</strong>
-                                                dengan minat belajar teknologi hardware, IoT, atau data.</span>
+                                            <span>{{ __('internship.smk_req_1') }}</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-[#0284c7] dark:text-cyan-400 mt-0.5 flex-shrink-0"
@@ -185,8 +174,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Surat Rekomendasi/Pengantar Resmi dari Sekolah/Kepala Jurusan
-                                                (PDF).</span>
+                                            <span>{{ __('internship.smk_req_2') }}</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-[#0284c7] dark:text-cyan-400 mt-0.5 flex-shrink-0"
@@ -194,8 +182,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Surat Izin Orang Tua / Wali untuk kegiatan onsite di laboratorium
-                                                Bandung.</span>
+                                            <span>{{ __('internship.smk_req_3') }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -203,8 +190,7 @@
                                 <!-- Fasilitas -->
                                 <div class="pt-3">
                                     <span
-                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">Fasilitas
-                                        & Benefit Pembinaan:</span>
+                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">{{ __('internship.smk_fac_title') }}</span>
                                     <ul class="space-y-2 text-[#1e293b] dark:text-slate-300">
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0"
@@ -212,8 +198,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Bimbingan teknisi senior, modul praktikum resmi, dan akses workshop
-                                                perangkat keras.</span>
+                                            <span>{{ __('internship.smk_fac_1') }}</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0"
@@ -221,8 +206,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Sertifikat Industri Resmi & Penilaian Kinerja Laporan PKL langsung ke
-                                                sekolah.</span>
+                                            <span>{{ __('internship.smk_fac_2') }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -234,7 +218,7 @@
                             <button
                                 class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl text-xs font-bold text-white bg-[#2563eb] hover:bg-[#1d4ed8] dark:bg-blue-600 dark:hover:bg-blue-500 shadow-sm transition-all cursor-pointer"
                                 onclick="openModal('modal-daftar-smk')" type="button">
-                                <span>Daftar Jalur SMK</span>
+                                <span>{{ __('internship.smk_btn') }}</span>
                                 <span class="text-sm">→</span>
                             </button>
                         </div>
@@ -246,7 +230,7 @@
                         <!-- Recommended Pill -->
                         <div
                             class="absolute -top-3 right-6 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-mono text-[10px] font-bold px-3 py-1 rounded-full tracking-wider uppercase shadow-sm">
-                            R&D Research Track
+                            {{ __('internship.he_badge') }}
                         </div>
 
                         <div>
@@ -255,11 +239,11 @@
                                 <div class="flex items-center space-x-2">
                                     <span
                                         class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider bg-cyan-50 text-cyan-800 dark:bg-cyan-950/70 dark:text-cyan-200 border border-cyan-100 dark:border-cyan-800/60">
-                                        JALUR PERGURUAN TINGGI
+                                        {{ __('internship.he_track') }}
                                     </span>
                                     <span
                                         class="px-2 py-1 rounded-md text-[11px] font-mono font-semibold bg-slate-100 text-[#0f172a] dark:bg-slate-800 dark:text-slate-200">
-                                        D3 / D4 / S1 / FRESH GRAD
+                                        {{ __('internship.he_level') }}
                                     </span>
                                 </div>
                                 <div
@@ -273,38 +257,36 @@
                             </div>
 
                             <h3 class="text-xl font-bold text-[#0f172a] dark:text-white mb-2">
-                                Program Internship (D3 / D4 / S1 & Fresh Graduate)
+                                {{ __('internship.he_title') }}
                             </h3>
                             <p class="text-xs text-[#475569] dark:text-slate-300 mb-6 leading-relaxed font-normal">
-                                Pengembangan arsitektur embedded telemetry (STM32/ESP32), integrasi protokol MQTT/Modbus,
-                                sistem SCADA hidrometeorologi, dan riset analitik data sensor.
+                                {{ __('internship.he_desc') }}
                             </p>
 
-                            <!-- Technical Spec Details -->
+                            <!-- Spec Details -->
                             <div class="space-y-4 text-xs">
                                 <!-- Durasi -->
                                 <div
                                     class="p-3.5 bg-[#f1f5f9] dark:bg-[#0c1626] rounded-xl border border-slate-200/70 dark:border-slate-800">
                                     <span
-                                        class="font-mono text-[10px] font-bold text-slate-600 dark:text-cyan-300 uppercase tracking-wide block mb-1">Durasi
-                                        & Skema Kerja</span>
+                                        class="font-mono text-[10px] font-bold text-slate-600 dark:text-cyan-300 uppercase tracking-wide block mb-1">{{ __('internship.he_duration_label') }}</span>
                                     <div
                                         class="flex items-center justify-between text-[#0f172a] dark:text-slate-200 font-semibold">
                                         <span class="flex items-center gap-1.5">
                                             <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
-                                            Durasi:
-                                            <strong class="font-bold text-[#0f172a] dark:text-white">6 - 12 Bulan</strong>
+                                            <span>{{ __('internship.he_duration_label') }}:</span>
+                                            <strong
+                                                class="font-bold text-[#0f172a] dark:text-white">{{ __('internship.he_duration_val') }}</strong>
                                         </span>
-                                        <span class="font-mono text-[#0284c7] dark:text-cyan-300 font-bold">WFO Lab Litbang
-                                            Bandung</span>
+                                        <span
+                                            class="font-mono text-[#0284c7] dark:text-cyan-300 font-bold">{{ __('internship.he_location_val') }}</span>
                                     </div>
                                 </div>
 
                                 <!-- Syarat Umum -->
                                 <div>
                                     <span
-                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">Syarat
-                                        Umum Kualifikasi:</span>
+                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">{{ __('internship.he_req_title') }}</span>
                                     <ul class="space-y-2 text-[#1e293b] dark:text-slate-300">
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400 mt-0.5 flex-shrink-0"
@@ -312,9 +294,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Mahasiswa aktif (minimal semester 5) atau Fresh Graduate dari <strong
-                                                    class="text-[#0f172a] dark:text-white font-bold">SEMUA jurusan /
-                                                    program studi</strong> tanpa batasan.</span>
+                                            <span>{{ __('internship.he_req_1') }}</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400 mt-0.5 flex-shrink-0"
@@ -322,7 +302,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Surat Pengantar Magang Kampus / Rekomendasi Program MBKM Mandiri.</span>
+                                            <span>{{ __('internship.he_req_2') }}</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400 mt-0.5 flex-shrink-0"
@@ -330,8 +310,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Curriculum Vitae (CV) & Portofolio Proyek atau karya kreatif yang pernah
-                                                dikerjakan.</span>
+                                            <span>{{ __('internship.he_req_3') }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -339,8 +318,7 @@
                                 <!-- Fasilitas -->
                                 <div class="pt-3">
                                     <span
-                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">Fasilitas
-                                        & Benefit Penugasan:</span>
+                                        class="font-mono text-[11px] font-bold text-[#0f172a] dark:text-slate-200 uppercase tracking-wide block mb-2">{{ __('internship.he_fac_title') }}</span>
                                     <ul class="space-y-2 text-[#1e293b] dark:text-slate-300">
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0"
@@ -348,8 +326,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Stipend penugasan proyek Litbang, sertifikasi industri, dan mentorship
-                                                insinyur telemetri.</span>
+                                            <span>{{ __('internship.he_fac_1') }}</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0"
@@ -357,8 +334,7 @@
                                                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"
                                                     stroke-width="2"></path>
                                             </svg>
-                                            <span>Kesempatan fast-track rekrutmen permanen sebagai R&D Associate
-                                                Engineer.</span>
+                                            <span>{{ __('internship.he_fac_2') }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -370,7 +346,7 @@
                             <button
                                 class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl text-xs font-bold text-white bg-[#06b6d4] hover:bg-[#0891b2] transition-all shadow-sm cursor-pointer"
                                 onclick="openModal('modal-daftar-mahasiswa')" type="button">
-                                <span>Daftar Jalur Mahasiswa</span>
+                                <span>{{ __('internship.he_btn') }}</span>
                                 <span class="text-sm">→</span>
                             </button>
                         </div>
@@ -385,13 +361,12 @@
             <div class="max-w-6xl mx-auto">
                 <div class="text-center max-w-2xl mx-auto mb-12">
                     <span
-                        class="text-xs font-mono uppercase tracking-widest text-[#0284c7] dark:text-cyan-400 font-bold">FLOW
-                        PROSES STANDAR</span>
+                        class="text-xs font-mono uppercase tracking-widest text-[#0284c7] dark:text-cyan-400 font-bold">{{ __('internship.steps_badge') }}</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0f172a] dark:text-white mt-1">
-                        Tahapan Alur Program & Verifikasi Berkas
+                        {{ __('internship.steps_title') }}
                     </h2>
                     <p class="text-xs sm:text-sm text-[#475569] dark:text-slate-300 mt-2 font-medium">
-                        Siklus penerimaan transparan, terukur, dan terintegrasi sistem pelacakan otomatis.
+                        {{ __('internship.steps_subtitle') }}
                     </p>
                 </div>
 
@@ -403,12 +378,12 @@
                             class="font-mono text-2xl font-black text-[#0284c7] dark:text-cyan-400 mb-3 flex items-center justify-between">
                             <span>01</span>
                             <span
-                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-sky-50 text-[#0369a1] dark:bg-blue-950/60 dark:text-blue-300 border border-sky-100 dark:border-blue-900">Online</span>
+                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-sky-50 text-[#0369a1] dark:bg-blue-950/60 dark:text-blue-300 border border-sky-100 dark:border-blue-900">{{ __('internship.step1_tag') }}</span>
                         </div>
-                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">Pengajuan Formulir Online</h3>
+                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">
+                            {{ __('internship.step1_title') }}</h3>
                         <p class="text-xs text-[#475569] dark:text-slate-300 leading-relaxed font-normal">
-                            Pengisian identitas, peminatan bidang (Embedded RTU / Sensor / Web SCADA), serta unggah berkas
-                            PDF.
+                            {{ __('internship.step1_desc') }}
                         </p>
                     </div>
 
@@ -419,14 +394,12 @@
                             class="font-mono text-2xl font-black text-teal-600 dark:text-teal-400 mb-3 flex items-center justify-between">
                             <span>02</span>
                             <span
-                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-100 dark:border-teal-900">SLA:
-                                2-3 Hari</span>
+                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-100 dark:border-teal-900">{{ __('internship.step2_tag') }}</span>
                         </div>
-                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">Verifikasi Berkas Administrasi
-                        </h3>
+                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">
+                            {{ __('internship.step2_title') }}</h3>
                         <p class="text-xs text-[#475569] dark:text-slate-300 leading-relaxed font-normal">
-                            Validasi surat pengantar resmi, keselarasan silabus kampus/sekolah, dan ketersediaan kuota
-                            pembimbing lab.
+                            {{ __('internship.step2_desc') }}
                         </p>
                     </div>
 
@@ -437,12 +410,12 @@
                             class="font-mono text-2xl font-black text-[#0284c7] dark:text-cyan-400 mb-3 flex items-center justify-between">
                             <span>03</span>
                             <span
-                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-50 dark:bg-cyan-950/60 text-cyan-800 dark:text-cyan-300 border border-cyan-100 dark:border-cyan-900">Daring</span>
+                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-50 dark:bg-cyan-950/60 text-cyan-800 dark:text-cyan-300 border border-cyan-100 dark:border-cyan-900">{{ __('internship.step3_tag') }}</span>
                         </div>
-                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">Asesmen Teknis & Wawancara</h3>
+                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">
+                            {{ __('internship.step3_title') }}</h3>
                         <p class="text-xs text-[#475569] dark:text-slate-300 leading-relaxed font-normal">
-                            Diskusi kompetensi dasar logika mikrokontroler, hardware perakitan, dan kesiapan penugasan
-                            proyek lab.
+                            {{ __('internship.step3_desc') }}
                         </p>
                     </div>
 
@@ -453,12 +426,12 @@
                             class="font-mono text-2xl font-black text-emerald-600 dark:text-emerald-400 mb-3 flex items-center justify-between">
                             <span>04</span>
                             <span
-                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-900">Bandung</span>
+                                class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-900">{{ __('internship.step4_tag') }}</span>
                         </div>
-                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">Onboarding & Penugasan Lab</h3>
+                        <h3 class="text-sm font-bold text-[#0f172a] dark:text-white mb-2">
+                            {{ __('internship.step4_title') }}</h3>
                         <p class="text-xs text-[#475569] dark:text-slate-300 leading-relaxed font-normal">
-                            Penerbitan LOA digital resmi, induksi K3, penyerahan modul RTU, dan integrasi bersama tim
-                            litbang teknis.
+                            {{ __('internship.step4_desc') }}
                         </p>
                     </div>
                 </div>
@@ -467,7 +440,7 @@
         <!-- END: Section Tahapan Alur Program -->
 
         <!-- MODAL 1: Pendaftaran PKL SMK/MAK -->
-        <div class="fixed inset-0 z-[2000] hidden items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto"
+        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto"
             id="modal-daftar-smk" onclick="if (event.target === this) closeModal('modal-daftar-smk');">
             <div
                 class="relative w-full max-w-2xl bg-white dark:bg-[#131D36] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
@@ -480,10 +453,10 @@
                         </div>
                         <div>
                             <h3 class="text-base sm:text-lg font-bold text-[#0f172a] dark:text-white leading-tight">
-                                Formulir Pendaftaran PKL Jalur SMK / MAK
+                                {{ __('internship.form_smk_title') }}
                             </h3>
                             <p class="text-xs text-slate-500 dark:text-slate-400">
-                                Lab Instrumentasi, Perakitan RTU & Telemetri Bandung
+                                {{ __('internship.form_smk_subtitle') }}
                             </p>
                         </div>
                     </div>
@@ -498,109 +471,107 @@
                         onsubmit="handleFormSubmit(event, 'modal-daftar-smk', 'Pendaftaran PKL SMK berhasil dikirim! Nomor Registrasi Pelacakan: HGT-SMK-' + Math.floor(1000 + Math.random() * 9000))">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Lengkap
-                                    Siswa *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_name_student') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="Nama lengkap sesuai kartu pelajar" required type="text" />
+                                    placeholder="{{ __('internship.field_name_student_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">NISN / NIK
-                                    Siswa *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_nisn') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 font-mono focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="00xxxxxxxx / 32xxxxxxxx" required type="text" />
+                                    placeholder="{{ __('internship.field_nisn_ph') }}" required type="text" />
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Asal Sekolah
-                                    (SMK / MAK) *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_school') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="cth: SMKN 1 Cimahi / SMKN 2 Bandung" required type="text" />
+                                    placeholder="{{ __('internship.field_school_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Jurusan /
-                                    Kompetensi Keahlian *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_major') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="cth: TKJ, RPL, Mekatronika, Elektronika" required type="text" />
+                                    placeholder="{{ __('internship.field_major_ph') }}" required type="text" />
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Kelas /
-                                    Tingkat *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_class') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="cth: Kelas XI / XII" required type="text" />
+                                    placeholder="{{ __('internship.field_class_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">No. WhatsApp
-                                    Siswa *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_phone') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 font-mono focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="08xxxxxxxxxx" required type="tel" />
+                                    placeholder="{{ __('internship.field_phone_ph') }}" required type="tel" />
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Durasi Magang
-                                    *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_duration') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="cth: 3 Bulan / 6 Bulan" required type="text" />
+                                    placeholder="{{ __('internship.field_duration_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Bulan Mulai
-                                    Magang *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_start_month') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb]"
-                                    placeholder="cth: Juli / Agustus 2025" required type="text" />
+                                    placeholder="{{ __('internship.field_start_month_ph') }}" required type="text" />
                             </div>
                         </div>
                         <div>
-                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Peminatan / Minat
-                                Bidang PKL *</label>
+                            <label
+                                class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_interest') }}</label>
                             <input
                                 class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb]"
-                                placeholder="cth: Perakitan Hardware RTU & Solder Komponen, Kalibrasi Sensor" required
-                                type="text" />
+                                placeholder="{{ __('internship.field_interest_ph') }}" required type="text" />
                         </div>
                         <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
                             <label
-                                class="block font-mono text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wide">Unggah
-                                Kelengkapan Dokumen (Format PDF, Maks. 2MB per file):</label>
+                                class="block font-mono text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wide">{{ __('internship.docs_header') }}</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">a. Kartu
-                                        Pelajar / Scan KTP *</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_student_id') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-950 dark:file:text-blue-300 hover:file:bg-blue-100 cursor-pointer"
                                         required type="file" />
                                 </div>
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">b. Surat
-                                        Pengantar Sekolah *</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_school_letter') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-950 dark:file:text-blue-300 hover:file:bg-blue-100 cursor-pointer"
                                         required type="file" />
                                 </div>
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">c. CV &
-                                        Portofolio Singkat</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_cv_optional') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-950 dark:file:text-blue-300 hover:file:bg-blue-100 cursor-pointer"
                                         type="file" />
                                 </div>
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">d.
-                                        Transkrip Nilai / Rapor *</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_report') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-950 dark:file:text-blue-300 hover:file:bg-blue-100 cursor-pointer"
                                         required type="file" />
@@ -612,12 +583,12 @@
                             <button
                                 class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition font-semibold cursor-pointer"
                                 onclick="closeModal('modal-daftar-smk')" type="button">
-                                Batal
+                                {{ __('internship.btn_cancel') }}
                             </button>
                             <button
                                 class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold transition shadow-sm cursor-pointer"
                                 type="submit">
-                                Kirim Berkas Pendaftaran SMK
+                                {{ __('internship.btn_submit_smk') }}
                             </button>
                         </div>
                     </form>
@@ -626,7 +597,7 @@
         </div>
 
         <!-- MODAL 2: Pendaftaran Internship Mahasiswa -->
-        <div class="fixed inset-0 z-[2000] hidden items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto"
+        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto"
             id="modal-daftar-mahasiswa" onclick="if (event.target === this) closeModal('modal-daftar-mahasiswa');">
             <div
                 class="relative w-full max-w-2xl bg-white dark:bg-[#131D36] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
@@ -639,10 +610,10 @@
                         </div>
                         <div>
                             <h3 class="text-base sm:text-lg font-bold text-[#0f172a] dark:text-white leading-tight">
-                                Formulir Internship Mahasiswa & Fresh Graduate
+                                {{ __('internship.form_he_title') }}
                             </h3>
                             <p class="text-xs text-slate-500 dark:text-slate-400">
-                                Program Litbang Embedded Telemetri, SCADA & IoT Cloud
+                                {{ __('internship.form_he_subtitle') }}
                             </p>
                         </div>
                     </div>
@@ -657,47 +628,47 @@
                         onsubmit="handleFormSubmit(event, 'modal-daftar-mahasiswa', 'Pendaftaran Magang Mahasiswa berhasil dikirim! ID Tiket Anda: HGT-RND-' + Math.floor(1000 + Math.random() * 9000))">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Lengkap
-                                    Mahasiswa *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_name_he') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#06b6d4]"
-                                    placeholder="Nama lengkap beserta gelar jika ada" required type="text" />
+                                    placeholder="{{ __('internship.field_name_he_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">NIM / NIK
-                                    *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_nim') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 font-mono focus:ring-2 focus:ring-[#06b6d4]"
-                                    placeholder="NIM Mahasiswa / NIK KTP" required type="text" />
+                                    placeholder="{{ __('internship.field_nim_ph') }}" required type="text" />
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Asal
-                                    Universitas / Institut / Politeknik *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_univ') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#06b6d4]"
-                                    placeholder="cth: Institut Teknologi Bandung / Polban" required type="text" />
+                                    placeholder="{{ __('internship.field_univ_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Program Studi
-                                    / Jurusan *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_major_he') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#06b6d4]"
-                                    placeholder="cth: Teknik Elektro, Informatika, Fisika" required type="text" />
+                                    placeholder="{{ __('internship.field_major_he_ph') }}" required type="text" />
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Semester Aktif
-                                    / Status *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_semester') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#06b6d4]"
-                                    placeholder="cth: Semester 5 / 6 / 7 / Fresh Grad" required type="text" />
+                                    placeholder="{{ __('internship.field_semester_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">No. WhatsApp
-                                    Aktif *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_phone_he') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 font-mono focus:ring-2 focus:ring-[#06b6d4]"
                                     placeholder="08xxxxxxxxxx" required type="tel" />
@@ -705,61 +676,60 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Durasi Magang
-                                    / Riset *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_duration_he') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#06b6d4]"
-                                    placeholder="cth: 6 Bulan / 1 Tahun" required type="text" />
+                                    placeholder="{{ __('internship.field_duration_he_ph') }}" required type="text" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Bulan Mulai
-                                    Magang *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_start_month_he') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#06b6d4]"
-                                    placeholder="cth: September 2025" required type="text" />
+                                    placeholder="{{ __('internship.field_start_month_he_ph') }}" required
+                                    type="text" />
                             </div>
                         </div>
                         <div>
-                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Minat Riset /
-                                Posisi Peminatan *</label>
+                            <label
+                                class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.field_interest_he') }}</label>
                             <input
                                 class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 focus:ring-2 focus:ring-[#06b6d4]"
-                                placeholder="cth: Embedded Firmware STM32/ESP32, SCADA & Web Telemetry, IoT Cloud" required
-                                type="text" />
+                                placeholder="{{ __('internship.field_interest_he_ph') }}" required type="text" />
                         </div>
                         <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
                             <label
-                                class="block font-mono text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wide">Unggah
-                                Dokumen Berkas (Format PDF, Maks. 2MB per file):</label>
+                                class="block font-mono text-xs font-bold text-slate-900 dark:text-white mb-2 uppercase tracking-wide">{{ __('internship.docs_header') }}</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">a. KTM /
-                                        Scan KTP *</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_ktm') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-50 file:text-cyan-700 dark:file:bg-cyan-950 dark:file:text-cyan-300 hover:file:bg-cyan-100 cursor-pointer"
                                         required type="file" />
                                 </div>
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">b. Surat
-                                        Pengantar Kampus / MBKM *</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_univ_letter') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-50 file:text-cyan-700 dark:file:bg-cyan-950 dark:file:text-cyan-300 hover:file:bg-cyan-100 cursor-pointer"
                                         required type="file" />
                                 </div>
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">c.
-                                        Curriculum Vitae & Portofolio *</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_cv_he') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-50 file:text-cyan-700 dark:file:bg-cyan-950 dark:file:text-cyan-300 hover:file:bg-cyan-100 cursor-pointer"
                                         required type="file" />
                                 </div>
                                 <div
                                     class="p-3.5 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-[#0c1626]">
-                                    <span class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">d.
-                                        Transkrip Nilai Akademik *</span>
+                                    <span
+                                        class="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">{{ __('internship.doc_transcript') }}</span>
                                     <input
                                         class="block w-full text-xs text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-50 file:text-cyan-700 dark:file:bg-cyan-950 dark:file:text-cyan-300 hover:file:bg-cyan-100 cursor-pointer"
                                         required type="file" />
@@ -771,12 +741,12 @@
                             <button
                                 class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition font-semibold cursor-pointer"
                                 onclick="closeModal('modal-daftar-mahasiswa')" type="button">
-                                Batal
+                                {{ __('internship.btn_cancel') }}
                             </button>
                             <button
                                 class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#06b6d4] hover:bg-[#0891b2] text-white font-bold transition shadow-sm cursor-pointer"
                                 type="submit">
-                                Kirim Berkas Pendaftaran Mahasiswa
+                                {{ __('internship.btn_submit_he') }}
                             </button>
                         </div>
                     </form>
@@ -785,7 +755,7 @@
         </div>
 
         <!-- MODAL 3: Pelacakan Status Berkas & Kelulusan -->
-        <div class="fixed inset-0 z-[2000] hidden items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto"
+        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto"
             id="modal-lacak-status" onclick="if (event.target === this) closeModal('modal-lacak-status');">
             <div
                 class="relative w-full max-w-xl bg-white dark:bg-[#131D36] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
@@ -798,10 +768,10 @@
                         </div>
                         <div>
                             <h3 class="text-base sm:text-lg font-bold text-[#0f172a] dark:text-white leading-tight">
-                                Pelacakan Status Berkas & LOA
+                                {{ __('internship.track_title') }}
                             </h3>
                             <p class="text-xs text-slate-500 dark:text-slate-400">
-                                Cek progres seleksi penerimaan & unduh Letter of Acceptance
+                                {{ __('internship.track_subtitle') }}
                             </p>
                         </div>
                     </div>
@@ -818,12 +788,12 @@
                         <button
                             class="py-2 px-3 rounded-lg font-bold text-xs transition-all bg-white dark:bg-[#131D36] text-[#0284c7] dark:text-cyan-400 shadow-sm cursor-pointer"
                             id="tab-lacak-id" onclick="switchLacakTab('id')" type="button">
-                            Berdasarkan ID Registrasi
+                            {{ __('internship.track_tab_id') }}
                         </button>
                         <button
                             class="py-2 px-3 rounded-lg font-bold text-xs transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer"
                             id="tab-lacak-email" onclick="switchLacakTab('email')" type="button">
-                            Berdasarkan Email
+                            {{ __('internship.track_tab_email') }}
                         </button>
                     </div>
 
@@ -831,16 +801,16 @@
                     <form class="space-y-4" onsubmit="searchStatus(event)">
                         <div class="space-y-3" id="form-lacak-id-group">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">ID Permintaan
-                                    / Registrasi *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.track_id_label') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 text-xs font-mono focus:ring-2 focus:ring-[#0ea5e9]"
                                     id="lookup-input-id" placeholder="cth: HGT-2025-0482 atau HGT-SMK-2025"
                                     type="text" value="HGT-2025-0482" required />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Verifikasi
-                                    Nama Depan Pemohon *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.track_name_label') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-[#0ea5e9]"
                                     id="lookup-input-name" placeholder="cth: Ahmad" type="text" value="Ahmad"
@@ -850,15 +820,15 @@
 
                         <div class="space-y-3 hidden" id="form-lacak-email-group">
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email
-                                    Terdaftar *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.track_email_label') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-[#0ea5e9]"
                                     id="lookup-input-email" placeholder="cth: ahmad.farhan@itb.ac.id" type="email" />
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Verifikasi 4
-                                    Digit Terakhir No. HP *</label>
+                                <label
+                                    class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('internship.track_phone_label') }}</label>
                                 <input
                                     class="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#0c1626] text-slate-900 dark:text-white px-3.5 py-2.5 text-xs font-mono focus:ring-2 focus:ring-[#0ea5e9]"
                                     id="lookup-input-phone" maxlength="4" placeholder="cth: 0299" type="text" />
@@ -867,13 +837,13 @@
 
                         <div class="flex items-center justify-between pt-1 gap-2">
                             <p class="text-[11px] text-slate-500 dark:text-slate-400">
-                                * Coba sampel:
+                                {{ __('internship.track_sample_note') }}
                                 <code class="text-cyan-600 dark:text-cyan-400 font-mono font-bold">HGT-2025-0482</code>
                             </p>
                             <button
                                 class="px-5 py-2.5 rounded-xl bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold text-xs transition cursor-pointer shadow-sm"
                                 type="submit">
-                                Cek Status Pengajuan
+                                {{ __('internship.track_btn_check') }}
                             </button>
                         </div>
                     </form>
@@ -889,12 +859,12 @@
                                     HGT-2025-0482
                                 </div>
                                 <div class="text-slate-500 dark:text-slate-400 text-[11px]" id="result-applicant-info">
-                                    Ahmad Farhan — ITB (Track SCADA Telemetri & Modbus)
+                                    Ahmad Farhan — ITB
                                 </div>
                             </div>
                             <span
                                 class="px-2.5 py-1 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-[10px] w-fit">
-                                DITERIMA (LETTER OF ACCEPTANCE TERBIT)
+                                {{ __('internship.track_status_accepted') }}
                             </span>
                         </div>
                         <div
@@ -902,52 +872,48 @@
                             <div class="relative">
                                 <span
                                     class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] font-bold">✓</span>
-                                <div class="font-bold text-slate-900 dark:text-white">1. Pengajuan Formulir & Berkas
-                                    Digital</div>
-                                <div class="text-slate-500 text-[11px]">Terkirim & terverifikasi lengkap pada sistem
-                                    penerimaan</div>
+                                <div class="font-bold text-slate-900 dark:text-white">
+                                    {{ __('internship.track_step_1_title') }}</div>
+                                <div class="text-slate-500 text-[11px]">{{ __('internship.track_step_1_desc') }}</div>
                             </div>
                             <div class="relative">
                                 <span
                                     class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] font-bold">✓</span>
-                                <div class="font-bold text-slate-900 dark:text-white">2. Seleksi Administrasi & Surat
-                                    Rekomendasi</div>
-                                <div class="text-slate-500 text-[11px]">Selesai — Sesuai kuota pembimbing laboratorium R&D
-                                    Bandung</div>
+                                <div class="font-bold text-slate-900 dark:text-white">
+                                    {{ __('internship.track_step_2_title') }}</div>
+                                <div class="text-slate-500 text-[11px]">{{ __('internship.track_step_2_desc') }}</div>
                             </div>
                             <div class="relative">
                                 <span
                                     class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] font-bold">✓</span>
-                                <div class="font-bold text-slate-900 dark:text-white">3. Asesmen Teknis & Wawancara Online
-                                </div>
-                                <div class="text-slate-500 text-[11px]">Hasil evaluasi kompetensi mikrokontroler & IoT:
-                                    Skor 94/100</div>
+                                <div class="font-bold text-slate-900 dark:text-white">
+                                    {{ __('internship.track_step_3_title') }}</div>
+                                <div class="text-slate-500 text-[11px]">{{ __('internship.track_step_3_desc') }}</div>
                             </div>
                             <div class="relative">
                                 <span
                                     class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-cyan-500 text-white flex items-center justify-center text-[9px] animate-pulse font-bold">●</span>
-                                <div class="font-bold text-cyan-600 dark:text-cyan-400">4. Onboarding Lab R&D Bandung &
-                                    Penerbitan LOA Digital</div>
-                                <div class="text-slate-500 text-[11px]">Dokumen penugasan resmi aktif untuk Batch Ganjil
-                                    2025/2026</div>
+                                <div class="font-bold text-cyan-600 dark:text-cyan-400">
+                                    {{ __('internship.track_step_4_title') }}</div>
+                                <div class="text-slate-500 text-[11px]">{{ __('internship.track_step_4_desc') }}</div>
                             </div>
                         </div>
                         <div
                             class="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
                             <a class="inline-flex items-center gap-1.5 text-xs font-bold text-[#0284c7] dark:text-cyan-400 hover:underline"
                                 href="#"
-                                onclick="alert('Mengunduh dokumen resmi Letter of Acceptance (LOA_Higertech_2025.pdf)...'); return false;">
-                                <span>📄 Unduh LOA Digital (PDF, 420 KB)</span>
+                                onclick="alert('Mengunduh dokumen resmi Letter of Acceptance (LOA_Higertech.pdf)...'); return false;">
+                                <span>{{ __('internship.track_download_loa') }}</span>
                             </a>
                             <div class="flex items-center gap-2">
                                 <a class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-bold hover:underline text-[11px]"
                                     href="https://wa.me/628112332182" rel="noopener noreferrer" target="_blank">
-                                    Hubungi WhatsApp Litbang
+                                    {{ __('internship.track_btn_wa') }}
                                 </a>
                                 <button
                                     class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800 cursor-pointer"
                                     onclick="closeModal('modal-lacak-status')" type="button">
-                                    Tutup
+                                    {{ __('internship.track_btn_close') }}
                                 </button>
                             </div>
                         </div>
@@ -956,8 +922,6 @@
             </div>
         </div>
     </main>
-
-    @include('landing.partials.footer')
 @endsection
 
 @push('scripts')
