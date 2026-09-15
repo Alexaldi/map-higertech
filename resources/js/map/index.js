@@ -23,6 +23,7 @@ function initialize(rootElement) {
         resultStatus: document.querySelector('#station-result-status'),
         search: document.querySelector('#station-search'),
         searchForm: document.querySelector('#station-search-form'),
+        searchSubmit: document.querySelector('#station-search-submit'),
         searchSuggestions: document.querySelector('#station-search-suggestions'),
         organization: document.querySelector('#organization-filter'),
         typeFilters: document.querySelector('[data-type-filters]'),
@@ -86,6 +87,21 @@ function initialize(rootElement) {
         showStationState(elements, 'loading');
         elements.resultStatus.textContent = 'Memuat station...';
 
+        if (elements.searchSubmit) {
+            elements.searchSubmit.disabled = true;
+            elements.searchSubmit.classList.add('opacity-75', 'cursor-wait');
+        }
+
+        if (elements.results) {
+            elements.results.innerHTML = `
+                <div class="space-y-2 p-1 animate-pulse" aria-hidden="true">
+                    <div class="h-20 rounded-2xl bg-slate-200/60 dark:bg-[#131D36] border border-slate-200/50 dark:border-slate-800"></div>
+                    <div class="h-20 rounded-2xl bg-slate-200/60 dark:bg-[#131D36] border border-slate-200/50 dark:border-slate-800"></div>
+                    <div class="h-20 rounded-2xl bg-slate-200/60 dark:bg-[#131D36] border border-slate-200/50 dark:border-slate-800"></div>
+                </div>
+            `;
+        }
+
         try {
             const query = buildStationQuery(state.filters);
             const response = await fetch(`${STATIONS_URL}${query ? `?${query}` : ''}`, {
@@ -105,6 +121,11 @@ function initialize(rootElement) {
 
             showStationState(elements, 'error');
             elements.resultStatus.textContent = 'Gagal memuat station';
+        } finally {
+            if (elements.searchSubmit) {
+                elements.searchSubmit.disabled = false;
+                elements.searchSubmit.classList.remove('opacity-75', 'cursor-wait');
+            }
         }
     }
 

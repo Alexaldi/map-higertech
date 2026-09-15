@@ -128,13 +128,6 @@ export function initGlobalLoader() {
         }
     });
 
-    // Also trigger on form submits (e.g. search or filter forms)
-    document.addEventListener('submit', (e) => {
-        const form = e.target;
-        if (!form || form.getAttribute('target') === '_blank') return;
-        startLoader();
-    });
-
     // Provide global handle
     window.HigertechLoader = {
         start: startLoader,
