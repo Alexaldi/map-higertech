@@ -3,8 +3,6 @@
 @section('title', 'Higertech Karya Sinergi | Integrated Telemetry Solution & Internship Academy')
 
 @section('content')
-    @include('partials.header')
-
     <main>
         @include('landing.partials.hero')
         @include('landing.partials.workstation')
@@ -22,52 +20,12 @@
 @push('scripts')
     <script>
         // =============================================
-        // Theme Switcher
+        // Sync theme buttons on load (theme.js handles the logic)
         // =============================================
-        const THEME_KEY = 'higertech_theme';
-
-        function setTheme(theme) {
-            localStorage.setItem(THEME_KEY, theme);
-            document.documentElement.classList.toggle('dark', theme === 'dark');
-            syncThemeUI(theme);
-            window.dispatchEvent(new CustomEvent('theme-changed', {
-                detail: theme
-            }));
-        }
-
-        function syncThemeUI(theme) {
-            const isDark = theme === 'dark';
-            const btnLight = document.getElementById('btn-theme-light');
-            const btnDark = document.getElementById('btn-theme-dark');
-            if (!btnLight || !btnDark) return;
-
-            if (isDark) {
-                btnLight.className =
-                    'flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-400 hover:text-white bg-transparent transition-all duration-150 text-xs font-semibold';
-                btnDark.className =
-                    'flex items-center gap-1 px-2.5 py-1 rounded-md text-white bg-cyan-600 border border-cyan-400/40 shadow-xs transition-all duration-150 text-xs font-bold';
-            } else {
-                btnLight.className =
-                    'flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-900 bg-white shadow-xs border border-slate-300/80 transition-all duration-150 text-xs font-bold';
-                btnDark.className =
-                    'flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 bg-transparent transition-all duration-150 text-xs font-semibold';
-            }
-        }
-
-        // Sync on load
         document.addEventListener('DOMContentLoaded', () => {
             const isDark = document.documentElement.classList.contains('dark');
-            syncThemeUI(isDark ? 'dark' : 'light');
+            if (typeof syncThemeButtons === 'function') syncThemeButtons();
         });
-
-        // Listen for OS changes (only if no manual override)
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem(THEME_KEY)) {
-                document.documentElement.classList.toggle('dark', e.matches);
-                syncThemeUI(e.matches ? 'dark' : 'light');
-            }
-        });
-
         // =============================================
         // 4 Pillar Tab Switcher
         // =============================================

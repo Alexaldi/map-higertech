@@ -5,6 +5,7 @@ use App\Http\Controllers\LocaleController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
+Route::view('/products', 'products.index')->name('products');
 
 // Map page
 Route::view('/map', 'map.index')->name('map');

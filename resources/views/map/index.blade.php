@@ -1,30 +1,15 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', __('map.title'))
+
+@section('body_class', 'overflow-hidden bg-slate-100 dark:bg-[#0B1120] font-sans text-slate-900 dark:text-slate-100')
+
+@push('head')
     <meta name="theme-color" content="#0f4c81">
-    <title>{{ __('map.title') }}</title>
+@endpush
 
-    {{-- Prevent flash of wrong theme: apply dark class BEFORE CSS loads --}}
-    <script>
-        (function() {
-            const saved = localStorage.getItem('higertech_theme');
-            const sys = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (saved === 'dark' || (saved === null && sys)) {
-                document.documentElement.classList.add('dark');
-            }
-        })();
-    </script>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body
-    class="overflow-hidden bg-slate-100 dark:bg-[#0B1120] font-sans text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
+@section('content')
     <div id="app" class="flex h-dvh flex-col" data-live-map>
-        @include('map.partials.header')
 
         <main class="relative min-h-0 flex-1 overflow-hidden">
             <section id="map-workspace" class="relative h-full overflow-hidden bg-slate-200 dark:bg-[#070d18]"
@@ -116,53 +101,4 @@
         <button id="drawer-backdrop" class="fixed inset-0 z-[1100] hidden bg-slate-950/40 backdrop-blur-[1px]"
             type="button" aria-label="Tutup panel filter"></button>
     </div>
-
-    <script>
-        const THEME_KEY = 'higertech_theme';
-
-        function setTheme(theme) {
-            localStorage.setItem(THEME_KEY, theme);
-            document.documentElement.classList.toggle('dark', theme === 'dark');
-            syncThemeUI(theme);
-            window.dispatchEvent(new CustomEvent('theme-changed', {
-                detail: theme
-            }));
-        }
-
-        function syncThemeUI(theme) {
-            const isDark = theme === 'dark';
-            const btnLight = document.getElementById('btn-theme-light');
-            const btnDark = document.getElementById('btn-theme-dark');
-            if (!btnLight || !btnDark) return;
-
-            if (isDark) {
-                btnLight.className =
-                    'flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold text-slate-400 bg-transparent transition-all';
-                btnDark.className =
-                    'flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold text-white bg-cyan-600 border border-cyan-400/40 shadow-xs transition-all';
-            } else {
-                btnLight.className =
-                    'flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold text-slate-900 bg-white shadow-xs border border-slate-300 transition-all';
-                btnDark.className =
-                    'flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold text-slate-300 bg-transparent transition-all';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            syncThemeUI(isDark ? 'dark' : 'light');
-        });
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem(THEME_KEY)) {
-                document.documentElement.classList.toggle('dark', e.matches);
-                syncThemeUI(e.matches ? 'dark' : 'light');
-                window.dispatchEvent(new CustomEvent('theme-changed', {
-                    detail: e.matches ? 'dark' : 'light'
-                }));
-            }
-        });
-    </script>
-</body>
-
-</html>
+@endsection

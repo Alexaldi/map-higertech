@@ -64,3 +64,8 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
 
 // Expose to window for inline onclick attributes in Blade templates
 window.setTheme = setTheme;
+
+// Auto-sync button state setiap halaman selesai dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    syncThemeButtons();
+});

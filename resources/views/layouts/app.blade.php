@@ -22,7 +22,9 @@
 
     @stack('head')
 </head>
-<body class="bg-[#F8FAFC] dark:bg-[#0B1120] text-slate-800 dark:text-slate-100 antialiased selection:bg-cyan-500 selection:text-white transition-colors duration-300">
+<body class="@yield('body_class', 'bg-[#F8FAFC] dark:bg-[#0B1120] text-slate-800 dark:text-slate-100') antialiased selection:bg-cyan-500 selection:text-white transition-colors duration-300">
+
+    @include('partials.header')
 
     @yield('content')
 
