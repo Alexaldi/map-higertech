@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UsersController;
 
 // Landing page
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'prevent-back'])
         return view('admin.dashboard.index');
     })->name('dashboard');
     Route::resource('users', UsersController::class);
+    Route::resource('categories', CategoryController::class)->except('show');
     Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');
 });
