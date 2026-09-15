@@ -1,6 +1,7 @@
 @php
     $isMap = request()->is('map*') || request()->routeIs('map');
     $isHome = request()->routeIs('home') || request()->is('/');
+    $isProducts = request()->routeIs('products');
     $locale = app()->getLocale();
 
     $products = [
@@ -166,13 +167,23 @@
             {{-- Desktop Navigation --}}
             <nav class="site-nav hidden xl:flex items-center gap-6 text-[13px] font-semibold text-slate-700 dark:text-slate-200"
                 aria-label="Navigasi utama">
-                <a href="{{ route('home') }}" data-nav-target="hero"
-                    class="nav-link {{ $isHome ? 'is-active text-blue-600 dark:text-cyan-400 font-bold' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}">{{ __('landing.nav_home') }}</a>
+                <a href="{{ route('home') }}"
+                    @if ($isHome)
+                        data-nav-target="hero"
+                    @endif
+                    class="nav-link {{ $isHome
+                        ? 'is-active text-blue-600 dark:text-cyan-400 font-bold'
+                        : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}">
+                    {{ __('landing.nav_home') }}
+                </a>
 
                 {{-- Product Dropdown --}}
                 <div class="nav-dropdown relative group" data-nav-target="workstation">
                     <button type="button"
-                        class="nav-dropdown-btn flex items-center gap-1 hover:text-blue-600 dark:hover:text-cyan-400 transition py-2">
+                        class="nav-dropdown-btn flex items-center gap-1 py-2 transition
+                        {{ $isProducts
+                            ? 'is-active text-blue-600 dark:text-cyan-400 font-bold'
+                            : 'hover:text-blue-600 dark:hover:text-cyan-400' }}">
                         <span>{{ __('landing.nav_product') }}</span>
                         <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
@@ -183,24 +194,16 @@
                     <div
                         class="absolute left-0 top-full mt-1 w-72 rounded-2xl bg-white dark:bg-[#131D36] shadow-2xl border border-slate-200/80 dark:border-slate-700 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         <div class="py-1">
-                            @foreach (array_slice($products, 0, 3) as $product)
-                                <a href="{{ $isHome ? '#workstation' : $product['url'] }}"
-                                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
-                                    class="flex items-center justify-between px-4 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400">
-                                    <span>{{ $product['label'] }}</span>
-                                    @if (!empty($product['sub']))
-                                        <span
-                                            class="text-[10px] text-slate-400 font-mono">{{ $product['sub'] }}</span>
-                                    @endif
-                                </a>
-                            @endforeach
-                        </div>
-                        <div class="border-t border-slate-100 dark:border-slate-800 py-1">
-                            @foreach (array_slice($products, 3) as $product)
-                                <a href="{{ $isHome && !str_contains($product['url'], 'Tutorial') ? '#workstation' : $product['url'] }}"
-                                    @if (!$isHome || str_contains($product['url'], 'Tutorial')) target="_blank" rel="noopener noreferrer" @endif
-                                    class="block px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400">{{ $product['label'] }}</a>
-                            @endforeach
+                            <a href="{{ route('products') }}"
+                                @if (!$isHome) rel="noopener noreferrer" @endif
+                                class="flex items-center justify-between px-4 py-2 text-xs font-semibold
+                                text-slate-800 dark:text-slate-200
+                                hover:bg-blue-50 dark:hover:bg-blue-900/30
+                                hover:text-blue-600 dark:hover:text-cyan-400">
+
+                                <span>Hidrologi</span>
+
+                            </a>
                         </div>
                     </div>
                 </div>
