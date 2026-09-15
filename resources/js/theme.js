@@ -40,7 +40,7 @@ export function syncThemeButtons() {
   const btnLight = document.getElementById('btn-theme-light');
   const btnDark = document.getElementById('btn-theme-dark');
 
-  if (btnLight && btnDark) {
+  if (btnLight && btnDark && !btnLight.hasAttribute('hidden') && !btnLight.classList.contains('hidden')) {
     if (isDark) {
       btnLight.className = 'flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-400 hover:text-white bg-transparent transition-all duration-150 text-xs font-semibold';
       btnDark.className = 'flex items-center gap-1 px-2.5 py-1 rounded-md text-white bg-cyan-600 border border-cyan-400/40 shadow-xs transition-all duration-150 text-xs font-bold';
@@ -62,10 +62,20 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
   }
 });
 
+/**
+ * Toggle theme between dark and light.
+ */
+export function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light');
+  syncThemeButtons();
+}
+
 // Expose to window for inline onclick attributes in Blade templates
 window.setTheme = setTheme;
+window.toggleTheme = toggleTheme;
 
 // Auto-sync button state setiap halaman selesai dimuat
 document.addEventListener('DOMContentLoaded', () => {
-    syncThemeButtons();
+  syncThemeButtons();
 });

@@ -13,6 +13,7 @@ Route::view('/tutorials', 'tutorials.index')->name('tutorials');
 Route::redirect('/Article', '/articles');
 Route::redirect('/article/pemasangan-pos-curah-hujan-(pch)-bendungkaret-tawangsari', '/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari');
 Route::redirect('/Tutorial', '/tutorials');
+Route::view('/internship', 'internship.index')->name('internship');
 
 // Map page
 Route::view('/map', 'map.index')->name('map');
