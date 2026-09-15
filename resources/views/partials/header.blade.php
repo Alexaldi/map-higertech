@@ -1,7 +1,7 @@
 @php
     $isMap = request()->is('map*') || request()->routeIs('map');
     $isHome = request()->routeIs('home') || request()->is('/');
-    $isProducts = request()->routeIs('products');
+    $isProducts = request()->routeIs('products*') || request()->is('products*');
     $locale = app()->getLocale();
 
     $products = [
@@ -168,9 +168,6 @@
             <nav class="site-nav hidden xl:flex items-center gap-6 text-[13px] font-semibold text-slate-700 dark:text-slate-200"
                 aria-label="Navigasi utama">
                 <a href="{{ route('home') }}"
-                    @if ($isHome)
-                        data-nav-target="hero"
-                    @endif
                     class="nav-link {{ $isHome
                         ? 'is-active text-blue-600 dark:text-cyan-400 font-bold'
                         : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}">
@@ -178,7 +175,7 @@
                 </a>
 
                 {{-- Product Dropdown --}}
-                <div class="nav-dropdown relative group" data-nav-target="workstation">
+                <div class="nav-dropdown relative group {{ $isProducts ? 'is-active' : '' }}">
                     <button type="button"
                         class="nav-dropdown-btn flex items-center gap-1 py-2 transition
                         {{ $isProducts
@@ -197,9 +194,7 @@
                             <a href="{{ route('products') }}"
                                 @if (!$isHome) rel="noopener noreferrer" @endif
                                 class="flex items-center justify-between px-4 py-2 text-xs font-semibold
-                                text-slate-800 dark:text-slate-200
-                                hover:bg-blue-50 dark:hover:bg-blue-900/30
-                                hover:text-blue-600 dark:hover:text-cyan-400">
+                                {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 bg-blue-50/60 dark:bg-blue-900/30' : 'text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400' }}">
 
                                 <span>Hidrologi</span>
 
@@ -209,20 +204,19 @@
                 </div>
 
                 <a href="{{ $isHome ? '#map-section' : 'https://higertech.com/#services' }}"
-                    data-nav-target="map-section"
                     @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_projects') }}</a>
 
-                <a href="{{ $isHome ? '#articles' : 'https://higertech.com/Article' }}" data-nav-target="articles"
+                <a href="{{ $isHome ? '#articles' : 'https://higertech.com/Article' }}"
                     @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_articles') }}</a>
 
-                <a href="{{ $isHome ? '#contact' : 'https://higertech.com/Tutorial' }}" data-nav-target="contact"
+                <a href="{{ $isHome ? '#contact' : 'https://higertech.com/Tutorial' }}"
                     @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_download') }}</a>
 
                 {{-- Peta link with Active Indicator when on /map --}}
-                <a href="{{ route('map') }}" data-nav-target="map"
+                <a href="{{ route('map') }}"
                     class="nav-link {{ $isMap ? 'text-blue-600 dark:text-cyan-400 font-bold inline-flex items-center gap-1.5 is-active' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
                     {!! $isMap ? 'aria-current="page"' : '' !!}>
                     @if ($isMap)
@@ -240,7 +234,7 @@
                 </a>
 
                 {{-- Internship special link --}}
-                <a href="{{ $isHome ? '#internship' : route('home') . '#internship' }}" data-nav-target="internship"
+                <a href="{{ $isHome ? '#internship' : route('home') . '#internship' }}"
                     class="nav-link nav-pill relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-300 dark:border-cyan-700 text-cyan-800 dark:text-cyan-300 font-bold hover:bg-cyan-100 dark:hover:bg-cyan-900/80 transition">
                     <svg class="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 animate-spin" fill="none"
                         stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="animation-duration:3s"
@@ -299,25 +293,23 @@
     <div id="site-mobile-drawer"
         class="hidden xl:hidden bg-white dark:bg-[#0E1628] border-b border-slate-200 dark:border-slate-800 px-4 py-4">
         <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-            <a href="{{ route('home') }}" data-nav-target="hero"
+            <a href="{{ route('home') }}"
                 class="p-2 rounded transition {{ $isHome ? 'is-active bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 font-bold' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' }}">{{ __('landing.nav_home') }}</a>
-            <a href="{{ $isHome ? '#workstation' : 'https://higertech.com/Product/Hidrologi' }}"
-                data-nav-target="workstation"
+            <a href="{{ $isHome ? route('products') : 'https://higertech.com/Product/Hidrologi' }}"
                 @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
-                class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white transition">{{ __('landing.nav_product') }}</a>
+                class="p-2 rounded transition {{ $isProducts ? 'is-active bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 font-bold' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' }}">{{ __('landing.nav_product') }}</a>
             <a href="{{ $isHome ? '#map-section' : 'https://higertech.com/#services' }}"
-                data-nav-target="map-section"
                 @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                 class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white transition">{{ __('landing.nav_projects') }}</a>
-            <a href="{{ $isHome ? '#articles' : 'https://higertech.com/Article' }}" data-nav-target="articles"
+            <a href="{{ $isHome ? '#articles' : 'https://higertech.com/Article' }}"
                 @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                 class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white transition">{{ __('landing.nav_articles') }}</a>
-            <a href="{{ $isHome ? '#contact' : 'https://higertech.com/Tutorial' }}" data-nav-target="contact"
+            <a href="{{ $isHome ? '#contact' : 'https://higertech.com/Tutorial' }}"
                 @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                 class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white transition">{{ __('landing.nav_download') }}</a>
-            <a href="{{ route('map') }}" data-nav-target="map"
+            <a href="{{ route('map') }}"
                 class="p-2 rounded transition {{ $isMap ? 'is-active bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-cyan-400 font-bold' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' }}">{{ __('landing.nav_map') }}</a>
-            <a href="{{ $isHome ? '#internship' : route('home') . '#internship' }}" data-nav-target="internship"
+            <a href="{{ $isHome ? '#internship' : route('home') . '#internship' }}"
                 class="col-span-2 p-2 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-900 dark:text-cyan-300 font-bold transition">{{ __('landing.nav_internship') }}</a>
         </div>
     </div>
