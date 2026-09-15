@@ -9,7 +9,9 @@ export const addBasemapGallery = (L, map) => {
             ...(definition.maxNativeZoom ? { maxNativeZoom: definition.maxNativeZoom } : {}),
         }),
     ]));
-    let activeKey = BASEMAPS[0].key;
+
+    const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+    let activeKey = isDark && layers.has('dark') ? 'dark' : BASEMAPS[0].key;
     layers.get(activeKey).addTo(map);
 
     const control = L.control({ position: 'bottomright' });
@@ -24,8 +26,8 @@ export const addBasemapGallery = (L, map) => {
             <div class="basemap-gallery__panel" role="group" aria-label="Pilihan tampilan peta" hidden>
                 <div class="basemap-gallery__heading"><strong>Tampilan peta</strong><span>Pilih basemap</span></div>
                 <div class="basemap-gallery__grid">
-                    ${BASEMAPS.map((definition, index) => `
-                        <button class="basemap-option${index === 0 ? ' is-active' : ''}" type="button" data-basemap="${definition.key}" aria-pressed="${index === 0}">
+                    ${BASEMAPS.map((definition) => `
+                        <button class="basemap-option${definition.key === activeKey ? ' is-active' : ''}" type="button" data-basemap="${definition.key}" aria-pressed="${definition.key === activeKey}">
                             <img src="${definition.thumbnail}" alt="" loading="lazy" referrerpolicy="no-referrer">
                             <span><strong>${definition.label}</strong><small>${definition.description}</small></span>
                         </button>`).join('')}
@@ -42,6 +44,14 @@ export const addBasemapGallery = (L, map) => {
             toggle.setAttribute('aria-expanded', 'false');
         };
 
+        const updateButtonState = () => {
+            for (const button of container.querySelectorAll('[data-basemap]')) {
+                const selected = button.dataset.basemap === activeKey;
+                button.classList.toggle('is-active', selected);
+                button.setAttribute('aria-pressed', String(selected));
+            }
+        };
+
         toggle.addEventListener('click', () => {
             panel.hidden = !panel.hidden;
             toggle.setAttribute('aria-expanded', String(!panel.hidden));
@@ -53,17 +63,25 @@ export const addBasemapGallery = (L, map) => {
             map.removeLayer(layers.get(activeKey));
             activeKey = option.dataset.basemap;
             layers.get(activeKey).addTo(map);
-            for (const button of container.querySelectorAll('[data-basemap]')) {
-                const selected = button.dataset.basemap === activeKey;
-                button.classList.toggle('is-active', selected);
-                button.setAttribute('aria-pressed', String(selected));
-            }
+            updateButtonState();
             close();
         });
         container.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') close();
         });
         map.on('click', close);
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('theme-changed', (e) => {
+                const targetKey = e.detail === 'dark' ? 'dark' : 'street';
+                if (targetKey !== activeKey && layers.has(targetKey)) {
+                    map.removeLayer(layers.get(activeKey));
+                    activeKey = targetKey;
+                    layers.get(activeKey).addTo(map);
+                    updateButtonState();
+                }
+            });
+        }
 
         return container;
     };

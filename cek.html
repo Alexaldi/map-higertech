@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Higertech Karya Sinergi | Integrated Telemetry Solution &amp; Internship Academy</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef4ff',
+              100: '#e0eaff',
+              500: '#2563eb',
+              600: '#1d4ed8',
+              700: '#1e40af',
+              800: '#1e3a8a',
+              900: '#16275E',
+              accent: '#06b6d4',
+              surfaceDark: '#0B1120',
+              cardDark: '#131D36',
+              borderDark: '#1E2D4F'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .map-grid-bg {
+      background-size: 28px 28px;
+      background-image: linear-gradient(to right, rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+    }
+
+    .telemetry-radar-ping {
+      box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7);
+      animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(6, 182, 212, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] dark:bg-[#0B1120] text-slate-800 dark:text-slate-100 antialiased selection:bg-cyan-500 selection:text-white transition-colors duration-300">
+<!-- BEGIN: TopBar Utilities -->
+<div class="bg-[#16275E] dark:bg-[#070c17] text-white text-xs py-2 border-b border-[#22377A] dark:border-slate-800 transition-colors duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center gap-2">
+<!-- Left: Telemetry Status Badge & Live NOC Status -->
+<div class="flex items-center space-x-3">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        Live NOC Telemetry: Operational
+      </span>
+<span class="hidden md:inline-flex items-center gap-1 text-[11px] text-slate-300 font-mono">
+<svg aria-hidden="true" class="lucide lucide-activity w-3 h-3 text-cyan-400" data-lucide="activity" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        Server Ping: <strong class="text-cyan-300">18ms</strong> (Zero Packet Loss)
+      </span>
+</div>
+<!-- Right: Contact info & Segmented Theme Switcher -->
+<div class="flex items-center space-x-4">
+<div class="hidden sm:flex items-center space-x-4 text-slate-200 text-[12px]">
+<a class="flex items-center space-x-1.5 hover:text-cyan-300 transition" href="mailto:higertechkaryasinergi@gmail.com">
+<svg aria-hidden="true" class="lucide lucide-mail w-3.5 h-3.5 text-cyan-400" data-lucide="mail" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect height="16" rx="2" width="20" x="2" y="4"></rect></svg>
+<span class="font-medium">higertechkaryasinergi@gmail.com</span>
+</a>
+<a class="flex items-center space-x-1.5 hover:text-cyan-300 transition" href="tel:02221010299">
+<svg aria-hidden="true" class="lucide lucide-phone w-3.5 h-3.5 text-cyan-400" data-lucide="phone" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
+<span class="font-medium">022-2101-0299</span>
+</a>
+</div>
+<!-- Segmented Dual Theme Toggle -->
+<div aria-label="Mode Tampilan" class="inline-flex items-center p-0.5 rounded-lg bg-slate-900/60 border border-white/15 text-xs font-semibold" id="theme-segmented-toggle" role="group">
+<button class="flex items-center space-x-1 px-2.5 py-1 rounded text-slate-300 bg-white/10 shadow-xs border border-white/20 transition-all duration-150" id="btn-theme-light" onclick="setAppTheme('light')" type="button">
+<svg aria-hidden="true" class="lucide lucide-sun w-3 h-3 text-amber-400" data-lucide="sun" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+<span class="">Terang</span>
+</button>
+<button class="flex items-center space-x-1 px-2.5 py-1 rounded text-slate-300 bg-transparent transition-all duration-150" id="btn-theme-dark" onclick="setAppTheme('dark')" type="button">
+<svg aria-hidden="true" class="lucide lucide-moon w-3 h-3 text-cyan-300" data-lucide="moon" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg>
+<span class="">Gelap</span>
+</button>
+</div>
+<!-- Language Pill -->
+<div class="flex items-center bg-black/30 p-0.5 rounded-full text-[11px] font-bold border border-white/10">
+<span class="px-2 py-0.5 rounded-full bg-cyan-500 text-slate-950 font-extrabold shadow-xs">ID</span>
+<span class="px-2 py-0.5 rounded-full text-slate-300 hover:text-white cursor-pointer">EN</span>
+</div>
+</div>
+</div>
+</div>
+<!-- END: TopBar Utilities -->
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-white/95 dark:bg-[#0B1120]/95 backdrop-blur-md shadow-xs border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-20">
+<!-- Logo Higertech -->
+<a class="flex-shrink-0 flex items-center gap-3" href="#">
+<img alt="PT Higertech Karya Sinergi" class="h-10 sm:h-11 w-auto object-contain dark:brightness-110" src="https://lh3.googleusercontent.com/aida/AEtjO1UKPPrY20GJ2uItljYK1Fpy6KbOxoe64eKCxaq-E0NSkiQUUvljCNOBpb3-N_iTS7xVWTQ5pY4DhcYvh42RmbuQT5T4bJBEw5MhXuoBKmR3AH3RFRJoOchLMQs86k9IeK188s6z0BXYUOJz1fD_hI4okYFrswqHE04wWPc_bG2NbypT9t1eqOwmjgrW5oUgzX-DMamqCSuIM717mEIbjrKm0dBfC-03c9PYTKr84i7PzwOEbPccmODAqmbI"/>
+</a>
+<!-- Desktop Navigation: Full Authentic Structure + Internship -->
+<nav class="hidden xl:flex items-center space-x-6 text-[13px] font-semibold text-slate-700 dark:text-slate-200">
+<a class="text-blue-600 dark:text-cyan-400 font-bold transition hover:text-blue-700" href="#">Home</a>
+<!-- Dropdown Menu Item (Lengkap Sesuai Web Asli) -->
+<div class="relative group">
+<button class="flex items-center space-x-1 hover:text-blue-600 dark:hover:text-cyan-400 transition py-2 font-semibold" type="button">
+<span class="">Product</span>
+<svg aria-hidden="true" class="lucide lucide-chevron-down w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition" data-lucide="chevron-down" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+<div class="absolute left-0 top-full mt-1 w-72 rounded-2xl bg-white dark:bg-[#131D36] shadow-2xl border border-slate-200/80 dark:border-slate-700 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 divide-y divide-slate-100 dark:divide-slate-800">
+<div class="py-1">
+<a class="flex items-center justify-between px-4 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400" href="#workstation">
+<span class="">Hidrologi (AWLR &amp; Muka Air)</span>
+<span class="text-[10px] text-slate-400 font-mono">Sensors</span>
+</a>
+<a class="flex items-center justify-between px-4 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400" href="#workstation">
+<span class="">Hidrogeologi &amp; Sumur Pantau</span>
+<span class="text-[10px] text-slate-400 font-mono">Deep Water</span>
+</a>
+<a class="flex items-center justify-between px-4 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400" href="#workstation">
+<span class="">Hidrometeorologi (AWS &amp; ARR)</span>
+<span class="text-[10px] text-slate-400 font-mono">BMKG Spec</span>
+</a>
+</div>
+<div class="py-1">
+<a class="block px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400" href="#workstation">
+                Data Logger Multi Sensor HG-LOG900
+              </a>
+<a class="block px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400" href="#workstation">
+                Software Monitoring &amp; SCADA Cloud
+              </a>
+<a class="block px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400" href="#workstation">
+                Perangkat Pendukung (Solar Cell &amp; Mast)
+              </a>
+<a class="block px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400" href="#workstation">
+                CCTV Telemetri Real-Time
+              </a>
+</div>
+</div>
+</div>
+<a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#projects">Projects</a>
+<a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#articles">Articles</a>
+<a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#download">Download</a>
+<a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#map-section">Peta</a>
+<!-- Menu Khusus Internship dengan Badge Pill -->
+<a class="relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-300 dark:border-cyan-700 text-cyan-800 dark:text-cyan-300 font-bold hover:bg-cyan-100 dark:hover:bg-cyan-900/80 transition group" href="#internship">
+<svg aria-hidden="true" class="lucide lucide-sparkles w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 animate-spin" data-lucide="sparkles" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+<span class="">Internship</span>
+<span class="px-1.5 py-0.2 rounded-full bg-emerald-500 text-[9px] font-extrabold text-white uppercase tracking-wider">Open Batch 2025/2026</span>
+</a>
+</nav>
+<!-- Right Side: INAPROC LKPP Verified Badge Button -->
+<div class="flex items-center space-x-3">
+<!-- Verified INAPROC LKPP Badge -->
+<a class="inline-flex items-center space-x-2.5 px-3.5 py-2 rounded-xl border border-red-200 dark:border-red-900/50 bg-gradient-to-r from-red-50 to-amber-50/50 dark:from-red-950/40 dark:to-[#1a1215] text-slate-800 dark:text-slate-100 hover:border-red-400 transition shadow-xs" href="https://e-katalog.lkpp.go.id" rel="noopener noreferrer" target="_blank">
+<span class="w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-xs">
+<svg aria-hidden="true" class="lucide lucide-shopping-bag w-4 h-4" data-lucide="shopping-bag" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 10a4 4 0 0 1-8 0"></path><path d="M3.103 6.034h17.794"></path><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"></path></svg>
+</span>
+<div class="text-left leading-tight">
+<div class="flex items-center gap-1">
+<span class="font-extrabold text-red-600 dark:text-red-400 text-xs tracking-wider">INAPROC</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+</div>
+<span class="text-[10px] font-medium text-slate-600 dark:text-slate-300 block">Katalog Elektronik LKPP</span>
+</div>
+</a>
+<!-- Mobile Menu Button -->
+<button aria-label="Toggle menu" class="xl:hidden p-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800" id="mobile-menu-btn" onclick="document.getElementById('mobile-drawer').classList.toggle('hidden')">
+<svg aria-hidden="true" class="lucide lucide-menu w-6 h-6" data-lucide="menu" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+</button>
+</div>
+</div>
+</div>
+<!-- Mobile Drawer -->
+<div class="hidden xl:hidden bg-white dark:bg-[#0E1628] border-b border-slate-200 dark:border-slate-800 px-4 py-4 space-y-3" id="mobile-drawer">
+<div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+<a class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" href="#">Home</a>
+<a class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" href="#workstation">Produk Telemetri</a>
+<a class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" href="#projects">Proyek SDA</a>
+<a class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" href="#articles">Artikel &amp; Panduan</a>
+<a class="p-2 rounded bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white" href="#map-section">Peta GIS</a>
+<a class="p-2 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-900 dark:text-cyan-300 font-bold" href="#internship">Portal Magang R&amp;D</a>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<main>
+<!-- BEGIN: Hero Section -->
+<section class="relative pt-10 pb-16 lg:pt-14 lg:pb-24 overflow-hidden bg-gradient-to-b from-[#F0F5FD] via-[#F8FAFC] to-white dark:from-[#080d1a] dark:via-[#0B1120] dark:to-[#0B1120] transition-colors duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+<!-- Hero Text Content -->
+<div class="lg:col-span-6 space-y-6 text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#131D36] text-slate-800 dark:text-slate-200 text-xs font-mono font-medium shadow-xs">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="">STANDARD BMKG &amp; Ditjen SDA PUPR</span>
+<span class="text-slate-300 dark:text-slate-600">|</span>
+<span class="text-blue-700 dark:text-cyan-400 font-semibold">TKDN &gt; 45%</span>
+</div>
+<h1 class="text-4xl sm:text-5xl lg:text-[48px] font-extrabold tracking-tight leading-[1.15] text-slate-900 dark:text-white">
+            Sistem Telemetri &amp; Instrumentasi <br/>
+<span class="text-[#16275E] dark:text-cyan-400">Hidrometeorologi Terpadu</span>
+</h1>
+<p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+            Platform akuisisi data lapangan real-time untuk pemantauan muka air banjir, curah hujan otomatis, dan stasiun cuaca. Beroperasi 24/7 dengan transmisi seluler 4G/GSM serta satelit Iridium untuk remote area di seluruh DAS Indonesia.
+          </p>
+<div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-700 text-xs font-mono max-w-lg">
+<div>
+<div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">SLA Uptime</div>
+<div class="font-bold text-slate-900 dark:text-emerald-400 text-sm">99.85%</div>
+</div>
+<div>
+<div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">Sensor Aktif</div>
+<div class="font-bold text-slate-900 dark:text-white text-sm">1,240+ Unit</div>
+</div>
+<div>
+<div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">Protokol</div>
+<div class="font-bold text-slate-900 dark:text-cyan-400 text-sm">MQTT / MODBUS</div>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-3 pt-2">
+<a class="inline-flex items-center space-x-2.5 px-6 py-3 rounded-lg bg-[#16275E] hover:bg-blue-800 text-white font-bold text-sm transition shadow-sm" href="#workstation">
+<svg aria-hidden="true" class="lucide lucide-layers w-4 h-4" data-lucide="layers" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg>
+<span class="">Workstation Solusi Alat</span>
+</a>
+<a class="inline-flex items-center space-x-2 px-6 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition" href="#internship">
+<svg aria-hidden="true" class="lucide lucide-graduation-cap w-4 h-4 text-cyan-600 dark:text-cyan-400" data-lucide="graduation-cap" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg>
+<span class="">Portal Internship R&amp;D</span>
+</a>
+</div>
+</div>
+<!-- Hero 3D Viewport Card & Live Markers -->
+<div class="lg:col-span-6 flex flex-col items-center justify-center relative">
+<div class="w-full max-w-lg rounded-2xl p-5 bg-white dark:bg-[#131D36] border border-slate-300 dark:border-slate-700 shadow-md relative">
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 dark:border-slate-700 text-xs font-mono">
+<div class="flex items-center space-x-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-bold text-slate-800 dark:text-slate-200">AWLR-04 • Stasiun Citarum Hulu</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-bold">ONLINE</span>
+</div>
+<div class="relative rounded-xl bg-slate-50 dark:bg-[#0c1626] border border-slate-200 dark:border-slate-800 p-4 flex items-center justify-center">
+<img alt="Higertech Telemetry Field Monitoring Unit" class="w-full max-h-64 object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UP6BYZW3IgSN5y1cPe3ytx15uUoF1Qek6MIEjnEop5zq7W9cvwZ4sYW28laz7Z6idGzzwLeBk0B-pepuSGmcnsCOija0DSoabQOFGPB_VVk9NqbyZRTo3Bmot_Cngs8qwkQ8MaWoYeiFddJl1cfVY5wu3dMTjmJf-tlaP_va-vXoTZJvbtuwR9v4ZIn6u6krvyD0PcOBvfA6iZq1oBJJP4aLq54z0T9ZFxHbbQb1cOjSNhD7l5dA6a_l4"/>
+</div>
+<div class="mt-3 grid grid-cols-3 gap-2 text-center text-xs font-mono">
+<div class="p-2 rounded bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+<div class="text-[10px] text-slate-500 dark:text-slate-400">Tegangan Accu</div>
+<div class="font-bold text-slate-800 dark:text-white">12.8 V DC</div>
+</div>
+<div class="p-2 rounded bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+<div class="text-[10px] text-slate-500 dark:text-slate-400">Water Level</div>
+<div class="font-bold text-blue-600 dark:text-cyan-400">+4.12 m</div>
+</div>
+<div class="p-2 rounded bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+<div class="text-[10px] text-slate-500 dark:text-slate-400">Signal RSSI</div>
+<div class="font-bold text-emerald-600 dark:text-emerald-400">-68 dBm</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Hero Section -->
+<!-- BEGIN: WORKSTATION SPLIT MATRIX (5 Solusi Utama) -->
+<section class="py-20 bg-slate-50/70 dark:bg-[#0E1628] border-y border-slate-200/80 dark:border-slate-800 transition-colors duration-300" id="workstation">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+<div>
+<span class="text-blue-600 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider block mb-1">TELEMETRY WORKSTATION MATRIX</span>
+<h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+            Lima Solusi Utama Infrastruktur Presisi
+          </h2>
+<p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Arsitektur modul telemetry field-tested bersertifikasi nasional dengan wiring telemetry cerdas.
+          </p>
+</div>
+<a class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-[#16275E] hover:bg-blue-800 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-slate-950 text-xs font-bold transition shadow-sm" href="#contact">
+<span class="">Unduh Spesifikasi Lengkap</span>
+<svg aria-hidden="true" class="lucide lucide-arrow-down-to-line w-3.5 h-3.5" data-lucide="arrow-down-to-line" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17V3"></path><path d="m6 11 6 6 6-6"></path><path d="M19 21H5"></path></svg>
+</a>
+</div>
+<!-- Split Matrix Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"><!-- LEFT: Heavy Data Logger Workstation Card with Industrial Precision Enclosure Frame -->
+<div class="lg:col-span-5 rounded-3xl bg-white dark:bg-[#131D36] border-2 border-blue-500/40 dark:border-cyan-500/50 p-6 sm:p-7 flex flex-col justify-between shadow-xl dark:shadow-cyan-950/20 relative overflow-hidden group hover:border-blue-600 dark:hover:border-cyan-400 transition-all duration-300">
+<!-- Ambient Corner Tech Glow -->
+<div class="absolute -top-24 -right-24 w-60 h-60 bg-gradient-to-br from-cyan-500/10 via-blue-600/15 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-110 transition duration-500"></div>
+<!-- Central RTU Core Metallic Ribbon -->
+<div class="absolute top-0 right-0 px-4 py-1.5 bg-gradient-to-l from-[#16275E] via-blue-700 to-cyan-500 text-white text-[11px] font-mono font-bold rounded-bl-2xl tracking-wider shadow-md flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse"></span>
+<span>CENTRAL RTU CORE</span>
+</div>
+<div>
+<!-- Processor & Spec Header Pill -->
+<div class="flex items-center space-x-2 text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        ONLINE 24/7
+      </span>
+<span class="text-[11px] font-medium text-slate-600 dark:text-slate-300">HG-LOG900 Pro</span>
+</div>
+<h3 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
+      Data Logger &amp; RTU Multi Sensor
+    </h3>
+<p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2.5 leading-relaxed">
+      Jantung pemrosesan telemetri berspesifikasi militer dengan rating enclosure IP66 kedap air &amp; cuaca tropis ekstrem. Menerima akuisisi data simultan hingga 16 probe sensor dengan internal storage 32GB dan enkripsi hardware AES-256.
+    </p>
+<!-- 3D Hardware Display Stage with Blueprint Overlay -->
+<div class="my-5 p-5 rounded-2xl bg-gradient-to-b from-slate-100/90 via-slate-50 to-blue-50/40 dark:from-[#0c1626] dark:via-[#09101d] dark:to-[#080d19] border border-slate-200/90 dark:border-slate-800 relative group overflow-hidden shadow-inner flex flex-col items-center justify-center">
+<!-- Top Badges Row -->
+<div class="w-full flex items-center justify-between relative z-10 mb-2">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur text-white text-[10px] font-mono border border-white/10 shadow-xs">
+<svg class="lucide lucide-cpu w-3.5 h-3.5 text-cyan-400" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect height="16" rx="2" width="16" x="4" y="4"></rect><rect height="8" rx="1" width="8" x="8" y="8"></rect></svg>
+<span>SCHEMATIC V4.2</span>
+</div>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-700 dark:text-cyan-300 font-semibold border border-blue-500/20">
+          Dual Core 32-Bit MCU
+        </span>
+</div>
+<!-- Soft Pedestal Radial Glow -->
+<div class="absolute w-44 h-44 bg-cyan-400/10 dark:bg-cyan-500/10 rounded-full blur-xl pointer-events-none"></div>
+<!-- Product Image -->
+<img alt="Data Logger Multi Sensor HG-LOG900" class="w-full h-56 sm:h-60 object-contain drop-shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1W-EEVXO4nFrfPmB9WSXeq4zExttFPOAFkb6hoRYHqU1WrV6uF02sZF_eLFPAYiDYK36m21Gj8IAqoMUgugi3CGe-4bdSjCNeMSogyqiGaAfjkmPdb0qt-AS50yyBoQN0iyE9alZodLLt09L0g9OzzCdLRirTN5Qtadj0Mrj5UirmsKqa-OioLu3AMYNqJGLHjYktPjO5Xj-lbjeXupdT9Jr9ic-nOrhDTxX4YcbrgWsqXQEFaU6jtX7Ixv"/>
+<!-- Soft Ground Reflection Shadow -->
+<div class="w-3/4 h-3 bg-black/10 dark:bg-black/40 rounded-full blur-md -mt-1"></div>
+</div>
+<!-- Pinout & Interface Telemetry Stat Blocks -->
+<div class="grid grid-cols-2 gap-2.5 text-xs font-mono">
+<div class="bg-slate-100/90 dark:bg-[#0c1626] p-3 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs hover:border-cyan-400/40 transition">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Universal Bus</span>
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+</div>
+<span class="font-bold text-slate-900 dark:text-cyan-300 text-xs block leading-snug">RS485 / Modbus RTU / SDI-12</span>
+</div>
+<div class="bg-slate-100/90 dark:bg-[#0c1626] p-3 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs hover:border-cyan-400/40 transition">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Telemetry Uplink</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+</div>
+<span class="font-bold text-slate-900 dark:text-cyan-300 text-xs block leading-snug">4G LTE / GSM &amp; Satellite</span>
+</div>
+</div>
+</div>
+<!-- Bottom Bar: Solar Badge & Modern High-Contrast CTA Button -->
+<div class="pt-5 mt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+<svg class="lucide lucide-check-circle-2 w-4 h-4 flex-shrink-0" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="m16 9-5.5 5.5L8 12"></path></svg>
+<span>MPPT Solar Charger Built-in</span>
+</div>
+<a class="inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl bg-[#16275E] hover:bg-blue-800 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-slate-950 text-xs font-bold transition shadow-sm group-hover:shadow-md" href="#contact">
+<span>Konsultasi HG-LOG900</span>
+<svg class="lucide lucide-arrow-right w-3.5 h-3.5 group-hover:translate-x-1 transition" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+</a>
+</div>
+</div>
+<!-- RIGHT: 2x2 Interactive Solusi Grid (AWLR, ARR, AWS, EWS) -->
+<div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 items-stretch">
+<!-- Item 1: AWLR (Cyan Accent) -->
+<div class="rounded-3xl p-5 sm:p-6 bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl hover:border-cyan-500 dark:hover:border-cyan-400 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<!-- Soft Hover Accent Ribbon -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 opacity-80 group-hover:opacity-100 transition"></div>
+<div>
+<!-- Tech Header -->
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800 text-xs font-mono">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center border border-cyan-500/20 shadow-xs">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M2 12h20M2 12a10 10 0 0 1 10-10M2 12a10 10 0 0 0 10 10M12 2a10 10 0 0 1 10 10M12 22a10 10 0 0 0 10-10"></path></svg>
+</span>
+<div>
+<span class="font-bold text-cyan-800 dark:text-cyan-300 block text-[11px]">AWLR RADAR / SONAR</span>
+<span class="text-[9px] text-slate-400">Standar Ditjen SDA</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/70 text-cyan-800 dark:text-cyan-300 text-[10px] font-bold font-mono border border-cyan-300 dark:border-cyan-800">
+          0-35m Range
+        </span>
+</div>
+<h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
+        Automatic Water Level Recorder
+      </h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
+        Pemantauan tinggi muka air sungai &amp; bendungan dengan akurasi tinggi tanpa kontak fisik, tahan endapan lumpur pekat &amp; debris banjir.
+      </p>
+</div>
+<!-- Isometric Product Pedestal & Specs -->
+<div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
+<div class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-cyan-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 relative shadow-inner flex-shrink-0 group-hover:border-cyan-400/50 transition">
+<img alt="AWLR Sensor Higertech" class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1VhM7l-zuOU-o-eN9_9gwsv5mCswYwVXlFYqJDUeifZ3tt9zEneSgG0Gxpxq-wbskFVnyVOt5cx23bhozcDjBws2KDCE7iQl47QJWJMqlEoY74GtfV5gcozyPcqXdQjAxXHpOrXfbQyrfzLi9TZrHlFXAT2vWWkn245NXLx_tbr4TnD0Atrriu_r9UWYT1unIOk8-QhpamfOHNrNksKpdFFimsu9L70yWVORGUSB0IsP9HbWKi1IS1kS9A"/>
+</div>
+<div class="text-right text-[11px] font-mono space-y-0.5 flex-1">
+<div class="font-bold text-slate-900 dark:text-white">Akurasi: ±2mm</div>
+<div class="text-slate-500 dark:text-slate-400 text-[10px]">Output: Modbus RTU</div>
+<span class="inline-block mt-1 px-2 py-0.5 rounded-md bg-cyan-100 dark:bg-cyan-950/60 text-cyan-800 dark:text-cyan-300 text-[9px] font-extrabold border border-cyan-300 dark:border-cyan-700">
+          E-Katalog INAPROC
+        </span>
+</div>
+</div>
+</div>
+<!-- Item 2: ARR (Cobalt/Blue Accent) -->
+<div class="rounded-3xl p-5 sm:p-6 bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<!-- Soft Hover Accent Ribbon -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 opacity-80 group-hover:opacity-100 transition"></div>
+<div>
+<!-- Tech Header -->
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800 text-xs font-mono">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-xs">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M16 14v6M8 14v6M12 16v6"></path></svg>
+</span>
+<div>
+<span class="font-bold text-blue-700 dark:text-blue-300 block text-[11px]">ARR TIPPING BUCKET</span>
+<span class="text-[9px] text-slate-400">Standar BMKG &amp; WMO</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-[10px] font-bold font-mono border border-blue-200 dark:border-blue-800">
+          Orifice 200mm
+        </span>
+</div>
+<h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
+        Automatic Rainfall Recorder
+      </h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
+        Pengukur curah hujan presisi 0.5mm / tip berbahan stainless steel 304 tahan korosi air hujan asam dan kabut garam pesisir.
+      </p>
+</div>
+<!-- Isometric Product Pedestal & Specs -->
+<div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
+<div class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-blue-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 relative shadow-inner flex-shrink-0 group-hover:border-blue-400/50 transition">
+<img alt="ARR Sensor Higertech" class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1UP6BYZW3IgSN5y1cPe3ytx15uUoF1Qek6MIEjnEop5zq7W9cvwZ4sYW28laz7Z6idGzzwLeBk0B-pepuSGmcnsCOija0DSoabQOFGPB_VVk9NqbyZRTo3Bmot_Cngs8qwkQ8MaWoYeiFddJl1cfVY5wu3dMTjmJf-tlaP_va-vXoTZJvbtuwR9v4ZIn6u6krvyD0PcOBvfA6iZq1oBJJP4aLq54z0T9ZFxHbbQb1cOjSNhD7l5dA6a_l4"/>
+</div>
+<div class="text-right text-[11px] font-mono space-y-0.5 flex-1">
+<div class="font-bold text-slate-900 dark:text-white">Resolusi: 0.5 mm</div>
+<div class="text-slate-500 dark:text-slate-400 text-[10px]">SS 304 Anti-Karat</div>
+<span class="inline-block mt-1 px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[9px] font-extrabold border border-emerald-300 dark:border-emerald-700">
+          Field Calibrated
+        </span>
+</div>
+</div>
+</div>
+<!-- Item 3: AWS (Indigo/Sky Accent) -->
+<div class="rounded-3xl p-5 sm:p-6 bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<!-- Soft Hover Accent Ribbon -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-sky-400 opacity-80 group-hover:opacity-100 transition"></div>
+<div>
+<!-- Tech Header -->
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800 text-xs font-mono">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-500/20 shadow-xs">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2"></path></svg>
+</span>
+<div>
+<span class="font-bold text-indigo-700 dark:text-indigo-300 block text-[11px]">AWS KLIMATOLOGI</span>
+<span class="text-[9px] text-slate-400">All-in-One Station</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold font-mono border border-indigo-200 dark:border-indigo-800">
+          Tower 10 Meter
+        </span>
+</div>
+<h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
+        Automatic Weather Station
+      </h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
+        Stasiun cuaca otomatis terintegrasi: sensor ultrasonik arah/kecepatan angin, radiasi surya, tekanan barometrik, temperatur &amp; RH.
+      </p>
+</div>
+<!-- Isometric Product Pedestal & Specs -->
+<div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
+<div class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-indigo-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 relative shadow-inner flex-shrink-0 group-hover:border-indigo-400/50 transition">
+<img alt="AWS Stasiun Cuaca Higertech" class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1V5bUa3pCIesQqR6cmYAgDdcO7vOuLTmJqBRzk1YzvrSn3hu7KB_2MGt9e2LlXc-GaEC59K85kIvv17ZHZIqE0RCg-9E_YNXSjAaHhXXUQqSNnLk_iZ4WpDK20K66IukXZeVUD41unTnSSrXuIkf_AYvrRDLoM30d-aec4B6ZyFXklfxwhacjyVwHOdMpSOZAq602t9bHqKOt65ppo-GAzZR810fUD5no9n_fO10Fi_9YkZSTTkngNR-8eo"/>
+</div>
+<div class="text-right text-[11px] font-mono space-y-0.5 flex-1">
+<div class="font-bold text-slate-900 dark:text-white">7 Parameter Cuaca</div>
+<div class="text-slate-500 dark:text-slate-400 text-[10px]">Ultrasonic Wind 360°</div>
+<span class="inline-block mt-1 px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-cyan-300 text-[9px] font-extrabold border border-blue-300 dark:border-blue-700">
+          SDA &amp; Pertanian
+        </span>
+</div>
+</div>
+</div>
+<!-- Item 4: EWS (Red/Amber Accent) -->
+<div class="rounded-3xl p-5 sm:p-6 bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl hover:border-red-500 dark:hover:border-red-400 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<!-- Soft Hover Accent Ribbon -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-amber-500 opacity-80 group-hover:opacity-100 transition"></div>
+<div>
+<!-- Tech Header -->
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800 text-xs font-mono">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center border border-red-500/20 shadow-xs">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+</span>
+<div>
+<span class="font-bold text-red-600 dark:text-red-400 block text-[11px]">EWS PERINGATAN BANJIR</span>
+<span class="text-[9px] text-slate-400">Mitigasi Hulu Sungai</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300 text-[10px] font-bold font-mono border border-red-200 dark:border-red-800">
+          120dB Siren
+        </span>
+</div>
+<h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition leading-snug">
+        Early Warning System (EWS)
+      </h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
+        Mitigasi bahaya banjir bendungan &amp; luapan DAS hulu dengan sirine multi-tahap (Waspada, Siaga, Awas) serta visual strobe rotari terintegrasi SCADA.
+      </p>
+</div>
+<!-- Isometric Product Pedestal & Specs -->
+<div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
+<div class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-red-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 relative shadow-inner flex-shrink-0 group-hover:border-red-400/50 transition">
+<img alt="EWS Dam Alarm System Higertech" class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300" src="https://lh3.googleusercontent.com/aida/AEtjO1WdcL5w8Xt239hS5j_6GAX6e2mb29FZedQT7ZTCD3jzVp5HkGCUJiVcZ4e4cVfvQCF_Wk7Vf4tbJSETCg9As6SFM-GtenZXb5HGRsb70c5J2PLu1UZl6QyMmAlQzTJB4GJh_Vly3xm1sqVN-HzP1HkDtwIRYy6ntCI1TEQXbOpx9KBqDiHw8tG_oaSLibEvbhS43W63q_r_WdS3imc2xAXw5SpUo0AKGMYbiZ-ctnSLonseaogpBc2xk17l"/>
+</div>
+<div class="text-right text-[11px] font-mono space-y-0.5 flex-1">
+<div class="font-bold text-red-600 dark:text-red-400">Strobe &amp; Horn 120 dB</div>
+<div class="text-slate-500 dark:text-slate-400 text-[10px]">Otomatis Level Air</div>
+<span class="inline-block mt-1 px-2 py-0.5 rounded-md bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300 text-[9px] font-extrabold border border-red-300 dark:border-red-800">
+          Mitigasi Bencana
+        </span>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</section>
+<!-- END: WORKSTATION SPLIT MATRIX -->
+<!-- BEGIN: 4 PILAR INOVASI DENGAN LOGO & EMBLEM PRESISI -->
+<section class="py-20 bg-white dark:bg-[#0B1120] transition-colors duration-300" id="why-us">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-3xl mb-12">
+<span class="text-blue-600 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider block mb-2">4 Pilar Keunggulan Teknologi</span>
+<h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+          Arsitektur Telemetri Tangguh <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-cyan-400 dark:to-blue-400">Sensor-to-Cloud Tanpa Henti</span>
+</h2>
+<p class="mt-3 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+          Dirancang khusus menghadapi kondisi geografis kepulauan Indonesia, kelembaban ekstrem, dan sambaran petir di daerah tangkapan air.
+        </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<!-- 4 Interactive Selector Tabs with Custom Emblem Visuals -->
+<div class="lg:col-span-5 space-y-3" id="pillar-tabs"><button class="pillar-btn active w-full text-left p-4 rounded-2xl bg-blue-50/90 dark:bg-blue-900/30 border-2 border-blue-500 dark:border-cyan-500 transition-all flex items-center space-x-4 cursor-pointer" data-index="0" type="button"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 text-white flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-emerald-400/30"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg></div><div><div class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white tracking-wide">INOVASI BERKELANJUTAN</div><div class="text-[11px] text-slate-500 dark:text-slate-400">Green Eco-Sensor &amp; Solar Harvester</div></div></button><button class="pillar-btn w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-[#131D36] hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all flex items-center space-x-4 cursor-pointer" data-index="1" type="button"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-800 text-white flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-blue-400/20"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5M12 12h.01M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5M19.1 4.9C23 8.8 23 15.1 19.1 19"></path></svg></div><div><div class="font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300 tracking-wide">DATA REAL TIME DAN AKURAT</div><div class="text-[11px] text-slate-500 dark:text-slate-400">99.85% SLA &amp; Zero Packet Loss</div></div></button><button class="pillar-btn w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-[#131D36] hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all flex items-center space-x-4 cursor-pointer" data-index="2" type="button"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-cyan-400/20"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4M12 16h.01"></path></svg></div><div><div class="font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300 tracking-wide">KOMITMEN TERHADAP LINGKUNGAN</div><div class="text-[11px] text-slate-500 dark:text-slate-400">Watershed &amp; DAS Protection Ecosystem</div></div></button><button class="pillar-btn w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-[#131D36] hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all flex items-center space-x-4 cursor-pointer" data-index="3" type="button"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-amber-400/20"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg></div><div><div class="font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300 tracking-wide">KEMITRAAN STRATEGIS</div><div class="text-[11px] text-slate-500 dark:text-slate-400">PUPR, BMKG &amp; BBWS Partnership Badge</div></div></button></div>
+<!-- Pillar Interactive Display Card with Architecture Flow -->
+<div class="lg:col-span-7">
+<div class="rounded-3xl border border-blue-200 dark:border-slate-800 bg-gradient-to-br from-blue-50/60 via-slate-50 to-indigo-50/40 dark:from-[#131D36] dark:via-[#0E1628] dark:to-[#0B1120] p-6 sm:p-10 shadow-sm min-h-[380px] flex flex-col justify-between relative overflow-hidden">
+<div class="space-y-5 relative z-10 transition-all duration-300 opacity-100" id="pillar-display-body">
+<div class="flex items-center space-x-3">
+<div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold" id="pillar-display-icon">
+<svg aria-hidden="true" class="lucide lucide-leaf w-6 h-6" data-lucide="leaf" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20"></path><path d="M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13"></path></svg>
+</div>
+<div>
+<span class="text-[10px] font-mono uppercase tracking-widest text-emerald-600 dark:text-cyan-400 font-bold block" id="pillar-display-badge">ECO-HARVESTING CERTIFIED</span>
+<h3 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight" id="pillar-display-title">INOVASI BERKELANJUTAN</h3>
+</div>
+</div>
+<p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed" id="pillar-display-desc">
+                Penerapan panel surya monokristalin efisiensi tinggi dipadukan dengan modul MPPT otomatis dan baterai LiFePO4 tahan siklus tinggi, memastikan stasiun telemetri di lokasi pedalaman terus mengirimkan data tanpa henti meski berhari-hari musim penghujan.
+              </p>
+<!-- Sensor-to-Cloud Architecture Pipeline Preview -->
+<div class="p-4 rounded-2xl bg-white/80 dark:bg-[#0c1626]/80 border border-slate-200/80 dark:border-slate-800">
+<span class="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2 font-bold">Live Sensor-To-Cloud Pipeline:</span>
+<div class="grid grid-cols-4 gap-2 text-center text-[11px] font-mono">
+<div class="p-2 rounded bg-slate-100 dark:bg-slate-800">
+<span class="text-emerald-500 block">01. Sensor</span>
+<span class="font-bold text-slate-800 dark:text-slate-200">Radar / Tipping</span>
+</div>
+<div class="p-2 rounded bg-slate-100 dark:bg-slate-800">
+<span class="text-blue-500 block">02. Logger</span>
+<span class="font-bold text-slate-800 dark:text-slate-200">Sampling &amp; Calc</span>
+</div>
+<div class="p-2 rounded bg-slate-100 dark:bg-slate-800">
+<span class="text-cyan-500 block">03. Uplink</span>
+<span class="font-bold text-slate-800 dark:text-slate-200">MQTT / 4G GSM</span>
+</div>
+<div class="p-2 rounded bg-slate-100 dark:bg-slate-800">
+<span class="text-indigo-500 block">04. Cloud</span>
+<span class="font-bold text-slate-800 dark:text-slate-200">GIS &amp; Dashboard</span>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-6 relative z-10 flex flex-wrap items-center gap-3">
+<a class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#16275E] hover:bg-blue-800 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-slate-950 text-xs sm:text-sm font-bold transition shadow-md group" href="#contact">
+<span class="">Konsultasi Enjiniring Kami</span>
+<svg aria-hidden="true" class="lucide lucide-arrow-right w-4 h-4 group-hover:translate-x-1 transition" data-lucide="arrow-right" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+</a>
+<span class="text-xs text-slate-500 font-mono">ISO 9001:2015 Registered</span>
+</div>
+<!-- Decorative Watermark Icon -->
+<div class="absolute -right-6 -bottom-6 w-48 h-48 opacity-5 dark:opacity-10 text-blue-600 dark:text-cyan-400 pointer-events-none">
+<svg aria-hidden="true" class="lucide lucide-activity w-full h-full" data-lucide="activity" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: 4 PILAR INOVASI -->
+<!-- BEGIN: DEDICATED SECTION INTERNSHIP (PORTAL MAGANG R&D) -->
+<section class="py-20 bg-gradient-to-b from-slate-50 via-cyan-50/30 to-white dark:from-[#0E1628] dark:via-[#09101f] dark:to-[#0B1120] border-t border-slate-200/80 dark:border-slate-800 transition-colors duration-300" id="internship">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Section Header -->
+<div class="text-center max-w-3xl mx-auto mb-14">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100 dark:bg-cyan-950/70 border border-cyan-300 dark:border-cyan-700 text-cyan-800 dark:text-cyan-300 text-xs font-bold mb-3 shadow-xs">
+<svg aria-hidden="true" class="lucide lucide-sparkles w-3.5 h-3.5 animate-bounce text-cyan-600 dark:text-cyan-400" data-lucide="sparkles" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+<span class="">CAMPUS APPRENTICESHIP &amp; TALENT INCUBATION</span>
+</div>
+<h2 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+          Higertech R&amp;D Internship Academy
+        </h2>
+<p class="mt-3 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+          Kembangkan keahlian teknologi telemetri hidrometeorologi generasi mendatang bersama engineer senior Higertech. Terjun langsung merakit IoT hardware, sensor calibration di lapangan, dan deployment server SCADA.
+        </p>
+</div>
+<!-- Internship Highlight Card & Role Breakdown -->
+<div class="rounded-3xl bg-white dark:bg-[#131D36] border-2 border-cyan-500/40 shadow-xl p-6 sm:p-10 relative overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Role Details -->
+<div class="lg:col-span-7 space-y-6">
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-md bg-emerald-500 text-white font-mono font-bold text-xs">BATCH GANJIL 2025/2026</span>
+<span class="text-xs text-slate-500 dark:text-slate-400 font-mono">Lokasi: Bandung R&amp;D Lab &amp; Site BWS</span>
+</div>
+<h3 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+              Pilihan Posisi Magang Spesialis:
+            </h3>
+<!-- 3 Key Roles -->
+<div class="space-y-4">
+<!-- Role 1 -->
+<div class="p-4 rounded-2xl bg-slate-50 dark:bg-[#0c1626] border border-slate-200 dark:border-slate-800 hover:border-cyan-400 transition flex items-start space-x-4">
+<div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 font-bold">
+<svg aria-hidden="true" class="lucide lucide-cpu w-5 h-5" data-lucide="cpu" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect height="16" rx="2" width="16" x="4" y="4"></rect><rect height="8" rx="1" width="8" x="8" y="8"></rect></svg>
+</div>
+<div>
+<h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">IoT Embedded Firmware Engineer</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                    Pengembangan kode C/C++ pada RTU mikrokontroler 32-bit, optimasi power consumption sleep-mode baterai surya, serta implementasi library MODBUS RTU &amp; SDI-12.
+                  </p>
+</div>
+</div>
+<!-- Role 2 -->
+<div class="p-4 rounded-2xl bg-slate-50 dark:bg-[#0c1626] border border-slate-200 dark:border-slate-800 hover:border-cyan-400 transition flex items-start space-x-4">
+<div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 font-bold">
+<svg aria-hidden="true" class="lucide lucide-gauge w-5 h-5" data-lucide="gauge" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>
+</div>
+<div>
+<h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Hydrology Instrument Field Engineer</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                    Kalibrasi sensor radar air, tipping bucket curah hujan standar BMKG, instalasi mast tower 10 meter, uji grounding petir dan penataan panel surya stasiun bendungan.
+                  </p>
+</div>
+</div>
+<!-- Role 3 -->
+<div class="p-4 rounded-2xl bg-slate-50 dark:bg-[#0c1626] border border-slate-200 dark:border-slate-800 hover:border-cyan-400 transition flex items-start space-x-4">
+<div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center flex-shrink-0 font-bold">
+<svg aria-hidden="true" class="lucide lucide-layout-dashboard w-5 h-5" data-lucide="layout-dashboard" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="9" rx="1" width="7" x="3" y="3"></rect><rect height="5" rx="1" width="7" x="14" y="3"></rect><rect height="9" rx="1" width="7" x="14" y="12"></rect><rect height="5" rx="1" width="7" x="3" y="16"></rect></svg>
+</div>
+<div>
+<h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Web SCADA &amp; GIS Telemetry Developer</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                    Pembangunan visualisasi map GIS interaktif, agregasi database time-series PostgreSQL/InfluxDB, serta REST API/MQTT broker untuk sistem peringatan banjir terpadu.
+                  </p>
+</div>
+</div>
+</div>
+<!-- Benefits List -->
+<div class="pt-2">
+<span class="text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">Fasilitas &amp; Benefit Program:</span>
+<div class="flex flex-wrap gap-2 text-xs">
+<span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">Uang Saku Bulanan</span>
+<span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">Mentoring Engineer Senior</span>
+<span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">Sertifikat Industri Resmi</span>
+<span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">Peluang Fast-Track Karyawan</span>
+</div>
+</div>
+</div>
+<!-- Registration CTA Box with Field Preview -->
+<div class="lg:col-span-5 flex flex-col justify-between h-full bg-gradient-to-b from-[#16275E] to-[#0d1738] rounded-2xl p-6 sm:p-8 text-white relative shadow-lg">
+<div>
+<div class="w-12 h-12 rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center mb-4">
+<svg aria-hidden="true" class="lucide lucide-send w-6 h-6" data-lucide="send" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+</div>
+<h4 class="text-xl font-bold tracking-tight">Siap Membangun Karir Enjiniring Telemetri?</h4>
+<p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Terbuka bagi mahasiswa D3/D4/S1 jurusan Teknik Elektro, Teknik Fisika, Teknik Komputer, Mekatronika, Geofisika, dan Sistem Informasi.
+              </p>
+<div class="my-6 p-4 rounded-xl bg-white/10 border border-white/15 space-y-2 text-xs">
+<div class="flex justify-between text-slate-300">
+<span class="">Pendaftaran Ditutup:</span>
+<span class="font-bold text-amber-300 font-mono">31 Juli 2025</span>
+</div>
+<div class="flex justify-between text-slate-300">
+<span class="">Durasi Magang:</span>
+<span class="font-bold text-white font-mono">3 - 6 Bulan</span>
+</div>
+<div class="flex justify-between text-slate-300">
+<span class="">Metode:</span>
+<span class="font-bold text-cyan-300 font-mono">Hybrid (Lab &amp; Field Site)</span>
+</div>
+</div>
+</div>
+<div class="space-y-3 pt-2">
+<a class="w-full inline-flex items-center justify-center space-x-2 py-3 px-6 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm transition shadow-md" href="mailto:higertechkaryasinergi@gmail.com?subject=Aplikasi%20Magang%20Higertech%20Batch%202025">
+<svg aria-hidden="true" class="lucide lucide-file-check w-4 h-4" data-lucide="file-check" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="m9 15 2 2 4-4"></path></svg>
+<span class="">Daftar Magang Sekarang</span>
+</a>
+<a class="w-full inline-flex items-center justify-center space-x-2 py-2 px-6 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition" href="https://wa.me/628112332182?text=Halo%20Admin%20Higertech%2C%20saya%20ingin%20bertanya%20mengenai%20program%20magang" target="_blank">
+<svg aria-hidden="true" class="lucide lucide-message-circle w-3.5 h-3.5 text-emerald-400" data-lucide="message-circle" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
+<span class="">Tanya Program via WhatsApp</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: SECTION INTERNSHIP -->
+<!-- BEGIN: Live GIS Map Dashboard & Metrics -->
+<section class="py-20 bg-slate-50/50 dark:bg-[#080d19] border-t border-slate-200/80 dark:border-slate-800 transition-colors duration-300" id="map-section">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+<div>
+<span class="text-blue-600 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider block mb-1">Portofolio &amp; Sebaran Stasiun</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Success Story &amp; GIS Telemetry Map
+          </h2>
+</div>
+<div class="text-xs text-slate-500 dark:text-slate-400 font-mono">
+          Tersebar di 34 Provinsi di seluruh Indonesia
+        </div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Interactive GIS Map Canvas -->
+<div class="lg:col-span-7 bg-[#0c1626] rounded-3xl overflow-hidden border border-slate-800 shadow-2xl relative min-h-[460px] flex flex-col justify-between p-5">
+<!-- Map Top Bar -->
+<div class="flex items-center justify-between relative z-20">
+<div class="flex items-center space-x-2 bg-slate-900/90 backdrop-blur px-3.5 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-200">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+<span class="font-medium font-mono">Live Telemetry Map • Indonesia</span>
+</div>
+<div class="flex space-x-2">
+<button class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center hover:bg-slate-700 transition" title="Filter Layers" type="button">
+<svg aria-hidden="true" class="lucide lucide-layers w-4 h-4" data-lucide="layers" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg>
+</button>
+<button class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 flex items-center justify-center hover:bg-slate-700 transition" title="Expand Map" type="button">
+<svg aria-hidden="true" class="lucide lucide-maximize-2 w-4 h-4" data-lucide="maximize-2" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="m21 3-7 7"></path><path d="m3 21 7-7"></path><path d="M9 21H3v-6"></path></svg>
+</button>
+</div>
+</div>
+<!-- SVG Archipelago Vector Background -->
+<div class="absolute inset-0 bg-[#070e1c] map-grid-bg flex items-center justify-center overflow-hidden">
+<svg class="w-[120%] sm:w-full h-auto opacity-35 text-cyan-600 fill-current" viewbox="0 0 1000 450">
+<path d="M120,130 L160,110 L230,170 L280,240 L260,260 L180,210 Z"></path>
+<path d="M290,290 L380,310 L470,320 L530,330 L530,310 L420,295 L300,285 Z"></path>
+<path d="M360,140 L440,110 L500,160 L490,230 L400,240 L350,190 Z"></path>
+<path d="M570,160 L620,130 L630,200 L590,240 L560,210 L580,180 Z"></path>
+<path d="M780,200 L870,170 L950,220 L940,290 L850,280 L790,230 Z"></path>
+</svg>
+<!-- Node Points -->
+<div class="absolute top-[35%] left-[22%] group cursor-pointer">
+<div class="w-4 h-4 rounded-full bg-emerald-400 border-2 border-white shadow-lg shadow-emerald-500/50 animate-bounce"></div>
+<div class="opacity-0 group-hover:opacity-100 transition absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-900 text-white text-[10px] whitespace-nowrap z-30 font-mono">BWS Sumatera II</div>
+</div>
+<div class="absolute top-[68%] left-[36%] group cursor-pointer">
+<div class="w-4 h-4 rounded-full bg-cyan-400 border-2 border-white shadow-lg shadow-cyan-500/50"></div>
+<div class="opacity-0 group-hover:opacity-100 transition absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-900 text-white text-[10px] whitespace-nowrap z-30 font-mono">BBWS Citarum</div>
+</div>
+<div class="absolute top-[69%] left-[45%] group cursor-pointer">
+<div class="w-4 h-4 rounded-full bg-blue-500 border-2 border-white shadow-lg shadow-blue-500/50"></div>
+<div class="opacity-0 group-hover:opacity-100 transition absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-900 text-white text-[10px] whitespace-nowrap z-30 font-mono">BBWS Bengawan Solo</div>
+</div>
+<div class="absolute top-[48%] left-[43%] group cursor-pointer">
+<div class="w-4 h-4 rounded-full bg-amber-400 border-2 border-white shadow-lg shadow-amber-500/50"></div>
+<div class="opacity-0 group-hover:opacity-100 transition absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-900 text-white text-[10px] whitespace-nowrap z-30 font-mono">BWS Kalimantan I</div>
+</div>
+<div class="absolute top-[42%] left-[60%] group cursor-pointer">
+<div class="w-4 h-4 rounded-full bg-purple-400 border-2 border-white shadow-lg shadow-purple-500/50"></div>
+<div class="opacity-0 group-hover:opacity-100 transition absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-900 text-white text-[10px] whitespace-nowrap z-30 font-mono">BWS Sulawesi II</div>
+</div>
+<!-- Cluster Badges -->
+<span class="absolute top-[40%] left-[20%] px-2 py-0.5 rounded-full bg-blue-600/90 text-[10px] font-bold text-white border border-white/20 font-mono">68 AWLR</span>
+<span class="absolute top-[75%] left-[34%] px-2 py-0.5 rounded-full bg-cyan-600/90 text-[10px] font-bold text-white border border-white/20 font-mono">142 Stasiun</span>
+<span class="absolute top-[52%] left-[42%] px-2 py-0.5 rounded-full bg-indigo-600/90 text-[10px] font-bold text-white border border-white/20 font-mono">45 AWS</span>
+<span class="absolute top-[50%] left-[62%] px-2 py-0.5 rounded-full bg-purple-600/90 text-[10px] font-bold text-white border border-white/20 font-mono">54 Logger</span>
+</div>
+<!-- Bottom Legend Bar -->
+<div class="relative z-20 mt-auto pt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300 border-t border-slate-800 font-mono">
+<div class="flex items-center space-x-4">
+<span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-1.5"></span> AWLR</span>
+<span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 mr-1.5"></span> ARR</span>
+<span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 mr-1.5"></span> AWS</span>
+<span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 mr-1.5"></span> EWS</span>
+</div>
+<span class="text-slate-400 text-[11px]">Higertech GIS Network • 2025</span>
+</div>
+</div>
+<!-- Project Stats Cards Grid -->
+<div class="lg:col-span-5 space-y-4">
+<div class="grid grid-cols-2 gap-4"><div class="rounded-2xl bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 p-5 shadow-sm"><div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center mb-3 text-blue-600 dark:text-cyan-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg></div><div class="text-3xl font-black tracking-tight text-slate-900 dark:text-white font-mono">500+</div><div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Automatic Water Level Recorder</div></div><div class="rounded-2xl bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 p-5 shadow-sm"><div class="w-9 h-9 rounded-xl bg-cyan-50 dark:bg-cyan-900/40 flex items-center justify-center mb-3 text-cyan-600 dark:text-cyan-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M16 14v6M8 14v6M12 16v6"></path></svg></div><div class="text-3xl font-black tracking-tight text-slate-900 dark:text-white font-mono">300+</div><div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Automatic Rainfall Recorder</div></div><div class="rounded-2xl bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 p-5 shadow-sm"><div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-900/40 flex items-center justify-center mb-3 text-amber-500 dark:text-amber-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M12 7a5 5 0 1 0 5 5"></path></svg></div><div class="text-3xl font-black tracking-tight text-slate-900 dark:text-white font-mono">60+</div><div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Automatic Weather Station</div></div><div class="rounded-2xl bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 p-5 shadow-sm"><div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-900/40 flex items-center justify-center mb-3 text-emerald-500 dark:text-emerald-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path><path d="M10 6h4M10 10h4M10 14h4M10 18h4"></path></svg></div><div class="text-3xl font-black tracking-tight text-slate-900 dark:text-white font-mono">75+</div><div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Instansi Pemerintah Percaya</div></div></div>
+<a class="w-full inline-flex items-center justify-center space-x-2 py-3.5 px-6 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-semibold text-sm transition" href="#projects">
+<span class="">Jelajahi Arsip Proyek Telemetri Selengkapnya</span>
+<svg aria-hidden="true" class="lucide lucide-arrow-right w-4 h-4" data-lucide="arrow-right" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Live GIS Map Dashboard & Metrics -->
+<!-- BEGIN: Client Agencies -->
+<section class="py-16 bg-white dark:bg-[#0B1120] border-y border-slate-200/80 dark:border-slate-800 transition-colors duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-8">
+        Dipercaya untuk Mengelola <br class="hidden sm:inline"/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-cyan-400 dark:to-blue-400">Sumber Daya Air Nasional</span>
+</h2>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 pt-2">
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm flex-shrink-0">PU</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">BALAI WILAYAH SUNGAI MALUKU</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Kementerian PUPR</div>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0">PEMKAB</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">PEMKAB KUTAI TIMUR</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Dinas PU &amp; SDA</div>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm flex-shrink-0">PU</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">BWS SULAWESI II</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Ditjen Sumber Daya Air</div>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs flex-shrink-0">SDA</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">DINAS SUMBER DAYA AIR</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Pemprov Jawa Barat</div>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm flex-shrink-0">PU</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">BWS SUMATERA IV</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Ditjen SDA PUPR</div>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm flex-shrink-0">PU</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">BWS KALIMANTAN I</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Kementerian PUPR</div>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm flex-shrink-0">PU</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">BWS SUMATERA VII</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Ditjen Sumber Daya Air</div>
+</div>
+</div>
+<div class="rounded-2xl p-4 bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-left shadow-xs hover:border-blue-400 transition">
+<div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm flex-shrink-0">PU</div>
+<div class="overflow-hidden">
+<div class="text-xs font-bold text-slate-900 dark:text-white truncate">BWS KALIMANTAN IV</div>
+<div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Kementerian PUPR</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Client Agencies -->
+<!-- BEGIN: Knowledge & Tutorial Articles (Semua Aset Lapangan Terpasang) -->
+<section class="py-20 bg-slate-50/50 dark:bg-[#0E1628] transition-colors duration-300" id="articles">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="mb-12">
+<span class="text-blue-600 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider block mb-1">Knowledge Hub &amp; Technical Manuals</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          Buat <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-cyan-400 dark:to-blue-400">Pengalaman</span> Barumu
+        </h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+<!-- Article Card 1: Malahayu (Featured Tall) -->
+<article class="lg:col-span-4 bg-white dark:bg-[#131D36] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+<div class="relative h-64 overflow-hidden bg-slate-100 dark:bg-slate-800">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur text-blue-700 dark:text-cyan-400 text-[11px] font-bold shadow-xs">Artikel</span>
+<img alt="Perangkat Telemetry Klimatologi Malahayu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1WiOWcNhsZar7mQLixAJHh2jlM_dJlYUKkPxx7PrDQZqzcTvgJXSXpkKyDIWY7vAON5RQprEpG1B9umV1JmISN-_8iVXBqNInBRH80kGRPkiEaYIBiTlPJNja6n1SYhw8SpC3xhS557jUxuO5Pn77K0vaFAVtJeUBC19gMXNGjX8lPGG5AKIDLP8pTRWAt-VVJ2LHyWA6svBH2DELCuSWyOkcdbYfW_Cs72A19lXWIA47Mtif8mUpBAjudY"/>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-bold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
+                Perangkat Telemetry Klimatologi Malahayu
+              </h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-2.5 line-clamp-3">
+                Sistem pemantauan cuaca otomatis untuk mengukur data parameter iklim presisi di Malahayu, Kec. Banjarharjo, Kab. Brebes, Jawa Tengah.
+              </p>
+</div>
+<div class="pt-6 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+<span class="flex items-center"><svg aria-hidden="true" class="lucide lucide-calendar w-3.5 h-3.5 mr-1" data-lucide="calendar" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8 2v3"></path><path d="M16 2v3"></path><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M3 9h18"></path></svg> 08 Juni 2026</span>
+<span class="flex items-center"><svg aria-hidden="true" class="lucide lucide-clock w-3.5 h-3.5 mr-1" data-lucide="clock" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 5 mnt baca</span>
+</div>
+</div>
+</article>
+<!-- Right Grid of Cards -->
+<div class="lg:col-span-8 flex flex-col space-y-8">
+<!-- Horizontal Tutorial Card: AWS Installation Guide -->
+<article class="rounded-3xl bg-gradient-to-r from-[#16275E] via-indigo-900 to-[#0B1120] text-white p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-center shadow-lg border border-white/10 group">
+<div class="w-full sm:w-48 h-40 rounded-2xl overflow-hidden flex-shrink-0 bg-white shadow-inner">
+<img alt="Installation Guide AWS Higertech" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1WBBoAGyGtr1Jpl8LVpe4XfQfW1nHugxQ8YAVlU1Su4iZqYSo5Qj1Ycct5xe3hzhmhbu33bl5VuVDiiJFIf5kokbFENYNEz_t9di4ggoeAaGaJ27VWW2pYxxC-ir9coV4q_TJyUelPP_QycZp0gbw5OeCakpPO_pHe7pfCA2EgK7YZElMhMV6GaK5l5kq5WEze-9OMgDjCqoXimKlmeACDBmybDcqYq27M68lHpKlKTxmenJiLFNSG4pTo"/>
+</div>
+<div class="flex-1 space-y-3">
+<span class="inline-block px-3 py-1 rounded-full bg-cyan-400/20 text-cyan-300 text-[11px] font-semibold border border-cyan-400/30">Tutorial Teknis</span>
+<h3 class="text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-cyan-300 transition">
+                Installation Guide Automatic Weather Station (AWS)
+              </h3>
+<p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Panduan komprehensif penempatan sensor arah angin, pyranometer surya, mast tower penangkal petir, dan grounding tahan uji.
+              </p>
+<div class="flex items-center space-x-6 text-xs text-slate-300 pt-2 font-mono">
+<span class="flex items-center"><svg aria-hidden="true" class="lucide lucide-calendar w-3.5 h-3.5 mr-1" data-lucide="calendar" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8 2v3"></path><path d="M16 2v3"></path><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M3 9h18"></path></svg> 20 Mei 2026</span>
+<span class="flex items-center"><svg aria-hidden="true" class="lucide lucide-clock w-3.5 h-3.5 mr-1" data-lucide="clock" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 8 mnt baca</span>
+</div>
+</div>
+</article>
+<!-- Bottom 2 Split Articles -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+<!-- Card: Deli Serdang Article -->
+<article class="bg-white dark:bg-[#131D36] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+<div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur text-blue-700 dark:text-cyan-400 text-[11px] font-bold shadow-xs">Artikel</span>
+<img alt="Pemasangan Perangkat Telemetri Deli Serdang" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1U0WX-84YiQqpmK-F-q1mRjBrOzySXHfZdnmG5gNuk7_GfJQeDKnpNePh0Gr9nCU8XOP5jpqRZxEsyt1wEHRrhYcEo9fmBhGwyIr9xvpTlCC4hQjiv97VQlnmPqqDhB2v4ldKuFB1ahFGousUuqUNXDNBVLcCLYWOvjXJaM-CDDjmHzuv8D-l8ylC-Ddy8J2ttfR_UK5kUfC3f9U0lfE7qkhUvIwDsoBmSuGHBaMOUvQNdb2nV1CdEjMfg"/>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
+                  Pemasangan Perangkat TELEMETRI Rumah Gerat
+                </h3>
+<div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
+<span class="">08 Juni 2026</span>
+<span class="">Deli Serdang</span>
+</div>
+</div>
+</article>
+<!-- Card: Video Tutorial Setting AWLR -->
+<article class="bg-white dark:bg-[#131D36] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+<div class="relative h-48 overflow-hidden bg-slate-800">
+<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-cyan-500 text-slate-950 text-[11px] font-bold shadow-xs">Video Tutorial</span>
+<img alt="Tutorial AWLR Sonar Digital" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1XvFRSmv0GfB6_G4ov9xAtxCjuaZns2eYvFC-OEqBoRfufrxXO8nrAeJWYEAMptc7yFMvjWpf6WO97UpiijhLoH0WJezXK5-aQjBqpFHcE3h362LKhjW47jvQTMIHJUeXUtjKLyeyXBHIS2WiNAbjVfQpn7sgrt9UIGSHVXFnlsZWel4Jx9OkOIQ9QN_2phQjZ1Hvt2TXTRTfC5o51yynG3W7DZOtF8hE-icMJ_ouzXVWP_MS0XZmUKyc7o"/>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
+                  TUTORIAL SETTING DAN RESET LOGGER AWLR SONAR DIGITAL
+                </h3>
+<div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
+<span class="">11 Maret 2025</span>
+<span class="">Video Panduan</span>
+</div>
+</div>
+</article>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Knowledge Articles -->
+<!-- BEGIN: Call To Action Banner -->
+<section class="py-16 bg-[#16275E] dark:bg-[#070e1c] border-y border-blue-900 dark:border-slate-800 text-white relative" id="contact">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+<div class="inline-flex items-center space-x-2 px-3 py-1 rounded bg-white/10 text-xs font-mono font-medium mb-4 text-slate-200 border border-white/10">
+<svg aria-hidden="true" class="lucide lucide-cpu w-3.5 h-3.5 text-cyan-400" data-lucide="cpu" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect height="16" rx="2" width="16" x="4" y="4"></rect><rect height="8" rx="1" width="8" x="8" y="8"></rect></svg>
+<span class="">LAYANAN KONSULTASI ENJINIRING TELEMETRI</span>
+</div>
+<h2 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight">
+        Rancang Sistem Stasiun Telemetri Handal &amp; Terstandarisasi
+      </h2>
+<p class="mt-3 text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto font-normal leading-relaxed">
+        Konsultasikan kebutuhan spesifikasi teknis, integrasi protokol data ke server pusat instansi, dan ketersediaan paket katalog e-LKPP INAPROC bersama tim enjinir Higertech.
+      </p>
+<div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+<a class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-lg bg-white text-slate-900 hover:bg-slate-100 font-bold text-xs sm:text-sm transition shadow-sm" href="https://wa.me/628112332182" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" class="lucide lucide-message-circle w-4 h-4 text-emerald-600" data-lucide="message-circle" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
+<span class="">Hubungi WhatsApp Tim Teknis</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-lg bg-transparent hover:bg-white/10 border border-white/30 text-white font-semibold text-xs sm:text-sm transition" href="#workstation">
+<svg aria-hidden="true" class="lucide lucide-file-text w-4 h-4" data-lucide="file-text" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+<span class="">Katalog Produk &amp; Spesifikasi</span>
+</a>
+</div>
+</div>
+</section>
+<!-- END: Call To Action Banner -->
+</main>
+<!-- BEGIN: Main Footer -->
+<footer class="bg-white dark:bg-[#070c17] border-t border-slate-200 dark:border-slate-800 pt-16 pb-12 text-slate-600 dark:text-slate-400 text-sm transition-colors duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
+<!-- Brand Info -->
+<div class="lg:col-span-5 space-y-4">
+<a class="inline-block" href="#">
+<img alt="Higertech Karya Sinergi" class="h-10 w-auto object-contain dark:brightness-110" src="https://lh3.googleusercontent.com/aida/AEtjO1UKPPrY20GJ2uItljYK1Fpy6KbOxoe64eKCxaq-E0NSkiQUUvljCNOBpb3-N_iTS7xVWTQ5pY4DhcYvh42RmbuQT5T4bJBEw5MhXuoBKmR3AH3RFRJoOchLMQs86k9IeK188s6z0BXYUOJz1fD_hI4okYFrswqHE04wWPc_bG2NbypT9t1eqOwmjgrW5oUgzX-DMamqCSuIM717mEIbjrKm0dBfC-03c9PYTKr84i7PzwOEbPccmODAqmbI"/>
+</a>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
+          PT Higertech Karya Sinergi menghadirkan portofolio terdepan instrumentasi hidrologi, telemetri lingkungan, serta program inkubasi talenta muda di Indonesia.
+        </p>
+<div class="pt-2 space-y-1.5 text-xs text-slate-600 dark:text-slate-300"><p class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><strong class="text-slate-900 dark:text-white font-semibold">Telepon:</strong> 022-2101-0299</p><p class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="16" rx="2" width="20" x="2" y="4"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg><strong class="text-slate-900 dark:text-white font-semibold">Email:</strong> higertechkaryasinergi@gmail.com</p><p class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg><strong class="text-slate-900 dark:text-white font-semibold">Workshop:</strong> Bandung, Jawa Barat, Indonesia</p></div>
+</div>
+<!-- Links -->
+<div class="lg:col-span-3 space-y-3">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">Solusi Kami</h4>
+<ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#workstation">Water Level Recorder (AWLR)</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#workstation">Automatic Rainfall Recorder (ARR)</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#workstation">Weather Station (AWS)</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#workstation">Early Warning System (EWS)</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#workstation">Data Logger HG-LOG900</a></li>
+</ul>
+</div>
+<div class="lg:col-span-2 space-y-3">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">Perusahaan &amp; Program</h4>
+<ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#why-us">Tentang Kami</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#internship">Portal Internship R&amp;D</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#map-section">Proyek &amp; Peta GIS</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="#articles">Artikel &amp; Panduan</a></li>
+<li class=""><a class="hover:text-blue-600 dark:hover:text-cyan-400 transition" href="https://e-katalog.lkpp.go.id" target="_blank">E-Katalog INAPROC</a></li>
+</ul>
+</div>
+<div class="lg:col-span-2 space-y-4">
+<h4 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">Sosial &amp; Kontak</h4>
+<div class="flex items-center space-x-2.5"><a aria-label="WhatsApp" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-emerald-500 hover:text-white transition flex items-center justify-center shadow-xs" href="https://wa.me/628112332182"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></a><a aria-label="Email" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-blue-600 hover:text-white transition flex items-center justify-center shadow-xs" href="mailto:higertechkaryasinergi@gmail.com"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="16" rx="2" width="20" x="2" y="4"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></a><a aria-label="LinkedIn" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-blue-700 hover:text-white transition flex items-center justify-center shadow-xs" href="#"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect height="12" width="4" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg></a><a aria-label="Instagram" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-pink-600 hover:text-white transition flex items-center justify-center shadow-xs" href="#"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></a><a aria-label="YouTube" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-red-600 hover:text-white transition flex items-center justify-center shadow-xs" href="#"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><polygon points="10 15 15 12 10 9 10 15"></polygon></svg></a></div>
+</div>
+</div>
+<!-- Copyright Bar -->
+<div class="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
+<div class="">
+        © 2025 <span class="font-bold text-slate-800 dark:text-slate-200">PT Higertech Karya Sinergi</span>. All Rights Reserved.
+      </div>
+<a aria-label="Back to top" class="w-9 h-9 rounded-lg bg-[#16275E] dark:bg-cyan-500 text-white dark:text-slate-950 hover:bg-blue-800 transition flex items-center justify-center shadow-xs" href="#">
+<svg aria-hidden="true" class="lucide lucide-arrow-up w-4 h-4" data-lucide="arrow-up" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
+</a>
+</div>
+</div>
+</footer>
+<!-- END: Main Footer -->
+<!-- Interactive Scripts: Dual Theme Switcher & 4 Pillars Tab Switcher -->
+<script>
+  function updateThemeButtons(theme) {
+    const btnLight = document.getElementById('btn-theme-light');
+    const btnDark = document.getElementById('btn-theme-dark');
+    if (!btnLight || !btnDark) return;
+    if (theme === 'dark') {
+      btnLight.className = 'flex items-center space-x-1 px-2.5 py-1 rounded text-slate-300 bg-transparent transition-all duration-150';
+      btnDark.className = 'flex items-center space-x-1 px-2.5 py-1 rounded text-white bg-cyan-600 border border-cyan-400/40 shadow-xs transition-all duration-150 font-bold';
+    } else {
+      btnLight.className = 'flex items-center space-x-1 px-2.5 py-1 rounded text-slate-900 bg-white shadow-xs border border-slate-300 transition-all duration-150 font-bold';
+      btnDark.className = 'flex items-center space-x-1 px-2.5 py-1 rounded text-slate-300 bg-transparent transition-all duration-150';
+    }
+  }
+
+  function setAppTheme(theme) {
+    const htmlElement = document.documentElement;
+    if (theme === 'dark') {
+      htmlElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      htmlElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+    updateThemeButtons(theme);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const isDark = document.documentElement.classList.contains('dark') || localStorage.getItem('theme') === 'dark';
+    setAppTheme(isDark ? 'dark' : 'light');
+  });
+
+  // Interactive 4 Pillars Tab Switcher with Architectural Preview
+  const pillarData = [
+    {
+      title: 'INOVASI BERKELANJUTAN',
+      badge: 'ECO-HARVESTING CERTIFIED',
+      desc: 'Penerapan panel surya monokristalin efisiensi tinggi dipadukan dengan modul MPPT otomatis dan baterai LiFePO4 tahan siklus tinggi, memastikan stasiun telemetri di lokasi pedalaman terus mengirimkan data tanpa henti meski berhari-hari musim penghujan.',
+      icon: 'leaf',
+      colorClass: 'emerald'
+    },
+    {
+      title: 'DATA REAL TIME DAN AKURAT',
+      badge: 'HIGH-PRECISION TELEMETRY',
+      desc: 'Pengambilan sampel digital berkecepatan tinggi dengan transmisi GSM multi-operator dan satelit Iridium dual-link menjamin ketersediaan data hingga 99.85% SLA untuk pelaporan hidrologi nasional.',
+      icon: 'radio',
+      colorClass: 'blue'
+    },
+    {
+      title: 'KOMITMEN TERHADAP LINGKUNGAN',
+      badge: 'WATERSHED ECOSYSTEM PROTECTION',
+      desc: 'Dirancang tanpa zat beracun dengan sensor non-invasif ramah biota air sungai. Membantu otoritas DAS memantau sedimentasi, curah hujan hulu, dan debit air untuk mitigasi longsor serta banjir bandang.',
+      icon: 'shield-alert',
+      colorClass: 'cyan'
+    },
+    {
+      title: 'KEMITRAAN STRATEGIS',
+      badge: 'GOVERNMENT & INSTITUTION PARTNERS',
+      desc: 'Bekerja erat bersama Balai Wilayah Sungai (BWS/BBWS) Kementerian PUPR, BMKG, serta dinas SDA daerah untuk memastikan standardisasi instrumentasi dan kelayakan pengadaan e-Katalog INAPROC.',
+      icon: 'award',
+      colorClass: 'amber'
+    }
+  ];
+
+  const buttons = document.querySelectorAll('#pillar-tabs .pillar-btn');
+  const displayBody = document.getElementById('pillar-display-body');
+  const displayTitle = document.getElementById('pillar-display-title');
+  const displayBadge = document.getElementById('pillar-display-badge');
+  const displayDesc = document.getElementById('pillar-display-desc');
+  const displayIcon = document.getElementById('pillar-display-icon');
+
+  function setActivePillar(index) {
+    buttons.forEach((btn, idx) => {
+      if (idx === index) {
+        btn.className = 'pillar-btn active w-full text-left p-4 rounded-2xl bg-blue-50/90 dark:bg-blue-900/30 border-2 border-blue-500 dark:border-cyan-500 transition-all flex items-center space-x-4 cursor-pointer';
+      } else {
+        btn.className = 'pillar-btn w-full text-left p-4 rounded-2xl bg-slate-50 dark:bg-[#131D36] hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all flex items-center space-x-4 cursor-pointer';
+      }
+    });
+
+    if (displayBody) {
+      displayBody.style.opacity = '0';
+      setTimeout(() => {
+        const item = pillarData[index];
+        if (displayTitle) displayTitle.textContent = item.title;
+        if (displayBadge) displayBadge.textContent = item.badge;
+        if (displayDesc) displayDesc.textContent = item.desc;
+        if (displayIcon) {
+          displayIcon.innerHTML = `<i class="w-6 h-6" data-lucide="${item.icon}"></i>`;
+        }
+        lucide.createIcons();
+        displayBody.style.opacity = '1';
+      }, 120);
+    }
+  }
+
+  buttons.forEach((btn, idx) => {
+    btn.addEventListener('click', () => setActivePillar(idx));
+  });
+
+  // Render initial icons
+  lucide.createIcons();
+</script>
+</body></html>

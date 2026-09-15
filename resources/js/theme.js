@@ -42,15 +42,11 @@ export function syncThemeButtons() {
 
   if (btnLight && btnDark) {
     if (isDark) {
-      btnLight.classList.remove('bg-white', 'shadow-xs', 'border', 'border-white/20', 'text-slate-900', 'font-bold');
-      btnLight.classList.add('bg-transparent', 'text-slate-300');
-      btnDark.classList.add('bg-cyan-600', 'border', 'border-cyan-400/40', 'text-white', 'font-bold');
-      btnDark.classList.remove('bg-transparent', 'text-slate-300');
+      btnLight.className = 'flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-400 hover:text-white bg-transparent transition-all duration-150 text-xs font-semibold';
+      btnDark.className = 'flex items-center gap-1 px-2.5 py-1 rounded-md text-white bg-cyan-600 border border-cyan-400/40 shadow-xs transition-all duration-150 text-xs font-bold';
     } else {
-      btnLight.classList.add('bg-white', 'shadow-xs', 'border', 'border-white/20', 'text-slate-900', 'font-bold');
-      btnLight.classList.remove('bg-transparent', 'text-slate-300');
-      btnDark.classList.remove('bg-cyan-600', 'border', 'border-cyan-400/40', 'text-white', 'font-bold');
-      btnDark.classList.add('bg-transparent', 'text-slate-300');
+      btnLight.className = 'flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-900 bg-white shadow-xs border border-slate-300/80 transition-all duration-150 text-xs font-bold';
+      btnDark.className = 'flex items-center gap-1 px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 bg-transparent transition-all duration-150 text-xs font-semibold';
     }
   }
 }

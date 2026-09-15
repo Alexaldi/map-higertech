@@ -63,7 +63,7 @@ return [
     'pillar_title' => 'Arsitektur Telemetri Tangguh',
     'pillar_title_highlight' => 'Sensor-to-Cloud Tanpa Henti',
     'pillar_desc' => 'Dirancang khusus menghadapi kondisi geografis kepulauan Indonesia, kelembaban ekstrem, dan sambaran petir di daerah tangkapan air.',
-    'pillar_cta' => 'Konsultasi Enjiniring Kami',
+    'pillar_cta' => 'Konsultasi Bersama Tim Kami',
     'pillar_1_title' => 'INOVASI BERKELANJUTAN',
     'pillar_1_badge' => 'ECO-HARVESTING CERTIFIED',
     'pillar_1_desc' => 'Penerapan panel surya monokristalin efisiensi tinggi dipadukan dengan modul MPPT otomatis dan baterai LiFePO4 tahan siklus tinggi, memastikan stasiun telemetri di lokasi pedalaman terus mengirimkan data tanpa henti meski berhari-hari musim penghujan.',
@@ -95,7 +95,7 @@ return [
     'intern_benefit_2' => 'Mentoring Engineer Senior',
     'intern_benefit_3' => 'Sertifikat Industri Resmi',
     'intern_benefit_4' => 'Peluang Fast-Track Karyawan',
-    'intern_cta_title' => 'Siap Membangun Karir Enjiniring Telemetri?',
+    'intern_cta_title' => 'Siap Membangun Karir Engineering Telemetri?',
     'intern_cta_desc' => 'Terbuka bagi mahasiswa D3/D4/S1 jurusan Teknik Elektro, Teknik Fisika, Teknik Komputer, Mekatronika, Geofisika, dan Sistem Informasi.',
     'intern_deadline' => 'Pendaftaran Ditutup:',
     'intern_duration' => 'Durasi Magang:',
@@ -125,9 +125,9 @@ return [
     'articles_title_end' => 'Barumu',
 
     // CTA
-    'cta_label' => 'LAYANAN KONSULTASI ENJINIRING TELEMETRI',
+    'cta_label' => 'LAYANAN KONSULTASI ENGINEERING TELEMETRI',
     'cta_title' => 'Rancang Sistem Stasiun Telemetri Handal & Terstandarisasi',
-    'cta_desc' => 'Konsultasikan kebutuhan spesifikasi teknis, integrasi protokol data ke server pusat instansi, dan ketersediaan paket katalog e-LKPP INAPROC bersama tim enjinir Higertech.',
+    'cta_desc' => 'Konsultasikan kebutuhan spesifikasi teknis, integrasi protokol data ke server pusat instansi, dan ketersediaan paket katalog e-LKPP INAPROC bersama tim engineer Higertech.',
     'cta_wa' => 'Hubungi WhatsApp Tim Teknis',
     'cta_catalog' => 'Katalog Produk & Spesifikasi',
 

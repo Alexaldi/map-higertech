@@ -63,7 +63,7 @@ return [
     'pillar_title' => 'Robust Telemetry Architecture',
     'pillar_title_highlight' => 'Continuous Sensor-to-Cloud',
     'pillar_desc' => 'Specifically designed to handle Indonesian archipelago geographic conditions, extreme humidity, and lightning strikes in water catchment areas.',
-    'pillar_cta' => 'Consult Our Engineering Team',
+    'pillar_cta' => 'Consult with Our Team',
     'pillar_1_title' => 'SUSTAINABLE INNOVATION',
     'pillar_1_badge' => 'ECO-HARVESTING CERTIFIED',
     'pillar_1_desc' => 'High-efficiency monocrystalline solar panels combined with automatic MPPT modules and high-cycle LiFePO4 batteries ensure telemetry stations in remote locations continuously transmit data even during extended rainy seasons.',

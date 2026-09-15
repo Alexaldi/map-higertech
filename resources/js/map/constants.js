@@ -52,13 +52,15 @@ export const BASEMAPS = Object.freeze([
     },
     {
         key: 'light', label: 'Light', description: 'Basemap terang dan minimal',
-        url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', thumbnail: 'https://a.basemaps.cartocdn.com/light_all/5/26/16.png',
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO', maxZoom: 20,
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        thumbnail: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/5/16/26',
+        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ', maxZoom: 16,
     },
     {
         key: 'dark', label: 'Dark', description: 'Basemap gelap command center',
-        url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', thumbnail: 'https://a.basemaps.cartocdn.com/dark_all/5/26/16.png',
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO', maxZoom: 20,
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        thumbnail: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/5/16/26',
+        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ', maxZoom: 16,
     },
     {
         key: 'satellite', label: 'Satellite', description: 'Sentinel-2 Cloudless non-Google',
