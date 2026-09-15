@@ -19,6 +19,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
+                                <th>Sub Nama</th>
                                 <th>Deskripsi</th>
                                 <th>Dibuat</th>
                                 <th>Terakhir Diubah</th>
@@ -30,6 +31,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $category->name }}</td>
+                                    <td>{{ $category->sub_nama }}</td>
                                     <td>{{ $category->description ?: '-' }}</td>
                                     <td>{{ strtolower($category->created_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}</td>
                                     <td>{{ strtolower($category->updated_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}</td>
@@ -91,7 +93,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">Belum ada kategori.</td>
+                                    <td colspan="7" class="text-center">Belum ada kategori.</td>
                                 </tr>
                             @endforelse
                         </tbody>

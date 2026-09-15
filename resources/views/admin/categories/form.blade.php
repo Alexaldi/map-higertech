@@ -26,6 +26,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="sub_nama" class="form-label">Sub Nama Kategori</label>
+                                <input type="text" class="form-control @error('sub_nama') is-invalid @enderror" id="sub_nama" name="sub_nama" value="{{ old('sub_nama', $category->sub_nama ?? '') }}" placeholder="Masukkan sub nama kategori">
+                                @error('sub_nama')
+                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <label for="description" class="form-label">Deskripsi <span class="text-muted fs-12">(opsional)</span></label>
                                 <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4" placeholder="Masukkan deskripsi kategori">{{ old('description', $category->description ?? '') }}</textarea>
                                 @error('description')
