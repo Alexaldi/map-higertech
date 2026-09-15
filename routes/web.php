@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\UsersController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
@@ -22,3 +24,28 @@ Route::view('/map', 'map.index')->name('map');
 Route::get('/locale/{lang}', [LocaleController::class, 'switch'])
     ->name('locale.switch')
     ->where('lang', 'id|en');
+
+
+// guest
+Route::middleware('guest')->group(function () {
+
+    Route::get('/login', [LoginController::class, 'showLogin'])
+        ->name('login');
+
+    Route::post('/login', [LoginController::class, 'login'])
+        ->name('login.store');
+});
+
+// admin
+Route::middleware(['auth', 'prevent-back'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard.index');
+    })->name('dashboard');
+    Route::resource('users', UsersController::class);
+    Route::post('/logout', [LoginController::class, 'logout'])
+        ->name('logout');
+});
