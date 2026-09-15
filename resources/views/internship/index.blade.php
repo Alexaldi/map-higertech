@@ -6,8 +6,9 @@
 @section('content')
     <main class="flex-1">
         <!-- BEGIN: Hero Section -->
-        <section class="relative pt-16 pb-20 sm:pt-20 sm:pb-24 px-4 sm:px-8 bg-transparent transition-colors duration-300">
-            <div class="max-w-5xl mx-auto text-center">
+        <section
+            class="relative pt-16 pb-20 sm:pt-20 sm:pb-24 px-4 sm:px-8 bg-gradient-to-b from-blue-50/40 via-slate-50 to-white dark:from-[#080d1a] dark:via-[#0B1120] dark:to-[#0B1120] map-grid-bg transition-colors duration-300 overflow-hidden">
+            <div class="max-w-5xl mx-auto text-center relative z-10 scroll-reveal">
                 <!-- Top Technical Badge -->
                 <div
                     class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono font-bold tracking-wide bg-[#e0f2fe] text-[#0369a1] dark:bg-blue-950/70 dark:text-cyan-300 mb-6 shadow-xs border border-sky-200 dark:border-blue-800">
@@ -86,7 +87,7 @@
         <section class="py-16 px-4 sm:px-8 bg-slate-100/50 dark:bg-[#07152b] transition-colors duration-300"
             id="komparasi-jalur">
             <div class="max-w-6xl mx-auto">
-                <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="text-center max-w-3xl mx-auto mb-12 scroll-reveal">
                     <span
                         class="text-xs font-mono uppercase tracking-widest text-[#0284c7] dark:text-cyan-400 font-bold">{{ __('internship.comp_badge') }}</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0f172a] dark:text-white mt-1">
@@ -100,7 +101,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Kolom 1: Praktik Kerja Lapangan (PKL SMK/MAK) -->
                     <div
-                        class="bg-white dark:bg-[#131D36] rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-lg shadow-slate-200/50 dark:shadow-none border border-[#e2e8f0] dark:border-slate-800 hover:border-blue-300 dark:hover:border-slate-700 transition-all duration-300 relative group">
+                        class="scroll-reveal scroll-reveal-scale scroll-reveal-delay-1 bg-white dark:bg-[#131D36] rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-lg shadow-slate-200/50 dark:shadow-none border border-[#e2e8f0] dark:border-slate-800 hover:border-blue-400 dark:hover:border-cyan-500/50 hover:-translate-y-1.5 transition-all duration-300 relative group">
                         <div>
                             <!-- Card Header -->
                             <div class="flex items-center justify-between gap-2 mb-5">
@@ -226,7 +227,7 @@
 
                     <!-- Kolom 2: Program Internship (D3 / D4 / S1 & Fresh Graduate) -->
                     <div
-                        class="bg-white dark:bg-[#131D36] rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-lg shadow-slate-200/50 dark:shadow-none border border-[#e2e8f0] dark:border-slate-800 hover:border-cyan-300 dark:hover:border-slate-700 transition-all duration-300 relative group">
+                        class="scroll-reveal scroll-reveal-scale scroll-reveal-delay-2 bg-white dark:bg-[#131D36] rounded-3xl p-7 sm:p-8 flex flex-col justify-between shadow-lg shadow-slate-200/50 dark:shadow-none border border-[#e2e8f0] dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/50 hover:-translate-y-1.5 transition-all duration-300 relative group">
                         <!-- Recommended Pill -->
                         <div
                             class="absolute -top-3 right-6 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-mono text-[10px] font-bold px-3 py-1 rounded-full tracking-wider uppercase shadow-sm">
@@ -359,7 +360,7 @@
         <!-- BEGIN: Section Tahapan Alur Program & Verifikasi Berkas -->
         <section class="py-16 px-4 sm:px-8 bg-white dark:bg-[#060e20] transition-colors duration-300">
             <div class="max-w-6xl mx-auto">
-                <div class="text-center max-w-2xl mx-auto mb-12">
+                <div class="text-center max-w-2xl mx-auto mb-12 scroll-reveal">
                     <span
                         class="text-xs font-mono uppercase tracking-widest text-[#0284c7] dark:text-cyan-400 font-bold">{{ __('internship.steps_badge') }}</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0f172a] dark:text-white mt-1">
@@ -373,7 +374,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Step 1 -->
                     <div
-                        class="bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-blue-300 dark:hover:border-slate-700 transition-all">
+                        class="scroll-reveal scroll-reveal-scale scroll-reveal-delay-1 bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-blue-400 dark:hover:border-cyan-500/50 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
                         <div
                             class="font-mono text-2xl font-black text-[#0284c7] dark:text-cyan-400 mb-3 flex items-center justify-between">
                             <span>01</span>
@@ -389,7 +390,7 @@
 
                     <!-- Step 2 -->
                     <div
-                        class="bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-teal-300 dark:hover:border-slate-700 transition-all">
+                        class="scroll-reveal scroll-reveal-scale scroll-reveal-delay-2 bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-teal-400 dark:hover:border-teal-500/50 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
                         <div
                             class="font-mono text-2xl font-black text-teal-600 dark:text-teal-400 mb-3 flex items-center justify-between">
                             <span>02</span>
@@ -405,7 +406,7 @@
 
                     <!-- Step 3 -->
                     <div
-                        class="bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-cyan-300 dark:hover:border-slate-700 transition-all">
+                        class="scroll-reveal scroll-reveal-scale scroll-reveal-delay-3 bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-cyan-400 dark:hover:border-cyan-500/50 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
                         <div
                             class="font-mono text-2xl font-black text-[#0284c7] dark:text-cyan-400 mb-3 flex items-center justify-between">
                             <span>03</span>
@@ -421,7 +422,7 @@
 
                     <!-- Step 4 -->
                     <div
-                        class="bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-emerald-300 dark:hover:border-slate-700 transition-all">
+                        class="scroll-reveal scroll-reveal-scale scroll-reveal-delay-4 bg-white dark:bg-[#131D36] p-6 rounded-2xl shadow-sm border border-[#e2e8f0] dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-500/50 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
                         <div
                             class="font-mono text-2xl font-black text-emerald-600 dark:text-emerald-400 mb-3 flex items-center justify-between">
                             <span>04</span>
@@ -922,75 +923,6 @@
             </div>
         </div>
     </main>
+
+    @include('landing.partials.footer')
 @endsection
-
-@push('scripts')
-    <script>
-        function switchLacakTab(tab) {
-            const btnId = document.getElementById("tab-lacak-id");
-            const btnEmail = document.getElementById("tab-lacak-email");
-            const groupId = document.getElementById("form-lacak-id-group");
-            const groupEmail = document.getElementById("form-lacak-email-group");
-            if (!btnId || !btnEmail || !groupId || !groupEmail) return;
-
-            if (tab === "id") {
-                btnId.className =
-                    "py-2 px-3 rounded-lg font-bold text-xs transition-all bg-white dark:bg-[#131D36] text-[#0284c7] dark:text-cyan-400 shadow-sm cursor-pointer";
-                btnEmail.className =
-                    "py-2 px-3 rounded-lg font-bold text-xs transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer";
-                groupId.classList.remove("hidden");
-                groupEmail.classList.add("hidden");
-            } else {
-                btnEmail.className =
-                    "py-2 px-3 rounded-lg font-bold text-xs transition-all bg-white dark:bg-[#131D36] text-[#0284c7] dark:text-cyan-400 shadow-sm cursor-pointer";
-                btnId.className =
-                    "py-2 px-3 rounded-lg font-bold text-xs transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer";
-                groupEmail.classList.remove("hidden");
-                groupId.classList.add("hidden");
-            }
-        }
-
-        function openModal(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.classList.remove("hidden");
-                el.classList.add("flex");
-                document.body.style.overflow = "hidden";
-            }
-        }
-
-        function closeModal(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.classList.add("hidden");
-                el.classList.remove("flex");
-                document.body.style.overflow = "";
-            }
-        }
-
-        document.addEventListener("keydown", function(e) {
-            if (e.key === "Escape") {
-                closeModal("modal-daftar-smk");
-                closeModal("modal-daftar-mahasiswa");
-                closeModal("modal-lacak-status");
-            }
-        });
-
-        function handleFormSubmit(e, modalId, message) {
-            e.preventDefault();
-            alert(message);
-            closeModal(modalId);
-        }
-
-        function searchStatus(e) {
-            e.preventDefault();
-            const inputId = document.getElementById("lookup-input-id");
-            const query = inputId ? inputId.value : "";
-            const result = document.getElementById("modal-timeline-result");
-            if (result) {
-                result.classList.remove("hidden");
-                alert("Memperbarui data pelacakan untuk: " + query);
-            }
-        }
-    </script>
-@endpush

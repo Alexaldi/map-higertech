@@ -49,7 +49,7 @@
                         </svg>
                         <span>{{ __('landing.hero_cta_workstation') }}</span>
                     </a>
-                    <a href="#internship"
+                    <a href="{{ route('internship') }}"
                         class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-2xs">
                         <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor"
                             stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">

@@ -20,26 +20,42 @@
                         [
                             'title' => __('landing.pillar_1_title'),
                             'sub' => 'Teknologi Ramah Lingkungan & Mandiri Energi',
+                            'badge' => __('landing.pillar_1_badge'),
+                            'desc' => __('landing.pillar_1_desc'),
                             'gradient' => 'from-emerald-500 to-teal-700',
                             'ring' => 'ring-emerald-400/30',
+                            'iconColor' => 'text-emerald-600 dark:text-emerald-400',
+                            'bgColor' => 'bg-emerald-500/10',
                         ],
                         [
                             'title' => __('landing.pillar_2_title'),
                             'sub' => 'Akurasi Tinggi & Transmisi Real-Time',
+                            'badge' => __('landing.pillar_2_badge'),
+                            'desc' => __('landing.pillar_2_desc'),
                             'gradient' => 'from-blue-600 to-indigo-800',
                             'ring' => 'ring-blue-400/20',
+                            'iconColor' => 'text-blue-600 dark:text-blue-400',
+                            'bgColor' => 'bg-blue-500/10',
                         ],
                         [
                             'title' => __('landing.pillar_3_title'),
                             'sub' => 'Perlindungan Ekosistem Sungai & DAS',
+                            'badge' => __('landing.pillar_3_badge'),
+                            'desc' => __('landing.pillar_3_desc'),
                             'gradient' => 'from-cyan-500 to-blue-600',
                             'ring' => 'ring-cyan-400/20',
+                            'iconColor' => 'text-cyan-600 dark:text-cyan-400',
+                            'bgColor' => 'bg-cyan-500/10',
                         ],
                         [
                             'title' => __('landing.pillar_4_title'),
                             'sub' => 'Mitra Resmi Pemerintah & Institusi',
+                            'badge' => __('landing.pillar_4_badge'),
+                            'desc' => __('landing.pillar_4_desc'),
                             'gradient' => 'from-amber-500 to-orange-600',
                             'ring' => 'ring-amber-400/20',
+                            'iconColor' => 'text-amber-600 dark:text-amber-400',
+                            'bgColor' => 'bg-amber-500/10',
                         ],
                     ];
                 @endphp
@@ -47,7 +63,9 @@
                 @foreach ($pillars as $i => $pillar)
                     <button type="button"
                         class="pillar-btn w-full text-left p-4 rounded-2xl transition-all flex items-center gap-4 cursor-pointer {{ $i === 0 ? 'bg-blue-50/90 dark:bg-blue-900/30 border-2 border-blue-500 dark:border-cyan-500' : 'bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800' }}"
-                        data-index="{{ $i }}">
+                        data-index="{{ $i }}" data-title="{{ $pillar['title'] }}"
+                        data-badge="{{ $pillar['badge'] }}" data-desc="{{ $pillar['desc'] }}"
+                        data-icon-color="{{ $pillar['iconColor'] }}" data-bg-color="{{ $pillar['bgColor'] }}">
                         <div
                             class="w-12 h-12 rounded-xl bg-gradient-to-br {{ $pillar['gradient'] }} text-white flex items-center justify-center flex-shrink-0 shadow-md ring-2 {{ $pillar['ring'] }}">
                             @if ($i === 0)

@@ -1,0 +1,487 @@
+/* ==========================================================================
+   Map Interface Dark Mode Custom Styles
+   ========================================================================== */
+.dark .site-header {
+    background: #0b1120;
+    border-bottom-color: #1e293b;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
+}
+
+.dark .site-branding {
+    background: #0b1120;
+}
+
+.dark .site-nav a {
+    color: #cbd5e1;
+}
+
+.dark .site-nav a:hover,
+.dark .site-nav a.is-active {
+    color: #06b6d4;
+}
+
+.dark .site-nav__dropdown div {
+    background: #131d36;
+    border-color: #1e293b;
+    box-shadow: 0 18px 50px rgb(0 0 0 / 0.5);
+}
+
+.dark .site-nav__dropdown div a {
+    color: #cbd5e1;
+}
+
+.dark .site-nav__dropdown div a:hover {
+    background: #1e293b;
+    color: #38bdf8;
+}
+
+.dark .site-mobile-nav__panel {
+    background: #131d36;
+    border-color: #1e293b;
+}
+
+.dark .site-mobile-nav__panel > a {
+    color: #cbd5e1;
+}
+
+.dark #map-workspace {
+    background: #070d18;
+}
+
+/* Dark mode for Map Sidebar Cards and Controls */
+.dark .station-dock--controls,
+.dark .station-dock--results,
+.dark .station-panel,
+.dark .station-panel__controls-card,
+.dark .station-panel__results-card {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.4);
+}
+
+.dark .station-panel .sidebar-controls {
+    background: #131d36;
+}
+
+.dark .station-panel__results-heading {
+    background: #131d36;
+    border-bottom-color: #1e293b;
+}
+
+.dark .station-panel__results-heading h3 {
+    color: #f1f5f9;
+}
+
+.dark .station-panel__results-heading > div > p {
+    color: #38bdf8;
+}
+
+.dark #station-result-status {
+    color: #94a3b8;
+}
+
+.dark .station-search input,
+.dark .station-search-field input {
+    background: #0c1626;
+    border-color: #1e293b;
+    color: #f1f5f9;
+}
+
+.dark .station-search-suggestions {
+    background: rgb(19 29 54 / 0.98);
+    border-color: #1e293b;
+    box-shadow: 0 14px 30px rgb(0 0 0 / 0.5);
+}
+
+.dark .station-search-suggestion {
+    color: #f1f5f9;
+}
+
+.dark .station-search-suggestion:hover,
+.dark .station-search-suggestion:focus-visible {
+    background: #1e293b;
+}
+
+.dark .station-search-suggestion__copy small {
+    color: #94a3b8;
+}
+
+.dark .station-filter-panel {
+    background: #0c1626;
+    border-color: #1e293b;
+    color: #e2e8f0;
+}
+
+.dark .station-filter-panel > summary {
+    color: #f1f5f9;
+}
+
+.dark .station-filter-panel__heading strong {
+    color: #f1f5f9;
+}
+
+.dark .station-filter-panel__heading small {
+    color: #94a3b8;
+}
+
+.dark .station-filter-panel__icon {
+    background: #1e293b;
+    color: #38bdf8;
+}
+
+.dark .station-filter-panel__chevron {
+    color: #94a3b8;
+}
+
+.dark .station-filter-panel__body {
+    background: #0c1626;
+    border-top-color: #1e293b;
+}
+
+.dark .filter-chip {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #cbd5e1;
+}
+
+.dark .filter-chip:hover {
+    background: #1e293b;
+    border-color: #38bdf8;
+    color: #38bdf8;
+}
+
+.dark .filter-chip.is-active {
+    background: #0284c7;
+    border-color: #38bdf8;
+    color: #fff;
+    box-shadow: 0 5px 12px rgb(2 132 199 / 0.3);
+}
+
+.dark .station-card {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+}
+
+.dark .station-card:hover {
+    background: #172444;
+    border-color: #38bdf8;
+    box-shadow: 0 5px 14px rgb(0 0 0 / 0.3);
+}
+
+.dark .station-card__heading strong {
+    color: #f1f5f9;
+}
+
+.dark .station-card__category b {
+    background: #1e293b;
+    color: #94a3b8;
+}
+
+.dark .station-card__organization {
+    color: #94a3b8;
+}
+
+.dark .station-card__details {
+    color: #64748b;
+}
+
+.dark .station-card__logo {
+    background: color-mix(in srgb, var(--station-color) 18%, #131d36);
+    border-color: color-mix(in srgb, var(--station-color) 35%, #131d36);
+}
+
+.dark .map-legend,
+.dark .map-legend details {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+}
+
+.dark .map-legend summary {
+    background: #131d36;
+    color: #f1f5f9;
+}
+
+.dark .map-action {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+}
+
+.dark .map-action:hover {
+    background: #1e293b;
+    color: #38bdf8;
+}
+
+.dark .leaflet-bar {
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.4) !important;
+}
+
+.dark .leaflet-bar a,
+.dark .leaflet-bar a:hover {
+    background-color: #131d36 !important;
+    border-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+.dark .leaflet-bar a:hover {
+    background-color: #1e293b !important;
+    color: #38bdf8 !important;
+}
+
+.dark .network-status {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.4);
+}
+
+.dark .network-status__metric + .network-status__metric,
+.dark .network-details {
+    border-left-color: #1e293b;
+}
+
+.dark .network-status__metric small {
+    color: #94a3b8;
+}
+
+.dark .network-status__metric strong {
+    color: #f1f5f9;
+}
+
+.dark .network-status__metric--online {
+    color: #34d399;
+}
+
+.dark .network-status__metric--offline {
+    color: #fb7185;
+}
+
+.dark .network-status__icon {
+    background: #1e293b;
+    color: #38bdf8;
+}
+
+.dark .network-details > summary {
+    color: #cbd5e1;
+}
+
+.dark .network-details > summary:hover,
+.dark .network-details[open] > summary {
+    color: #38bdf8;
+}
+
+.dark .network-details__panel {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.5);
+}
+
+.dark .network-details__panel > header {
+    border-bottom-color: #1e293b;
+}
+
+.dark .network-details__panel header strong {
+    color: #f1f5f9;
+}
+
+.dark .network-details__panel header small {
+    color: #94a3b8;
+}
+
+.dark .network-details__organization {
+    border-left-color: #1e293b;
+}
+
+.dark #type-summary-items {
+    background: #1e293b;
+}
+
+.dark #type-summary-items li {
+    background: #131d36;
+    color: #f1f5f9;
+}
+
+.dark #type-summary-items li strong {
+    color: #f1f5f9;
+}
+
+.dark #type-summary-items li small {
+    color: #94a3b8;
+}
+
+.dark #type-summary-items li b {
+    color: #38bdf8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.dark .type-summary__icon {
+    background: color-mix(in srgb, var(--station-color) 20%, #131d36);
+}
+
+/* Dark mode for Basemap Gallery Control */
+.dark .basemap-gallery__toggle {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.4);
+}
+
+.dark .basemap-gallery__toggle:hover {
+    background: #1e293b;
+    color: #38bdf8;
+}
+
+.dark .basemap-gallery__panel {
+    background: rgb(19 29 54 / 0.98);
+    border-color: #1e293b;
+    box-shadow: 0 18px 50px rgb(0 0 0 / 0.6);
+}
+
+.dark .basemap-gallery__heading strong {
+    color: #f1f5f9;
+}
+
+.dark .basemap-gallery__heading span {
+    color: #94a3b8;
+}
+
+.dark .basemap-option {
+    background: #0c1626;
+    border-color: #1e293b;
+    color: #f1f5f9;
+}
+
+.dark .basemap-option strong {
+    color: #f1f5f9;
+}
+
+.dark .basemap-option small {
+    color: #94a3b8;
+}
+
+.dark .basemap-option:hover {
+    border-color: #38bdf8;
+    background: #131d36;
+}
+
+.dark .basemap-option.is-active {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px #0284c7;
+}
+
+/* Dark mode for Leaflet Zoom & Attribution */
+.dark .leaflet-bar a {
+    background-color: #131d36;
+    border-bottom-color: #1e293b;
+    color: #f1f5f9;
+}
+
+.dark .leaflet-bar a:hover {
+    background-color: #1e293b;
+    color: #38bdf8;
+}
+
+.dark .leaflet-bar a.leaflet-disabled {
+    background-color: #0c1626;
+    color: #64748b;
+}
+
+.dark .leaflet-control-attribution {
+    background: rgb(11 17 32 / 0.85) !important;
+    color: #94a3b8 !important;
+}
+
+.dark .leaflet-control-attribution a {
+    color: #38bdf8 !important;
+}
+
+/* Dark mode for Leaflet Telemetry Popups */
+.dark .telemetry-popup .leaflet-popup-content-wrapper {
+    background: #131d36;
+    border-color: #1e293b;
+    box-shadow: 0 18px 50px rgb(0 0 0 / 0.5);
+}
+
+.dark .telemetry-popup .leaflet-popup-tip {
+    background: #131d36;
+    box-shadow: 3px 3px 8px rgb(0 0 0 / 0.3);
+}
+
+.dark .telemetry-popup .leaflet-popup-close-button {
+    background: rgb(30 41 59 / 0.9) !important;
+    color: #94a3b8 !important;
+}
+
+.dark .telemetry-popup .leaflet-popup-close-button:hover {
+    color: #f1f5f9 !important;
+}
+
+.dark .station-popup {
+    color: #f1f5f9;
+}
+
+.dark .station-popup__header {
+    background: #131d36;
+}
+
+.dark .station-popup__header h3 {
+    color: #f1f5f9;
+}
+
+.dark .station-popup__category-icon {
+    background: color-mix(in srgb, var(--station-color) 20%, #131d36);
+    border-color: color-mix(in srgb, var(--station-color) 40%, #131d36);
+}
+
+.dark .station-popup__context {
+    background: #0c1626;
+    border-color: #1e293b;
+}
+
+.dark .station-popup__context p {
+    color: #cbd5e1;
+}
+
+.dark .station-popup__meta {
+    border-color: #1e293b;
+}
+
+.dark .station-popup__meta span {
+    color: #cbd5e1;
+}
+
+.dark .station-popup__meta small {
+    color: #64748b;
+}
+
+.dark .station-popup__telemetry {
+    background: #131d36;
+    border-color: #1e293b;
+}
+
+.dark .station-popup__metric {
+    background: #0c1626;
+    border-color: #1e293b;
+}
+
+.dark .station-popup__metric span {
+    color: #94a3b8;
+}
+
+.dark .station-popup__metric strong {
+    color: #f1f5f9;
+}
+
+.dark .station-popup__no-data {
+    color: #94a3b8;
+}
+
+.dark .map-state {
+    background: #131d36;
+    border-color: #1e293b;
+    color: #f1f5f9;
+}
