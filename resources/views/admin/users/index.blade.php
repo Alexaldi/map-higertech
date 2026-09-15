@@ -39,11 +39,11 @@
                                     </td>
 
                                     <td>
-                                        {{ $user->created_at->format('d-m-Y H:i') }}
+                                        {{ strtolower($user->created_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}
                                     </td>
 
                                     <td>
-                                        {{ $user->updated_at->format('d-m-Y H:i') }}
+                                        {{ strtolower($user->updated_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}
                                     </td>
 
                                     <td>

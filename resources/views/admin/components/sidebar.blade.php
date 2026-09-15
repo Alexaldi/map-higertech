@@ -17,7 +17,7 @@
         </li>
         <li><h3>DATA MASTER</h3></li>
         <li>
-            <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Kategori</span></a>
+            <a class="side-menu__item" href="{{ route('admin.categories.index') }}"><i class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Kategori</span></a>
             <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-cpu"></i><span class="side-menu__label">Produk</span></a>
             <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-file-text"></i><span class="side-menu__label">Artikel</span></a>
         </li>
