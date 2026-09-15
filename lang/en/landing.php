@@ -145,4 +145,15 @@ return [
     'footer_projects' => 'Projects & GIS Map',
     'footer_articles' => 'Articles & Guides',
     'footer_ecatalog' => 'INAPROC E-Catalog',
+
+    // article
+    'subab1' => 'Ideas Become Knowledge.',
+    'subab2' => 'Knowledge Becomes Benefits.',
+    'desc' => 'Implementation notes, technical guides, and instrumentation insights to build smarter water resource and environmental monitoring.',
+    'placeholder' => [
+        'search' => 'Search articles or guides...'
+    ],
+    'articles_label' => 'Articles',
+    'article_desc1' => 'Write with Purpose.',
+    'article_desc2' => 'Publish with Impact.',
 ];

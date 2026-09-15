@@ -145,4 +145,15 @@ return [
     'footer_projects' => 'Proyek & Peta GIS',
     'footer_articles' => 'Artikel & Panduan',
     'footer_ecatalog' => 'E-Katalog INAPROC',
+
+    // article
+    'subab1' => 'Ide Menjadi Ilmu.',
+    'subab2' => 'Ilmu Menjadi Manfaat.',
+    'articles_label' => 'Artikel',
+    'desc' => 'Catatan implementasi, panduan teknis, dan wawasan instrumentasi untuk membangun pemantauan sumber daya air serta lingkungan yang lebih cerdas.',
+    'placeholder' => [
+        'search' => 'Cari artikel atau panduan...'
+    ],
+    'article_desc1' => 'Tulis dengan tujuan.',
+    'article_desc2' => 'Terbitkan dengan dampak.'
 ];
