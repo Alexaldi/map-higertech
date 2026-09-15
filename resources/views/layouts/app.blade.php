@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Higertech Karya Sinergi | Integrated Telemetry Solution')</title>
     <meta name="description" content="@yield('description', 'Platform akuisisi data lapangan real-time untuk pemantauan muka air banjir, curah hujan otomatis, dan stasiun cuaca.')">
-
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/logo.png') }}">
     {{-- Prevent flash of wrong theme: apply dark class BEFORE CSS loads --}}
     <script>
         (function() {
