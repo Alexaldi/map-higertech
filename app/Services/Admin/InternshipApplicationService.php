@@ -5,7 +5,6 @@ namespace App\Services\Admin;
 use App\Models\InternshipApplication;
 use App\Models\InternshipMember;
 use App\Repositories\Admin\InternshipApplicationRepository;
-use App\Services\Notification\WahaService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\DomPDF\PDF as DomPdfWrapper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -17,8 +16,7 @@ use Illuminate\Support\Str;
 class InternshipApplicationService
 {
     public function __construct(
-        private readonly InternshipApplicationRepository $repository,
-        private readonly WahaService $wahaService
+        private readonly InternshipApplicationRepository $repository
     ) {}
 
     /**
@@ -114,9 +112,6 @@ class InternshipApplicationService
                 ]);
             }
         }
-
-        // Try triggering supervisor WhatsApp notification
-        $this->notifySupervisorNewApplication($application);
 
         return $application;
     }
@@ -220,11 +215,11 @@ class InternshipApplicationService
             }
         }
 
-        $application->update($data);
-
         if (in_array($status, ['accepted', 'rejected'])) {
-            $this->notifyApplicantStatusUpdate($application);
+            $data['notified_at'] = now();
         }
+
+        $application->update($data);
 
         return true;
     }
@@ -256,30 +251,5 @@ class InternshipApplicationService
     public function getCounts(): array
     {
         return $this->repository->getCounts();
-    }
-
-    /**
-     * Notify internship supervisor about new incoming registration.
-     */
-    private function notifySupervisorNewApplication(InternshipApplication $app): void
-    {
-        try {
-            $this->wahaService->notifySupervisorNewSubmission($app);
-        } catch (\Throwable $e) {
-            Log::warning("Gagal mengirim notifikasi WhatsApp pembina: " . $e->getMessage());
-        }
-    }
-
-    /**
-     * Notify applicant on status update (accepted/rejected).
-     */
-    private function notifyApplicantStatusUpdate(InternshipApplication $app): void
-    {
-        try {
-            $app->update(['notified_at' => now()]);
-            $this->wahaService->notifyApplicantStatusUpdate($app);
-        } catch (\Throwable $e) {
-            Log::warning("Gagal mengirim notifikasi WhatsApp peserta: " . $e->getMessage());
-        }
     }
 }

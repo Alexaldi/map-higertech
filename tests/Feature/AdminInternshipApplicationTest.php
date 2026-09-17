@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\InternshipApplication;
 use App\Models\User;
-use App\Services\Notification\WahaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
