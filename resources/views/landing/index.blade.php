@@ -2,6 +2,11 @@
 
 @section('title', 'Higertech Karya Sinergi | Integrated Telemetry Solution & Internship Academy')
 
+@push('head')
+    <link rel="preload" as="image" href="{{ asset('images/products/hero-unit.webp') }}" type="image/webp"
+        fetchpriority="high">
+@endpush
+
 @section('content')
     <main>
         @include('landing.partials.hero')

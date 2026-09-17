@@ -1,44 +1,70 @@
 {{-- Success Alert --}}
-@if(session('success'))
+@if (session('success'))
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: @json(session('success')),
-                confirmButtonText: 'OK'
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: @json(session('success')),
+                    confirmButtonColor: '#0ea5e9',
+                    confirmButtonText: 'OK',
+                    timer: 2500,
+                    timerProgressBar: true
+                });
+            }
         });
     </script>
 @endif
 
+{{-- Error Alert --}}
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: @json(session('error')),
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'Tutup'
+                });
+            }
+        });
+    </script>
+@endif
 
-{{-- Delete Confirmation --}}
+{{-- Generic Delete Confirmation --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-        document.querySelectorAll('.delete-form').forEach(function (form) {
-
-            form.addEventListener('submit', function (e) {
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete-form').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                Swal.fire({
-                    title: 'Hapus pengguna?',
-                    text: 'Data yang sudah dihapus tidak dapat dikembalikan.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, hapus',
-                    cancelButtonText: 'Batal',
-                }).then((result) => {
+                const title = form.dataset.title || 'Konfirmasi Hapus';
+                const text = form.dataset.message ||
+                    'Data yang sudah dihapus tidak dapat dikembalikan.';
 
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-
-                });
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '<i class="fe fe-trash-2 me-1"></i> Ya, Hapus',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                } else if (confirm(text)) {
+                    form.submit();
+                }
             });
-
         });
-
     });
 </script>

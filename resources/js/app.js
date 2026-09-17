@@ -1,15 +1,9 @@
 import '../css/app.css';
 import './theme.js';
-import { initGlobalLoader } from './loader.js';
 import { initPillars } from './landing.js';
 import { initInternship } from './internship.js';
 
-// Activate high-tech telemetry page loader immediately
-initGlobalLoader();
 
-import 'leaflet/dist/leaflet.css';
-import 'leaflet.markercluster/dist/MarkerCluster.css';
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 if (document.querySelector('[data-live-map]')) {
     import('./map/index.js');

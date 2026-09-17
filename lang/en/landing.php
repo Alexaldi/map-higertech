@@ -142,4 +142,11 @@ return [
     'tutorials_title1' => 'Learn with Confidence.',
     'tutorials_title2' => 'Build Your Solutions.',
     'tutorials_not_found' => 'Tutorials not found.',
+
+    // Loader
+    'loader_title' => 'Loading Page...',
+    'loader_subtitle' => 'Connecting to Server',
+    'loader_sync_lang' => 'Synchronizing Language Settings',
+    'loader_switching_en' => 'Switching to English...',
+    'loader_switching_id' => 'Switching to Indonesian...',
 ];

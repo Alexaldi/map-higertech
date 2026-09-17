@@ -82,9 +82,13 @@
                     </div>
 
                     {{-- Floating 3D Graphic with smooth CSS float animation --}}
-                    <img src="{{ asset('images/products/hero-unit.png') }}"
-                        alt="Higertech Telemetry Field Monitoring Unit"
-                        class="w-full max-h-72 sm:max-h-84 object-contain relative z-10 animate-float-subtle drop-shadow-2xl transition-transform duration-500 hover:scale-105">
+                    <picture>
+                        <source srcset="{{ asset('images/products/hero-unit.webp') }}" type="image/webp">
+                        <img src="{{ asset('images/products/hero-unit.png') }}"
+                            alt="Higertech Telemetry Field Monitoring Unit" width="512" height="384"
+                            fetchpriority="high" decoding="async"
+                            class="w-full max-h-72 sm:max-h-84 object-contain relative z-10 animate-float-subtle drop-shadow-2xl transition-transform duration-500 hover:scale-105">
+                    </picture>
                 </div>
             </div>
         </div>

@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ClientPartnerController;
+use App\Http\Controllers\Admin\InternshipApplicationController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UsersController;
 
 // Landing page
@@ -16,7 +19,11 @@ Route::view('/tutorials', 'tutorials.index')->name('tutorials');
 Route::redirect('/Article', '/articles');
 Route::redirect('/article/pemasangan-pos-curah-hujan-(pch)-bendungkaret-tawangsari', '/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari');
 Route::redirect('/Tutorial', '/tutorials');
-Route::view('/internship', 'internship.index')->name('internship');
+// Internship routes
+Route::get('/internship', [\App\Http\Controllers\InternshipController::class, 'index'])->name('internship');
+Route::post('/internship/apply', [\App\Http\Controllers\InternshipController::class, 'apply'])->name('internship.apply');
+Route::get('/internship/track', [\App\Http\Controllers\InternshipController::class, 'track'])->name('internship.track');
+Route::get('/internship/letter/{code}', [\App\Http\Controllers\InternshipController::class, 'downloadLetter'])->name('internship.letter');
 
 // Map page
 Route::view('/map', 'map.index')->name('map');
@@ -47,7 +54,13 @@ Route::middleware(['auth', 'prevent-back'])
         return view('admin.dashboard.index');
     })->name('dashboard');
     Route::resource('users', UsersController::class);
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('categories', CategoryController::class)->except('show');
+    Route::resource('clients', ClientPartnerController::class)->except('show');
+    Route::get('internships/{internship}/letter', [InternshipApplicationController::class, 'downloadLetter'])->name('internships.letter');
+    Route::get('internships/{internship}/letter/preview', [InternshipApplicationController::class, 'previewLetter'])->name('internships.letter.preview');
+    Route::resource('internships', InternshipApplicationController::class)->except(['create', 'store', 'edit']);
     Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');
 });

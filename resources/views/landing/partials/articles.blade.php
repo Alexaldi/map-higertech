@@ -17,9 +17,12 @@
                 <div class="relative h-64 overflow-hidden bg-slate-100 dark:bg-slate-800">
                     <span
                         class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur text-blue-700 dark:text-cyan-400 text-[11px] font-bold shadow-sm">Artikel</span>
-                    <img alt="Perangkat Telemetry Klimatologi Malahayu"
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        src="{{ asset('images/articles/malahayu.png') }}" loading="lazy">
+                    <picture>
+                        <source srcset="{{ asset('images/articles/malahayu.webp') }}" type="image/webp">
+                        <img alt="Perangkat Telemetry Klimatologi Malahayu" width="400" height="256"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="{{ asset('images/articles/malahayu.png') }}" loading="lazy" decoding="async">
+                    </picture>
                 </div>
                 <div class="p-6 flex-1 flex flex-col justify-between">
                     <div>
@@ -61,9 +64,12 @@
                     class="rounded-3xl bg-gradient-to-r from-blue-50/90 via-indigo-50/60 to-slate-50 dark:from-[#16275E] dark:via-indigo-900 dark:to-[#0B1120] text-slate-900 dark:text-white p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-center shadow-sm hover:shadow-xl border border-blue-200/80 dark:border-white/10 group transition-all duration-300">
                     <div
                         class="w-full sm:w-48 h-40 rounded-2xl overflow-hidden flex-shrink-0 bg-white shadow-inner border border-slate-200/60 dark:border-transparent">
-                        <img alt="Installation Guide AWS Higertech"
-                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                            src="{{ asset('images/articles/aws-guide.png') }}" loading="lazy">
+                        <picture>
+                            <source srcset="{{ asset('images/articles/aws-guide.webp') }}" type="image/webp">
+                            <img alt="Installation Guide AWS Higertech" width="200" height="160"
+                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                src="{{ asset('images/articles/aws-guide.png') }}" loading="lazy" decoding="async">
+                        </picture>
                     </div>
                     <div class="flex-1 space-y-3">
                         <span
@@ -99,9 +105,13 @@
                         <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
                             <span
                                 class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur text-blue-700 dark:text-cyan-400 text-[11px] font-bold shadow-sm">Artikel</span>
-                            <img alt="Pemasangan Perangkat Telemetri Deli Serdang"
-                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                                src="{{ asset('images/articles/deli-serdang.png') }}" loading="lazy">
+                            <picture>
+                                <source srcset="{{ asset('images/articles/deli-serdang.webp') }}" type="image/webp">
+                                <img alt="Pemasangan Perangkat Telemetri Deli Serdang" width="300" height="192"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                    src="{{ asset('images/articles/deli-serdang.png') }}" loading="lazy"
+                                    decoding="async">
+                            </picture>
                         </div>
                         <div class="p-6 flex-1 flex flex-col justify-between">
                             <h3
@@ -122,9 +132,13 @@
                             <span
                                 class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-cyan-500 text-slate-950 text-[11px] font-bold shadow-sm">Video
                                 Tutorial</span>
-                            <img alt="Tutorial AWLR Sonar Digital"
-                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                                src="{{ asset('images/articles/awlr-tutorial.png') }}" loading="lazy">
+                            <picture>
+                                <source srcset="{{ asset('images/articles/awlr-tutorial.webp') }}" type="image/webp">
+                                <img alt="Tutorial AWLR Sonar Digital" width="300" height="192"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                    src="{{ asset('images/articles/awlr-tutorial.png') }}" loading="lazy"
+                                    decoding="async">
+                            </picture>
                         </div>
                         <div class="p-6 flex-1 flex flex-col justify-between">
                             <h3

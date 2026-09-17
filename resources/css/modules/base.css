@@ -30,6 +30,147 @@ button {
     cursor: pointer;
 }
 
-html {
-    scrollbar-gutter: stable;
+/* ========================================================
+ * 1. MODERN SLENDER SCROLLBAR (LIGHT & DARK MODE)
+ * ======================================================== */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.dark * {
+    scrollbar-color: #1e293b transparent;
+}
+
+/* ========================================================
+ * 2. CHROME / SAFARI AUTOFILL OVERRIDE FIX
+ * Prevents browser autofill from turning inputs white in dark mode
+ * ======================================================== */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f8fafc !important;
+    -webkit-box-shadow: 0 0 0 1000px #0c1626 inset !important;
+    box-shadow: 0 0 0 1000px #0c1626 inset !important;
+    caret-color: #f8fafc !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0f172a !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+    caret-color: #0f172a !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ========================================================
+ * 3. DATEPICKER CALENDAR INDICATOR
+ * Custom, high-contrast illuminated calendar icon for light & dark mode
+ * ======================================================== */
+input[type="date"] {
+    color-scheme: light;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='4' rx='2'/%3E%3Cline x1='16' x2='16' y1='2' y2='6'/%3E%3Cline x1='8' x2='8' y1='2' y2='6'/%3E%3Cline x1='3' x2='21' y1='10' y2='10'/%3E%3Ccircle cx='8' cy='14' r='1' fill='%232563eb'/%3E%3Ccircle cx='12' cy='14' r='1' fill='%232563eb'/%3E%3Ccircle cx='16' cy='14' r='1' fill='%232563eb'/%3E%3Ccircle cx='8' cy='18' r='1' fill='%232563eb'/%3E%3Ccircle cx='12' cy='18' r='1' fill='%232563eb'/%3E%3Ccircle cx='16' cy='18' r='1' fill='%232563eb'/%3E%3C/svg%3E");
+    background-position: center;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-color: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    opacity: 0.9;
+    filter: none !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background-color: rgba(37, 99, 235, 0.16);
+    border-color: rgba(37, 99, 235, 0.5);
+}
+
+.dark input[type="date"] {
+    color-scheme: dark;
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='4' rx='2'/%3E%3Cline x1='16' x2='16' y1='2' y2='6'/%3E%3Cline x1='8' x2='8' y1='2' y2='6'/%3E%3Cline x1='3' x2='21' y1='10' y2='10'/%3E%3Ccircle cx='8' cy='14' r='1' fill='%2338bdf8'/%3E%3Ccircle cx='12' cy='14' r='1' fill='%2338bdf8'/%3E%3Ccircle cx='16' cy='14' r='1' fill='%2338bdf8'/%3E%3Ccircle cx='8' cy='18' r='1' fill='%2338bdf8'/%3E%3Ccircle cx='12' cy='18' r='1' fill='%2338bdf8'/%3E%3Ccircle cx='16' cy='18' r='1' fill='%2338bdf8'/%3E%3C/svg%3E");
+    background-position: center;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-color: rgba(56, 189, 248, 0.16);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    opacity: 1;
+    filter: none !important;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    transform: scale(1.12);
+    background-color: rgba(56, 189, 248, 0.3);
+    border-color: rgba(56, 189, 248, 0.8);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
+}
+
+/* ========================================================
+ * 4. ACTIVE MENU STATES (PREVENT RE-CLICKING CURRENT MENU)
+ * ======================================================== */
+.nav-link.is-active,
+.nav-dropdown.is-active > .nav-dropdown-btn,
+.side-menu__item.active,
+[aria-current="page"] {
+    cursor: default !important;
+    pointer-events: none !important;
 }

@@ -16,9 +16,17 @@ class LandingPageTest extends TestCase
             ->assertSee('Hidrometeorologi Terpadu')
             ->assertSee('PT Higertech Karya Sinergi')
             ->assertSee('Lima Solusi Utama Infrastruktur Presisi')
-            ->assertSee('Higertech R&D Internship Academy')
             ->assertSee('Success Story & GIS Telemetry Map')
             ->assertSee('higertech_theme', false);
+    }
+
+    public function test_internship_page_renders_successfully(): void
+    {
+        $response = $this->get('/internship');
+
+        $response->assertOk()
+            ->assertSee('Membangun Pengalaman Nyata')
+            ->assertSee('Keterampilan Industri');
     }
 
     public function test_landing_page_includes_anti_flash_dark_mode_script(): void

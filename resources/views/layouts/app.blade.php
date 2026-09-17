@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,16 @@
     <title>@yield('title', 'Higertech Karya Sinergi | Integrated Telemetry Solution')</title>
     <meta name="description" content="@yield('description', 'Platform akuisisi data lapangan real-time untuk pemantauan muka air banjir, curah hujan otomatis, dan stasiun cuaca.')">
     <link rel="icon" type="image/png" href="{{ asset('images/brand/logo.png') }}">
+
+    {{-- Preconnect & Non-blocking Google Fonts to eliminate render blocking --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+
     {{-- Prevent flash of wrong theme: apply dark class BEFORE CSS loads --}}
     <script>
+        window.__locale = '{{ app()->getLocale() }}';
         (function() {
             const saved = localStorage.getItem('higertech_theme');
             const sys = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -22,12 +31,15 @@
 
     @stack('head')
 </head>
+
 <body class="@yield('body_class', 'bg-[#F8FAFC] dark:bg-[#0B1120] text-slate-800 dark:text-slate-100') antialiased selection:bg-cyan-500 selection:text-white transition-colors duration-300">
 
+    @include('partials.page-loader')
     @include('partials.header')
 
     @yield('content')
 
     @stack('scripts')
 </body>
+
 </html>

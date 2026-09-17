@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'waha' => [
+        'url' => env('WAHA_API_URL', ''),
+        'key' => env('WAHA_API_KEY', ''),
+        'session' => env('WAHA_SESSION', 'default'),
+        'supervisor_phone' => env('INTERNSHIP_SUPERVISOR_PHONE', ''),
+    ],
+
 ];

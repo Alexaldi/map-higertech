@@ -37,10 +37,6 @@
 
 <header
     class="site-header {{ $isMap ? 'is-map-header relative' : 'sticky' }} z-[9999] bg-white/95 dark:bg-[#0B1120]/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-300">
-    {{-- Global Eager Loading Bar (React-style top progress bar) --}}
-    <div id="eager-progress-bar"
-        class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 opacity-0 transition-all duration-300 pointer-events-none z-[100]"
-        style="width: 0%;"></div>
 
     {{-- Topbar --}}
     <div
@@ -50,24 +46,27 @@
             {{-- Left: Email & Phone (Desktop & Mobile) --}}
             <div
                 class="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 text-slate-600 dark:text-slate-300 text-[9px] xs:text-[9.5px] sm:text-[12px] min-w-0">
-                <a href="mailto:higertechkaryasinergi@gmail.com" title="higertechkaryasinergi@gmail.com"
+                <a href="mailto:{{ setting('contact_email', 'higertechkaryasinergi@gmail.com') }}"
+                    title="{{ setting('contact_email', 'higertechkaryasinergi@gmail.com') }}"
                     class="flex items-center gap-1 hover:text-blue-600 dark:hover:text-cyan-300 transition">
                     <svg class="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-blue-600 dark:text-cyan-400 shrink-0" fill="none"
                         stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <rect x="2" y="4" width="20" height="16" rx="2" />
                         <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
                     </svg>
-                    <span class="font-medium whitespace-nowrap">higertechkaryasinergi@gmail.com</span>
+                    <span
+                        class="font-medium whitespace-nowrap">{{ setting('contact_email', 'higertechkaryasinergi@gmail.com') }}</span>
                 </a>
                 <span class="hidden sm:inline text-slate-300 dark:text-slate-700 select-none">•</span>
-                <a href="tel:+622221010299" title="022-2101-0299"
+                <a href="tel:{{ setting('contact_tel', '+622221010299') }}"
+                    title="{{ setting('contact_phone', '022-2101-0299') }}"
                     class="flex items-center gap-1 hover:text-blue-600 dark:hover:text-cyan-300 transition">
                     <svg class="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-blue-600 dark:text-cyan-400 shrink-0" fill="none"
                         stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path
                             d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 .8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
                     </svg>
-                    <span class="font-medium whitespace-nowrap">022-2101-0299</span>
+                    <span class="font-medium whitespace-nowrap">{{ setting('contact_phone', '022-2101-0299') }}</span>
                 </a>
             </div>
 
@@ -118,9 +117,11 @@
                 <div
                     class="language-switch inline-flex items-center p-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-900/60 border border-slate-300/80 dark:border-white/15 gap-0.5 text-[10px] sm:text-xs font-semibold">
                     <a href="{{ route('locale.switch', 'id') }}" onclick="switchLocaleEager(event, this)"
-                        class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 {{ $locale === 'id' ? 'bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white' }}">ID</a>
+                        class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 {{ $locale === 'id' ? 'bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40 pointer-events-none cursor-default select-none' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white' }}"
+                        {!! $locale === 'id' ? 'aria-current="true" tabindex="-1"' : '' !!}>ID</a>
                     <a href="{{ route('locale.switch', 'en') }}" onclick="switchLocaleEager(event, this)"
-                        class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 {{ $locale === 'en' ? 'bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white' }}">EN</a>
+                        class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 {{ $locale === 'en' ? 'bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40 pointer-events-none cursor-default select-none' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white' }}"
+                        {!! $locale === 'en' ? 'aria-current="true" tabindex="-1"' : '' !!}>EN</a>
                 </div>
             </div>
         </div>
@@ -129,22 +130,29 @@
     {{-- Eager Loading Script for Global Header --}}
     <script>
         function switchLocaleEager(e, link) {
+            if (link.classList.contains('pointer-events-none') || link.getAttribute('aria-current') === 'true') {
+                e.preventDefault();
+                return false;
+            }
             const container = link.closest('.language-switch');
             if (container) {
                 container.querySelectorAll('a').forEach(a => {
                     a.className =
                         'px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white';
+                    a.removeAttribute('aria-current');
+                    a.removeAttribute('tabindex');
                 });
                 link.className =
-                    'px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40';
+                    'px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40 pointer-events-none cursor-default select-none';
+                link.setAttribute('aria-current', 'true');
+                link.setAttribute('tabindex', '-1');
             }
-            const bar = document.getElementById('eager-progress-bar');
-            if (bar) {
-                bar.style.opacity = '1';
-                bar.style.width = '40%';
-                setTimeout(() => {
-                    if (bar) bar.style.width = '85%';
-                }, 80);
+            if (typeof window.showPageLoader === 'function') {
+                const isId = link.href.includes('/id');
+                window.showPageLoader(
+                    isId ? 'Beralih ke Bahasa Indonesia...' : 'Switching to English...',
+                    isId ? 'Sinkronisasi Pengaturan Bahasa' : 'Synchronizing Language Settings...'
+                );
             }
         }
     </script>
@@ -171,8 +179,8 @@
                     </button>
                 @endif
 
-                <a class="site-brand flex-shrink-0 flex items-center gap-3 {{ $isMap ? 'max-xl:absolute max-xl:left-1/2 max-xl:-translate-x-1/2' : '' }}"
-                    href="{{ route('home') }}" aria-label="Higertech Karya Sinergi">
+                <a class="site-brand flex-shrink-0 flex items-center gap-3 {{ $isHome ? 'pointer-events-none cursor-default select-none' : '' }} {{ $isMap ? 'max-xl:absolute max-xl:left-1/2 max-xl:-translate-x-1/2' : '' }}"
+                    href="{{ route('home') }}" aria-label="Higertech Karya Sinergi" {!! $isHome ? 'aria-current="page" tabindex="-1"' : '' !!}>
                     <img src="{{ asset('images/brand/higertech-logo.png') }}" alt="Higertech Karya Sinergi"
                         class="h-10 sm:h-11 w-auto object-contain dark:brightness-110" width="400" height="125">
                 </a>
@@ -183,8 +191,9 @@
                 aria-label="Navigasi utama">
                 <a href="{{ route('home') }}"
                     class="nav-link {{ $isHome
-                        ? 'is-active text-blue-600 dark:text-cyan-400 font-bold'
-                        : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}">
+                        ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none'
+                        : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
+                    {!! $isHome ? 'aria-current="page" tabindex="-1"' : '' !!}>
                     {{ __('landing.nav_home') }}
                 </a>
 
@@ -207,7 +216,8 @@
                         <div class="py-1">
                             <a href="{{ route('products') }}"
                                 class="flex items-center justify-between px-4 py-2 text-xs font-semibold
-                                {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 bg-blue-50/60 dark:bg-blue-900/30' : 'text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400' }} transition">
+                                {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 bg-blue-50/60 dark:bg-blue-900/30 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400' }} transition"
+                                {!! $isProducts ? 'aria-current="page" tabindex="-1"' : '' !!}>
                                 <span>Hidrologi</span>
                             </a>
                             <a href="https://higertech.com/Product/Hidrologi" class="hidden" aria-hidden="true"></a>
@@ -220,17 +230,17 @@
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_projects') }}</a>
 
                 <a href="{{ route('articles') }}" data-nav-target="articles"
-                    class="nav-link {{ $isArticles ? 'is-active text-blue-600 dark:text-cyan-400 font-bold' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
-                    @if ($isArticles) aria-current="page" @endif>{{ __('landing.nav_articles') }}</a>
+                    class="nav-link {{ $isArticles ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
+                    {!! $isArticles ? 'aria-current="page" tabindex="-1"' : '' !!}>{{ __('landing.nav_articles') }}</a>
 
                 <a href="{{ route('tutorials') }}" data-nav-target="contact"
-                    class="nav-link {{ $isTutorials ? 'is-active text-blue-600 dark:text-cyan-400 font-bold' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
-                    @if ($isTutorials) aria-current="page" @endif>Tutorials</a>
+                    class="nav-link {{ $isTutorials ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
+                    {!! $isTutorials ? 'aria-current="page" tabindex="-1"' : '' !!}>Tutorials</a>
 
                 {{-- Peta link with Active Indicator when on /map --}}
                 <a href="{{ route('map') }}"
-                    class="nav-link {{ $isMap ? 'text-blue-600 dark:text-cyan-400 font-bold inline-flex items-center gap-1.5 is-active' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
-                    {!! $isMap ? 'aria-current="page"' : '' !!}>
+                    class="nav-link {{ $isMap ? 'text-blue-600 dark:text-cyan-400 font-bold inline-flex items-center gap-1.5 is-active pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
+                    {!! $isMap ? 'aria-current="page" tabindex="-1"' : '' !!}>
                     @if ($isMap)
                         <span class="relative flex h-2 w-2">
                             <span
@@ -247,18 +257,23 @@
 
                 {{-- Internship special link --}}
                 <a href="{{ route('internship') }}"
-                    class="nav-link nav-pill relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full {{ $isInternship ? 'bg-cyan-100 dark:bg-cyan-900/80 border-cyan-400 dark:border-cyan-500 text-cyan-950 dark:text-cyan-200 ring-2 ring-cyan-400/40' : 'bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-300 dark:border-cyan-700 text-cyan-800 dark:text-cyan-300' }} font-bold hover:bg-cyan-100 dark:hover:bg-cyan-900/80 transition">
-                    <svg class="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 animate-spin" fill="none"
-                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="animation-duration:3s"
-                        aria-hidden="true">
+                    class="nav-link nav-pill relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full {{ $isInternship ? 'bg-cyan-100 dark:bg-cyan-900/80 border-cyan-400 dark:border-cyan-500 text-cyan-950 dark:text-cyan-200 ring-2 ring-cyan-400/40 pointer-events-none cursor-default select-none' : 'bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-300 dark:border-cyan-700 text-cyan-800 dark:text-cyan-300' }} font-bold hover:bg-cyan-100 dark:hover:bg-cyan-900/80 transition"
+                    {!! $isInternship ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                    <svg class="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path
                             d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
                         <path d="M20 2v4M22 4h-4" />
                         <circle cx="4" cy="20" r="2" />
                     </svg>
                     <span>{{ __('landing.nav_internship') }}</span>
-                    <span
-                        class="px-1.5 py-px rounded-full bg-emerald-500 text-[9px] font-extrabold text-white uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
+                    @if (is_internship_enabled())
+                        <span
+                            class="px-1.5 py-px rounded-full bg-emerald-500 text-[9px] font-extrabold text-white uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
+                    @else
+                        <span
+                            class="px-1.5 py-px rounded-full bg-slate-400 dark:bg-slate-600 text-[9px] font-extrabold text-white uppercase tracking-wider">Ditutup</span>
+                    @endif
                 </a>
             </nav>
 
@@ -313,7 +328,8 @@
                 aria-label="Menu Mobile">
                 {{-- Home --}}
                 <a href="{{ route('home') }}"
-                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl transition {{ $isHome ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-cyan-400 font-bold' : 'hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl transition {{ $isHome ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:bg-slate-100 dark:hover:bg-slate-800/60' }}"
+                    {!! $isHome ? 'aria-current="page" tabindex="-1"' : '' !!}>
                     <span>{{ __('landing.nav_home') }}</span>
                     @if ($isHome)
                         <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-cyan-400"></span>
@@ -339,7 +355,8 @@
                     <div
                         class="pl-3 pr-1 py-1.5 space-y-1 text-xs border-l-2 border-blue-500/30 dark:border-cyan-500/30 ml-4 my-1">
                         <a href="{{ route('products') }}"
-                            class="flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-900/40' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                            class="flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-900/40 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800' }}"
+                            {!! $isProducts ? 'aria-current="page" tabindex="-1"' : '' !!}>
                             <span>Hidrologi</span>
                         </a>
                     </div>
@@ -368,7 +385,8 @@
 
                 {{-- Peta --}}
                 <a href="{{ route('map') }}"
-                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl transition {{ $isMap ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-cyan-400 font-bold' : 'hover:bg-slate-100 dark:hover:bg-slate-800/60' }}">
+                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl transition {{ $isMap ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:bg-slate-100 dark:hover:bg-slate-800/60' }}"
+                    {!! $isMap ? 'aria-current="page" tabindex="-1"' : '' !!}>
                     <div class="flex items-center gap-2">
                         <span>{{ __('landing.nav_map') }}</span>
                         <span
@@ -381,7 +399,8 @@
 
                 {{-- Internship --}}
                 <a href="{{ route('internship') }}"
-                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl {{ $isInternship ? 'bg-cyan-100 dark:bg-cyan-900/80 border-cyan-400 dark:border-cyan-500 text-cyan-950 dark:text-cyan-200' : 'bg-cyan-50/80 dark:bg-cyan-950/40 border border-cyan-200/80 dark:border-cyan-800/60 text-cyan-800 dark:text-cyan-300' }} font-bold hover:bg-cyan-100 dark:hover:bg-cyan-900/60 transition">
+                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl {{ $isInternship ? 'bg-cyan-100 dark:bg-cyan-900/80 border-cyan-400 dark:border-cyan-500 text-cyan-950 dark:text-cyan-200 pointer-events-none cursor-default select-none' : 'bg-cyan-50/80 dark:bg-cyan-950/40 border border-cyan-200/80 dark:border-cyan-800/60 text-cyan-800 dark:text-cyan-300' }} font-bold hover:bg-cyan-100 dark:hover:bg-cyan-900/60 transition"
+                    {!! $isInternship ? 'aria-current="page" tabindex="-1"' : '' !!}>
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor"
                             stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -392,8 +411,13 @@
                         </svg>
                         <span>{{ __('landing.nav_internship') }}</span>
                     </div>
-                    <span
-                        class="px-1.5 py-0.5 rounded-full bg-emerald-500 text-[9px] font-extrabold text-white uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
+                    @if (is_internship_enabled())
+                        <span
+                            class="px-1.5 py-0.5 rounded-full bg-emerald-500 text-[9px] font-extrabold text-white uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
+                    @else
+                        <span
+                            class="px-1.5 py-0.5 rounded-full bg-slate-400 dark:bg-slate-600 text-[9px] font-extrabold text-white uppercase tracking-wider">Ditutup</span>
+                    @endif
                 </a>
             </nav>
 

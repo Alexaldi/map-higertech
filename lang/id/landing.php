@@ -142,4 +142,11 @@ return [
     'tutorials_title1' => 'Belajar dengan Percaya Diri.',
     'tutorials_title2' => 'Bangun Solusinya.',
     'tutorials_not_found' => 'Tutorial tidak ditemukan.',
+
+    // Loader
+    'loader_title' => 'Memuat Halaman...',
+    'loader_subtitle' => 'Menghubungkan ke Server',
+    'loader_sync_lang' => 'Sinkronisasi Pengaturan Bahasa',
+    'loader_switching_en' => 'Switching to English...',
+    'loader_switching_id' => 'Beralih ke Bahasa Indonesia...',
 ];
