@@ -27,6 +27,7 @@ class SettingController extends Controller
             'contact_email' => ['required', 'email', 'max:255'],
             'contact_phone' => ['required', 'string', 'max:50'],
             'contact_whatsapp' => ['nullable', 'string', 'max:50'],
+            'contact_whatsapp_message' => ['nullable', 'string', 'max:500'],
             'contact_address' => ['nullable', 'string', 'max:500'],
             'site_name' => ['nullable', 'string', 'max:255'],
             'footer_about' => ['nullable', 'string', 'max:1000'],

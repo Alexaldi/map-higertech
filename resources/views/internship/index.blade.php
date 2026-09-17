@@ -1893,7 +1893,8 @@
                             class="pt-3 border-t border-slate-200/60 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
                             <a id="result-wa-btn"
                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold hover:bg-emerald-100 transition text-[11px]"
-                                href="https://wa.me/628112332182" rel="noopener noreferrer" target="_blank">
+                                href="{{ whatsapp_url('Halo Admin Higertech, saya ingin menanyakan perihal status pendaftaran magang.') }}"
+                                rel="noopener noreferrer" target="_blank">
                                 <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="currentColor"
                                     viewBox="0 0 24 24">
                                     <path

@@ -224,3 +224,47 @@ if (!function_exists('is_internship_enabled')) {
     }
 }
 
+if (!function_exists('whatsapp_url')) {
+    /**
+     * Get normalized WhatsApp URL from site settings.
+     * Prioritizes 'contact_whatsapp', falls back to 'social_whatsapp' or default number.
+     * Normalizes 08xx / +62xx to 62xx international format.
+     */
+    function whatsapp_url(?string $message = null): string
+    {
+        $rawNumber = setting('contact_whatsapp');
+
+        if (empty($rawNumber)) {
+            $socialWa = setting('social_whatsapp');
+            if (!empty($socialWa) && str_starts_with($socialWa, 'http')) {
+                return $socialWa . ($message ? (str_contains($socialWa, '?') ? '&text=' : '?text=') . urlencode($message) : '');
+            }
+            $rawNumber = '628112332182';
+        }
+
+        // If it's already a full URL (e.g. https://wa.me/...)
+        if (str_starts_with((string) $rawNumber, 'http://') || str_starts_with((string) $rawNumber, 'https://')) {
+            return $rawNumber . ($message ? (str_contains($rawNumber, '?') ? '&text=' : '?text=') . urlencode($message) : '');
+        }
+
+        // Clean non-digits
+        $cleaned = preg_replace('/[^0-9]/', '', (string) $rawNumber);
+
+        // Convert leading 0 to 62 (Indonesian standard)
+        if (str_starts_with($cleaned, '0')) {
+            $cleaned = '62' . substr($cleaned, 1);
+        }
+
+        $url = 'https://wa.me/' . ($cleaned ?: '628112332182');
+        $defaultMsg = app()->getLocale() === 'en'
+            ? 'Hello Higertech Technical Team, I would like to consult about telemetry systems.'
+            : 'Halo Tim Teknis Higertech, saya ingin konsultasi mengenai sistem telemetri.';
+        $finalMessage = $message ?? setting('contact_whatsapp_message', $defaultMsg);
+        if (!empty($finalMessage)) {
+            $url .= '?text=' . urlencode($finalMessage);
+        }
+
+        return $url;
+    }
+}
+

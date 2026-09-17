@@ -125,6 +125,26 @@
                                                     <div class="text-danger mt-1 fs-12">{{ $message }}</div>
                                                 @enderror
                                             </div>
+
+                                            <div class="col-md-12 mb-3">
+                                                <label for="contact_whatsapp_message"
+                                                    class="form-label font-weight-semibold">Template Pesan WhatsApp
+                                                    Otomatis</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i
+                                                            class="fe fe-message-square"></i></span>
+                                                    <input type="text"
+                                                        class="form-control @error('contact_whatsapp_message') is-invalid @enderror"
+                                                        id="contact_whatsapp_message" name="contact_whatsapp_message"
+                                                        value="{{ old('contact_whatsapp_message', $settings['contact_whatsapp_message'] ?? '') }}"
+                                                        placeholder="contoh: Halo Tim Teknis Higertech, saya ingin konsultasi mengenai sistem telemetri.">
+                                                </div>
+                                                <small class="text-muted">Pesan pembuka default saat pengunjung klik tombol
+                                                    WhatsApp. Kosongkan untuk memakai teks standar.</small>
+                                                @error('contact_whatsapp_message')
+                                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
 
@@ -168,10 +188,32 @@
                                                     tersedia, beri nama label, dan cantumkan URL tautan. Anda dapat menambah
                                                     atau menghapus media sosial kapan saja.</p>
                                             </div>
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="addSocialRow()">
-                                                <i class="fe fe-plus me-1"></i> Tambah Media Sosial
-                                            </button>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fe fe-plus me-1"></i> Tambah Media Sosial
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-lg py-2 border-0"
+                                                    style="min-width: 200px; z-index: 1050;">
+                                                    <li
+                                                        class="dropdown-header text-uppercase fs-11 fw-bold text-muted px-3 py-1">
+                                                        Pilih Platform:</li>
+                                                    @foreach ($availablePlatforms as $platKey => $plat)
+                                                        <li>
+                                                            <a class="dropdown-item d-flex align-items-center gap-2 px-3 py-2 fs-12"
+                                                                href="javascript:void(0)"
+                                                                onclick="addSocialRow('{{ $platKey }}')">
+                                                                <span
+                                                                    class="d-inline-flex align-items-center justify-content-center"
+                                                                    style="width: 20px; height: 20px;">
+                                                                    {!! $plat['icon'] !!}
+                                                                </span>
+                                                                <span>{{ $plat['name'] }}</span>
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         </div>
 
                                         <div id="social-rows-container" class="d-flex flex-column gap-3">
@@ -182,11 +224,32 @@
                                             class="text-center py-5 border rounded-3 bg-light d-none">
                                             <i class="fe fe-share-2 fs-30 text-muted d-block mb-2"></i>
                                             <span class="text-muted">Belum ada akun media sosial yang ditambahkan.</span>
-                                            <div class="mt-2">
-                                                <button type="button" class="btn btn-outline-primary btn-sm"
-                                                    onclick="addSocialRow()">
+                                            <div class="mt-2 dropdown">
+                                                <button type="button"
+                                                    class="btn btn-outline-primary btn-sm dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fe fe-plus me-1"></i> Tambah Media Sosial
                                                 </button>
+                                                <ul class="dropdown-menu shadow-lg py-2 border-0"
+                                                    style="min-width: 200px; z-index: 1050;">
+                                                    <li
+                                                        class="dropdown-header text-uppercase fs-11 fw-bold text-muted px-3 py-1">
+                                                        Pilih Platform:</li>
+                                                    @foreach ($availablePlatforms as $platKey => $plat)
+                                                        <li>
+                                                            <a class="dropdown-item d-flex align-items-center gap-2 px-3 py-2 fs-12"
+                                                                href="javascript:void(0)"
+                                                                onclick="addSocialRow('{{ $platKey }}')">
+                                                                <span
+                                                                    class="d-inline-flex align-items-center justify-content-center"
+                                                                    style="width: 20px; height: 20px;">
+                                                                    {!! $plat['icon'] !!}
+                                                                </span>
+                                                                <span>{{ $plat['name'] }}</span>
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -464,10 +527,11 @@
             updateEmptyState();
         }
 
-        function addSocialRow() {
+        function addSocialRow(platformKey = 'whatsapp') {
+            const plat = availablePlatforms[platformKey] || availablePlatforms['whatsapp'];
             renderSocialRow({
-                platform: 'whatsapp',
-                label: 'WhatsApp',
+                platform: platformKey,
+                label: plat ? plat.name : '',
                 url: ''
             });
         }

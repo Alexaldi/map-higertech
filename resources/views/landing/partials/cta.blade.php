@@ -16,7 +16,7 @@
         <p class="mt-3 text-slate-600 dark:text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
             {{ __('landing.cta_desc') }}</p>
         <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a href="https://wa.me/628112332182" target="_blank" rel="noopener noreferrer"
+            <a href="{{ whatsapp_url() }}" target="_blank" rel="noopener noreferrer"
                 class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white dark:bg-cyan-500 dark:text-slate-950 dark:hover:bg-cyan-400 font-bold text-xs sm:text-sm transition shadow-sm">
                 <svg class="w-4 h-4 text-white dark:text-slate-950" fill="none" stroke="currentColor"
                     stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
