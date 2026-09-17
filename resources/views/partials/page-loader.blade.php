@@ -1,5 +1,5 @@
 {{-- Global Page Transition Skeleton & Telemetry Center Spinner Loader --}}
-<div id="page-loader-overlay"
+<div id="page-loader-overlay" style="display: none;"
     class="fixed inset-0 z-[999999] pointer-events-none opacity-0 invisible transition-opacity duration-200 flex items-center justify-center bg-slate-100/85 dark:bg-[#070d1a]/90 backdrop-blur-md overflow-hidden"
     aria-hidden="true" role="status" aria-live="polite">
 
@@ -25,8 +25,8 @@
 
         {{-- Clean, normal smooth circular spinner (tidak rame) --}}
         <div class="w-10 h-10 mb-3.5 flex items-center justify-center">
-            <svg class="w-9 h-9 animate-spin text-cyan-600 dark:text-cyan-400" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 24 24">
+            <svg width="36" height="36" class="w-9 h-9 animate-spin text-cyan-600 dark:text-cyan-400"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3">
                 </circle>
                 <path class="opacity-90" fill="currentColor"
@@ -67,6 +67,7 @@
                 if (titleEl && customTitle) titleEl.textContent = customTitle;
                 if (subEl && customSubtitle) subEl.textContent = customSubtitle;
 
+                overlay.style.display = 'flex';
                 overlay.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
                 overlay.classList.add('opacity-100', 'visible', 'pointer-events-auto');
                 if (cardEl) {
@@ -95,6 +96,11 @@
                 cardEl.classList.add('scale-95');
                 cardEl.classList.remove('scale-100');
             }
+            setTimeout(() => {
+                if (overlay.classList.contains('invisible')) {
+                    overlay.style.display = 'none';
+                }
+            }, 210);
         };
 
         // Hide when navigating via browser back/forward (bfcache)
