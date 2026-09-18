@@ -12,6 +12,16 @@ export function initMapPreview() {
     const container = document.getElementById('preview-station-map');
     if (!container) return;
 
+    if (L?.TileLayer && !L.TileLayer.prototype._asyncPatched) {
+        const origCreateTile = L.TileLayer.prototype.createTile;
+        L.TileLayer.prototype.createTile = function (coords, done) {
+            const tile = origCreateTile.call(this, coords, done);
+            tile.decoding = 'async';
+            return tile;
+        };
+        L.TileLayer.prototype._asyncPatched = true;
+    }
+
     const isDark = document.documentElement.classList.contains('dark');
 
     const darkTileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';

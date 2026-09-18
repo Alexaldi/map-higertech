@@ -6,9 +6,13 @@
             {{-- Brand Info --}}
             <div class="lg:col-span-5 space-y-4">
                 <a href="{{ route('home') }}" aria-label="Higertech">
-                    <img src="{{ asset('images/brand/higertech-logo.png') }}" alt="Higertech Karya Sinergi"
-                        class="h-10 w-auto object-contain dark:brightness-110" loading="lazy"
-                        onerror="this.onerror=null;this.src='https://placehold.co/220x70/16275E/FFFFFF?text=HIGERTECH'">
+                    <picture>
+                        <source srcset="{{ asset('images/brand/higertech-logo.webp') }}" type="image/webp">
+                        <img src="{{ asset('images/brand/higertech-logo.png') }}" alt="Higertech Karya Sinergi"
+                            class="h-10 w-auto object-contain dark:brightness-110" width="425" height="125"
+                            loading="lazy" decoding="async"
+                            onerror="this.onerror=null;this.src='https://placehold.co/220x70/16275E/FFFFFF?text=HIGERTECH'">
+                    </picture>
                 </a>
                 <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
                     {{ setting('footer_about', __('landing.footer_about')) }}</p>
@@ -48,8 +52,8 @@
 
             {{-- Solutions --}}
             <div class="lg:col-span-3 space-y-3">
-                <h4 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">
-                    {{ __('landing.footer_solutions') }}</h4>
+                <h3 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">
+                    {{ __('landing.footer_solutions') }}</h3>
                 <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
                     <li><a href="#workstation" class="hover:text-blue-600 dark:hover:text-cyan-400 transition">Water
                             Level Recorder (AWLR)</a></li>
@@ -66,8 +70,8 @@
 
             {{-- Company --}}
             <div class="lg:col-span-2 space-y-3">
-                <h4 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">
-                    {{ __('landing.footer_company') }}</h4>
+                <h3 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">
+                    {{ __('landing.footer_company') }}</h3>
                 <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
                     <li><a href="#why-us"
                             class="hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.footer_about_us') }}</a>
@@ -89,8 +93,8 @@
 
             {{-- Social --}}
             <div class="lg:col-span-2 space-y-4">
-                <h4 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">
-                    {{ __('landing.footer_social') }}</h4>
+                <h3 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">
+                    {{ __('landing.footer_social') }}</h3>
                 <div class="flex items-center gap-2.5 flex-wrap">
                     @foreach (setting_social_links() as $social)
                         <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer"

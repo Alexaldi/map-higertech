@@ -7,13 +7,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Higertech Karya Sinergi | Integrated Telemetry Solution')</title>
     <meta name="description" content="@yield('description', 'Platform akuisisi data lapangan real-time untuk pemantauan muka air banjir, curah hujan otomatis, dan stasiun cuaca.')">
-    <link rel="icon" type="image/png" href="{{ asset('images/brand/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon.png') }}">
 
     {{-- Preconnect & Non-blocking Google Fonts to eliminate render blocking --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
+    <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+    </noscript>
 
     {{-- Prevent flash of wrong theme: apply dark class BEFORE CSS loads --}}
     <script>

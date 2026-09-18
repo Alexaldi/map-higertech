@@ -3,12 +3,17 @@
 @section('title', __('internship.meta_title'))
 @section('description', __('internship.meta_description'))
 
+@push('head')
+    <link rel="preload" href="{{ asset('images/brand/higertech-logo.webp') }}" as="image" type="image/webp"
+        fetchpriority="high">
+@endpush
+
 @section('content')
-    <main class="flex-1">
+    <main class="flex-1" data-internship-page>
         <!-- BEGIN: Hero Section -->
         <section
             class="relative pt-16 pb-20 sm:pt-20 sm:pb-24 px-4 sm:px-8 bg-gradient-to-b from-blue-50/40 via-slate-50 to-white dark:from-[#080d1a] dark:via-[#0B1120] dark:to-[#0B1120] map-grid-bg transition-colors duration-300 overflow-hidden">
-            <div class="max-w-5xl mx-auto text-center relative z-10 scroll-reveal">
+            <div class="max-w-5xl mx-auto text-center relative z-10">
                 <!-- Top Technical Badge -->
                 <div
                     class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono font-bold tracking-wide bg-[#e0f2fe] text-[#0369a1] dark:bg-blue-950/70 dark:text-cyan-300 mb-6 shadow-xs border border-sky-200 dark:border-blue-800">

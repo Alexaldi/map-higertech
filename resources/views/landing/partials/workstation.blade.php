@@ -69,11 +69,13 @@
                                 Core 32-Bit MCU</span>
                         </div>
                         <picture>
-                            <source srcset="{{ asset('images/products/hg-log900.webp') }}" type="image/webp">
+                            <source srcset="{{ asset('images/products/hg-log900.webp') }}" type="image/webp"
+                                width="400" height="240">
                             <img src="{{ asset('images/products/hg-log900.png') }}"
                                 alt="Data Logger Multi Sensor HG-LOG900" width="400" height="240"
+                                style="aspect-ratio: 400 / 240;"
                                 class="w-full h-56 sm:h-60 object-contain drop-shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-500 ease-out"
-                                loading="lazy" decoding="async">
+                                loading="lazy" decoding="async" fetchpriority="low">
                         </picture>
                         <div class="w-3/4 h-3 bg-black/10 dark:bg-black/40 rounded-full blur-md -mt-1"></div>
                     </div>
@@ -168,11 +170,12 @@
                         <div
                             class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-cyan-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:via-[#09101d] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 flex-shrink-0 group-hover:border-cyan-400/50 transition">
                             <picture>
-                                <source srcset="{{ asset('images/products/awlr.webp') }}" type="image/webp">
+                                <source srcset="{{ asset('images/products/awlr-sm.webp') }}" type="image/webp"
+                                    width="112" height="96">
                                 <img src="{{ asset('images/products/awlr.png') }}" alt="AWLR Sensor Higertech"
-                                    width="112" height="96"
+                                    width="112" height="96" style="aspect-ratio: 112 / 96;"
                                     class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300"
-                                    loading="lazy" decoding="async">
+                                    loading="lazy" decoding="async" fetchpriority="low">
                             </picture>
                         </div>
                         <div class="text-right text-[11px] font-mono space-y-0.5 flex-1">
@@ -224,11 +227,12 @@
                         <div
                             class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-blue-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:via-[#09101d] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 flex-shrink-0 group-hover:border-blue-400/50 transition">
                             <picture>
-                                <source srcset="{{ asset('images/products/arr.webp') }}" type="image/webp">
+                                <source srcset="{{ asset('images/products/arr-sm.webp') }}" type="image/webp"
+                                    width="112" height="96">
                                 <img src="{{ asset('images/products/arr.png') }}" alt="ARR Sensor Higertech"
-                                    width="112" height="96"
+                                    width="112" height="96" style="aspect-ratio: 112 / 96;"
                                     class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300"
-                                    loading="lazy" decoding="async">
+                                    loading="lazy" decoding="async" fetchpriority="low">
                             </picture>
                         </div>
                         <div class="text-right text-[11px] font-mono space-y-0.5 flex-1">
@@ -280,11 +284,12 @@
                         <div
                             class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-indigo-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:via-[#09101d] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 flex-shrink-0 group-hover:border-indigo-400/50 transition">
                             <picture>
-                                <source srcset="{{ asset('images/products/aws.webp') }}" type="image/webp">
+                                <source srcset="{{ asset('images/products/aws-sm.webp') }}" type="image/webp"
+                                    width="112" height="96">
                                 <img src="{{ asset('images/products/aws.png') }}" alt="AWS Stasiun Cuaca Higertech"
-                                    width="112" height="96"
+                                    width="112" height="96" style="aspect-ratio: 112 / 96;"
                                     class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300"
-                                    loading="lazy" decoding="async">
+                                    loading="lazy" decoding="async" fetchpriority="low">
                             </picture>
                         </div>
                         <div class="text-right text-[11px] font-mono space-y-0.5 flex-1">
@@ -336,11 +341,13 @@
                         <div
                             class="w-24 h-24 sm:w-28 sm:h-24 bg-gradient-to-b from-red-50/50 via-slate-50 to-slate-100 dark:from-[#0c1626] dark:via-[#09101d] dark:to-[#080d19] rounded-2xl p-1.5 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 flex-shrink-0 group-hover:border-red-400/50 transition">
                             <picture>
-                                <source srcset="{{ asset('images/products/ews.webp') }}" type="image/webp">
+                                <source srcset="{{ asset('images/products/ews-sm.webp') }}" type="image/webp"
+                                    width="112" height="96">
                                 <img src="{{ asset('images/products/ews.png') }}"
                                     alt="EWS Dam Alarm System Higertech" width="112" height="96"
+                                    style="aspect-ratio: 112 / 96;"
                                     class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-110 transition duration-300"
-                                    loading="lazy" decoding="async">
+                                    loading="lazy" decoding="async" fetchpriority="low">
                             </picture>
                         </div>
                         <div class="text-right text-[11px] font-mono space-y-0.5 flex-1">

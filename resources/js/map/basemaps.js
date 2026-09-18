@@ -1,6 +1,16 @@
 import { BASEMAPS } from './constants.js';
 
 export const addBasemapGallery = (L, map) => {
+    if (L?.TileLayer && !L.TileLayer.prototype._asyncPatched) {
+        const origCreateTile = L.TileLayer.prototype.createTile;
+        L.TileLayer.prototype.createTile = function (coords, done) {
+            const tile = origCreateTile.call(this, coords, done);
+            tile.decoding = 'async';
+            return tile;
+        };
+        L.TileLayer.prototype._asyncPatched = true;
+    }
+
     const layers = new Map(BASEMAPS.map((definition) => [
         definition.key,
         L.tileLayer(definition.url, {

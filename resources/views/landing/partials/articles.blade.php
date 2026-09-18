@@ -18,8 +18,10 @@
                     <span
                         class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur text-blue-700 dark:text-cyan-400 text-[11px] font-bold shadow-sm">Artikel</span>
                     <picture>
-                        <source srcset="{{ asset('images/articles/malahayu.webp') }}" type="image/webp">
+                        <source srcset="{{ asset('images/articles/malahayu.webp') }}" type="image/webp" width="400"
+                            height="256">
                         <img alt="Perangkat Telemetry Klimatologi Malahayu" width="400" height="256"
+                            style="aspect-ratio: 400 / 256;"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             src="{{ asset('images/articles/malahayu.png') }}" loading="lazy" decoding="async">
                     </picture>
@@ -65,8 +67,10 @@
                     <div
                         class="w-full sm:w-48 h-40 rounded-2xl overflow-hidden flex-shrink-0 bg-white shadow-inner border border-slate-200/60 dark:border-transparent">
                         <picture>
-                            <source srcset="{{ asset('images/articles/aws-guide.webp') }}" type="image/webp">
+                            <source srcset="{{ asset('images/articles/aws-guide.webp') }}" type="image/webp"
+                                width="200" height="160">
                             <img alt="Installation Guide AWS Higertech" width="200" height="160"
+                                style="aspect-ratio: 200 / 160;"
                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                 src="{{ asset('images/articles/aws-guide.png') }}" loading="lazy" decoding="async">
                         </picture>
@@ -106,8 +110,10 @@
                             <span
                                 class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur text-blue-700 dark:text-cyan-400 text-[11px] font-bold shadow-sm">Artikel</span>
                             <picture>
-                                <source srcset="{{ asset('images/articles/deli-serdang.webp') }}" type="image/webp">
+                                <source srcset="{{ asset('images/articles/deli-serdang.webp') }}" type="image/webp"
+                                    width="300" height="192">
                                 <img alt="Pemasangan Perangkat Telemetri Deli Serdang" width="300" height="192"
+                                    style="aspect-ratio: 300 / 192;"
                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                     src="{{ asset('images/articles/deli-serdang.png') }}" loading="lazy"
                                     decoding="async">
@@ -133,8 +139,10 @@
                                 class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-cyan-500 text-slate-950 text-[11px] font-bold shadow-sm">Video
                                 Tutorial</span>
                             <picture>
-                                <source srcset="{{ asset('images/articles/awlr-tutorial.webp') }}" type="image/webp">
+                                <source srcset="{{ asset('images/articles/awlr-tutorial.webp') }}" type="image/webp"
+                                    width="300" height="192">
                                 <img alt="Tutorial AWLR Sonar Digital" width="300" height="192"
+                                    style="aspect-ratio: 300 / 192;"
                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                     src="{{ asset('images/articles/awlr-tutorial.png') }}" loading="lazy"
                                     decoding="async">

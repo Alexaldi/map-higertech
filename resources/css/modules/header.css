@@ -1,11 +1,18 @@
 .site-header {
+    --topbar-height: 40px;
     position: sticky;
-    top: calc(-1 * var(--topbar-height, 42px));
+    top: calc(-1 * var(--topbar-height));
     z-index: 9999;
     flex: none;
     border-bottom: 1px solid #e2e8f0;
     background: #fff;
     box-shadow: 0 2px 8px rgb(15 23 42 / 0.05);
+}
+
+@media (min-width: 640px) {
+    .site-header {
+        --topbar-height: 42px;
+    }
 }
 
 .site-header.is-map-header,
@@ -69,30 +76,10 @@ body:has([data-live-map]) #app {
     display: none !important;
 }
 
-.site-contact,
-.site-contact a {
+.site-contact {
     display: flex;
     align-items: center;
-}
-
-.dark .site-socials {
-    color: #94a3b8;
-}
-
-.site-socials svg {
-    width: 0.75rem;
-    height: 0.75rem;
-}
-
-.site-contact {
     gap: 0.6rem;
-}
-
-.site-contact a {
-    gap: 0.4rem;
-    color: inherit;
-    font-weight: 500;
-    text-decoration: none;
 }
 
 .site-contact svg {

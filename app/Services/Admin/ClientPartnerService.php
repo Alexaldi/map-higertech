@@ -6,10 +6,15 @@ use App\Models\ClientPartner;
 use App\Repositories\Admin\ClientPartnerRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ClientPartnerService
 {
+    public const CACHE_KEY_ACTIVE = 'client_partners.active';
+
+    private ?Collection $memoryActive = null;
+
     public function __construct(private readonly ClientPartnerRepository $repository) {}
 
     public function getAll(): Collection
@@ -19,11 +24,36 @@ class ClientPartnerService
 
     public function getActive(): Collection
     {
-        try {
-            return $this->repository->getActive();
-        } catch (\Throwable) {
-            return new Collection();
+        if ($this->memoryActive !== null) {
+            return $this->memoryActive;
         }
+
+        try {
+            $data = Cache::remember(self::CACHE_KEY_ACTIVE, 3600, function (): array {
+                return $this->repository->getActive()->toArray();
+            });
+
+            if (is_array($data)) {
+                $collection = new Collection();
+                foreach ($data as $attributes) {
+                    $model = new ClientPartner();
+                    $model->setRawAttributes($attributes, true);
+                    $collection->push($model);
+                }
+
+                return $this->memoryActive = $collection;
+            }
+
+            return $this->memoryActive = $this->repository->getActive();
+        } catch (\Throwable) {
+            return $this->memoryActive = new Collection();
+        }
+    }
+
+    public function flushCache(): void
+    {
+        $this->memoryActive = null;
+        Cache::forget(self::CACHE_KEY_ACTIVE);
     }
 
     public function findById(int $id): ?ClientPartner
@@ -48,7 +78,10 @@ class ClientPartnerService
             $data['color'] = 'bg-blue-600 text-white';
         }
 
-        return $this->repository->create($data);
+        $created = $this->repository->create($data);
+        $this->flushCache();
+
+        return $created;
     }
 
     /**
@@ -61,14 +94,20 @@ class ClientPartnerService
             $data['logo'] = $this->uploadLogo($logoFile);
         }
 
-        return $this->repository->update($client, $data);
+        $updated = $this->repository->update($client, $data);
+        $this->flushCache();
+
+        return $updated;
     }
 
     public function delete(ClientPartner $client): bool
     {
         $this->deleteLogoFile($client->logo);
 
-        return $this->repository->delete($client);
+        $deleted = $this->repository->delete($client);
+        $this->flushCache();
+
+        return $deleted;
     }
 
     public function uploadLogo(UploadedFile $file): string

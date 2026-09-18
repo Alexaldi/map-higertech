@@ -45,11 +45,11 @@
             class="site-header__inner max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 flex justify-between items-center gap-1.5 sm:gap-2 w-full">
             {{-- Left: Email & Phone (Desktop & Mobile) --}}
             <div
-                class="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 text-slate-600 dark:text-slate-300 text-[9px] xs:text-[9.5px] sm:text-[12px] min-w-0">
+                class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 text-slate-700 dark:text-slate-300 text-[10px] xs:text-[10.5px] sm:text-[12px] min-w-0">
                 <a href="mailto:{{ setting('contact_email', 'higertechkaryasinergi@gmail.com') }}"
                     title="{{ setting('contact_email', 'higertechkaryasinergi@gmail.com') }}"
-                    class="flex items-center gap-1 hover:text-blue-600 dark:hover:text-cyan-300 transition">
-                    <svg class="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-blue-600 dark:text-cyan-400 shrink-0" fill="none"
+                    class="inline-flex items-center gap-1.5 hover:text-blue-600 dark:hover:text-cyan-300 transition py-1 min-h-[28px]">
+                    <svg class="w-3 sm:w-3.5 h-3 sm:h-3.5 text-blue-600 dark:text-cyan-400 shrink-0" fill="none"
                         stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <rect x="2" y="4" width="20" height="16" rx="2" />
                         <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
@@ -60,8 +60,8 @@
                 <span class="hidden sm:inline text-slate-300 dark:text-slate-700 select-none">•</span>
                 <a href="tel:{{ setting('contact_tel', '+622221010299') }}"
                     title="{{ setting('contact_phone', '022-2101-0299') }}"
-                    class="flex items-center gap-1 hover:text-blue-600 dark:hover:text-cyan-300 transition">
-                    <svg class="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-blue-600 dark:text-cyan-400 shrink-0" fill="none"
+                    class="inline-flex items-center gap-1.5 hover:text-blue-600 dark:hover:text-cyan-300 transition py-1 min-h-[28px]">
+                    <svg class="w-3 sm:w-3.5 h-3 sm:h-3.5 text-blue-600 dark:text-cyan-400 shrink-0" fill="none"
                         stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path
                             d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 .8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
@@ -90,7 +90,7 @@
             <div class="site-contact flex items-center gap-1 sm:gap-2 shrink-0">
                 {{-- Single Icon Dark / Light Mode Toggle Button --}}
                 <button id="theme-toggle" onclick="toggleTheme()" type="button"
-                    class="active:scale-90 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-200/80 dark:bg-slate-900/60 border border-slate-300/80 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-slate-300/60 dark:hover:bg-slate-800 transition"
+                    class="active:scale-90 flex items-center justify-center min-w-[34px] min-h-[34px] sm:min-w-[36px] sm:min-h-[36px] rounded-lg bg-slate-200/80 dark:bg-slate-900/60 border border-slate-300/80 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-slate-300/60 dark:hover:bg-slate-800 transition"
                     title="Ganti Mode Tampilan" aria-label="Ganti Mode Tampilan">
                     {{-- Sun icon: shows in dark mode --}}
                     <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 hidden dark:block" fill="none"
@@ -115,12 +115,12 @@
 
                 {{-- Language Switcher with Instant Eager Loading --}}
                 <div
-                    class="language-switch inline-flex items-center p-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-900/60 border border-slate-300/80 dark:border-white/15 gap-0.5 text-[10px] sm:text-xs font-semibold">
+                    class="language-switch inline-flex items-center p-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-900/60 border border-slate-300/80 dark:border-white/15 gap-0.5 text-[11px] sm:text-xs font-semibold">
                     <a href="{{ route('locale.switch', 'id') }}" onclick="switchLocaleEager(event, this)"
-                        class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 {{ $locale === 'id' ? 'bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40 pointer-events-none cursor-default select-none' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white' }}"
+                        class="min-w-[32px] min-h-[32px] flex items-center justify-center px-2 py-1 rounded-md transition-all duration-150 {{ $locale === 'id' ? 'bg-white dark:bg-blue-600 text-slate-900 dark:!text-white font-bold shadow-xs border border-slate-300/70 dark:border-blue-400/40 pointer-events-none cursor-default select-none' : 'text-slate-700 hover:text-slate-950 dark:text-slate-200 dark:hover:text-white' }}"
                         {!! $locale === 'id' ? 'aria-current="true" tabindex="-1"' : '' !!}>ID</a>
                     <a href="{{ route('locale.switch', 'en') }}" onclick="switchLocaleEager(event, this)"
-                        class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 {{ $locale === 'en' ? 'bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40 pointer-events-none cursor-default select-none' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white' }}"
+                        class="min-w-[32px] min-h-[32px] flex items-center justify-center px-2 py-1 rounded-md transition-all duration-150 {{ $locale === 'en' ? 'bg-white dark:bg-blue-600 text-slate-900 dark:!text-white font-bold shadow-xs border border-slate-300/70 dark:border-blue-400/40 pointer-events-none cursor-default select-none' : 'text-slate-700 hover:text-slate-950 dark:text-slate-200 dark:hover:text-white' }}"
                         {!! $locale === 'en' ? 'aria-current="true" tabindex="-1"' : '' !!}>EN</a>
                 </div>
             </div>
@@ -138,12 +138,12 @@
             if (container) {
                 container.querySelectorAll('a').forEach(a => {
                     a.className =
-                        'px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white';
+                        'min-w-[32px] min-h-[32px] flex items-center justify-center px-2 py-1 rounded-md transition-all duration-150 text-slate-700 hover:text-slate-950 dark:text-slate-200 dark:hover:text-white';
                     a.removeAttribute('aria-current');
                     a.removeAttribute('tabindex');
                 });
                 link.className =
-                    'px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md transition-all duration-150 bg-white dark:bg-cyan-600 text-slate-900 dark:text-white font-bold shadow-xs border border-slate-300/70 dark:border-cyan-400/40 pointer-events-none cursor-default select-none';
+                    'min-w-[32px] min-h-[32px] flex items-center justify-center px-2 py-1 rounded-md transition-all duration-150 bg-white dark:bg-blue-600 text-slate-900 dark:!text-white font-bold shadow-xs border border-slate-300/70 dark:border-blue-400/40 pointer-events-none cursor-default select-none';
                 link.setAttribute('aria-current', 'true');
                 link.setAttribute('tabindex', '-1');
             }
@@ -181,8 +181,12 @@
 
                 <a class="site-brand flex-shrink-0 flex items-center gap-3 {{ $isHome ? 'pointer-events-none cursor-default select-none' : '' }} {{ $isMap ? 'max-xl:absolute max-xl:left-1/2 max-xl:-translate-x-1/2' : '' }}"
                     href="{{ route('home') }}" aria-label="Higertech Karya Sinergi" {!! $isHome ? 'aria-current="page" tabindex="-1"' : '' !!}>
-                    <img src="{{ asset('images/brand/higertech-logo.png') }}" alt="Higertech Karya Sinergi"
-                        class="h-10 sm:h-11 w-auto object-contain dark:brightness-110" width="400" height="125">
+                    <picture>
+                        <source srcset="{{ asset('images/brand/higertech-logo.webp') }}" type="image/webp">
+                        <img src="{{ asset('images/brand/higertech-logo.png') }}" alt="Higertech Karya Sinergi"
+                            class="h-10 sm:h-11 w-auto object-contain dark:brightness-110" width="425"
+                            height="125" decoding="async" fetchpriority="high" loading="eager">
+                    </picture>
                 </a>
             </div>
 
@@ -269,7 +273,7 @@
                     <span>{{ __('landing.nav_internship') }}</span>
                     @if (is_internship_enabled())
                         <span
-                            class="px-1.5 py-px rounded-full bg-emerald-500 text-[9px] font-extrabold text-white uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
+                            class="px-1.5 py-px rounded-full bg-emerald-800 text-white font-extrabold text-[9px] uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
                     @else
                         <span
                             class="px-1.5 py-px rounded-full bg-slate-400 dark:bg-slate-600 text-[9px] font-extrabold text-white uppercase tracking-wider">Ditutup</span>
@@ -282,7 +286,7 @@
                 <a href="https://katalog.inaproc.id/higertech-karya-sinergi" target="_blank"
                     rel="noopener noreferrer"
                     class="inaproc-link hidden xl:inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-red-200 dark:border-red-900/50 bg-gradient-to-r from-red-50 to-amber-50/50 dark:from-red-950/40 dark:to-[#1a1215] text-slate-800 dark:text-slate-100 hover:border-red-400 transition shadow-sm"
-                    aria-label="Buka INAPROC Katalog Elektronik">
+                    aria-label="INAPROC Katalog Elektronik LKPP">
                     <span class="w-7 h-7 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24" aria-hidden="true">
@@ -300,7 +304,7 @@
                             Elektronik LKPP</span>
                     </div>
                     <img src="{{ asset('images/brand/inaproc-logo.png') }}" alt="INAPROC Katalog Elektronik"
-                        class="sr-only">
+                        class="sr-only" width="28" height="28" loading="lazy" decoding="async">
                 </a>
 
                 {{-- Mobile menu button with smooth hamburger / close toggle --}}
@@ -413,7 +417,7 @@
                     </div>
                     @if (is_internship_enabled())
                         <span
-                            class="px-1.5 py-0.5 rounded-full bg-emerald-500 text-[9px] font-extrabold text-white uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
+                            class="px-1.5 py-0.5 rounded-full bg-emerald-800 text-white font-extrabold text-[9px] uppercase tracking-wider">{{ __('landing.nav_internship_badge') }}</span>
                     @else
                         <span
                             class="px-1.5 py-0.5 rounded-full bg-slate-400 dark:bg-slate-600 text-[9px] font-extrabold text-white uppercase tracking-wider">Ditutup</span>
@@ -426,7 +430,7 @@
                 <a href="https://katalog.inaproc.id/higertech-karya-sinergi" target="_blank"
                     rel="noopener noreferrer"
                     class="flex items-center justify-between p-3 rounded-xl border border-red-200 dark:border-red-900/50 bg-gradient-to-r from-red-50 to-amber-50/50 dark:from-red-950/40 dark:to-[#1a1215] text-slate-800 dark:text-slate-100 hover:border-red-400 transition shadow-xs"
-                    aria-label="Buka INAPROC Katalog Elektronik">
+                    aria-label="INAPROC Katalog Elektronik LKPP">
                     <div class="flex items-center gap-3">
                         <span
                             class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-xs shrink-0">

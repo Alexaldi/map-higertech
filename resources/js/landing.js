@@ -15,8 +15,8 @@ export function initPillars() {
 
     let activePillarIndex = 0;
 
-    function setActivePillar(index) {
-        if (activePillarIndex === index) return;
+    function setActivePillar(index, shouldFocus = false) {
+        if (activePillarIndex === index && !shouldFocus) return;
         activePillarIndex = index;
 
         pillarBtns.forEach((btn, idx) => {
@@ -27,7 +27,6 @@ export function initPillars() {
                     'border-2',
                     'border-blue-500',
                     'dark:border-cyan-500',
-                    'pointer-events-none',
                     'cursor-default',
                     'select-none'
                 );
@@ -40,7 +39,8 @@ export function initPillars() {
                     'cursor-pointer'
                 );
                 btn.setAttribute('aria-selected', 'true');
-                btn.setAttribute('tabindex', '-1');
+                btn.setAttribute('tabindex', '0');
+                if (shouldFocus) btn.focus();
             } else {
                 btn.classList.remove(
                     'bg-blue-50/90',
@@ -48,7 +48,6 @@ export function initPillars() {
                     'border-2',
                     'border-blue-500',
                     'dark:border-cyan-500',
-                    'pointer-events-none',
                     'cursor-default',
                     'select-none'
                 );
@@ -61,11 +60,12 @@ export function initPillars() {
                     'cursor-pointer'
                 );
                 btn.setAttribute('aria-selected', 'false');
-                btn.removeAttribute('tabindex');
+                btn.setAttribute('tabindex', '-1');
             }
         });
 
         if (displayBody) {
+            displayBody.setAttribute('aria-labelledby', `pillar-tab-${index}`);
             displayBody.style.opacity = '0';
             displayBody.style.transform = 'translateY(4px)';
             setTimeout(() => {
@@ -97,15 +97,38 @@ export function initPillars() {
         }
     }
 
-    // Set initial active state
-    if (pillarBtns[0]) {
-        pillarBtns[0].classList.add('pointer-events-none', 'cursor-default', 'select-none');
-        pillarBtns[0].setAttribute('aria-selected', 'true');
-        pillarBtns[0].setAttribute('tabindex', '-1');
-    }
-
+    // Set initial active state & keyboard navigation
     pillarBtns.forEach((btn, idx) => {
+        if (idx === 0) {
+            btn.setAttribute('aria-selected', 'true');
+            btn.setAttribute('tabindex', '0');
+        } else {
+            btn.setAttribute('aria-selected', 'false');
+            btn.setAttribute('tabindex', '-1');
+        }
+
         btn.addEventListener('click', () => setActivePillar(idx));
+
+        btn.addEventListener('keydown', (e) => {
+            let targetIndex = null;
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                targetIndex = (idx + 1) % pillarBtns.length;
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                targetIndex = (idx - 1 + pillarBtns.length) % pillarBtns.length;
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                targetIndex = 0;
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                targetIndex = pillarBtns.length - 1;
+            }
+
+            if (targetIndex !== null) {
+                setActivePillar(targetIndex, true);
+            }
+        });
     });
 }
 

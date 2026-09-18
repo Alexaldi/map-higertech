@@ -1,7 +1,7 @@
 {{-- Global Page Transition Skeleton & Telemetry Center Spinner Loader --}}
 <div id="page-loader-overlay" style="display: none;"
     class="fixed inset-0 z-[999999] pointer-events-none opacity-0 invisible transition-opacity duration-200 flex items-center justify-center bg-slate-100/85 dark:bg-[#070d1a]/90 backdrop-blur-md overflow-hidden"
-    aria-hidden="true" role="status" aria-live="polite">
+    aria-hidden="true">
 
     <style>
         @keyframes hg-spin {
@@ -36,9 +36,9 @@
         </div>
 
         {{-- Status Title & Subtitle --}}
-        <h4 id="page-loader-title" class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
+        <p id="page-loader-title" class="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
             {{ __('landing.loader_title') }}
-        </h4>
+        </p>
         <p id="page-loader-subtitle" class="text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
             {{ __('landing.loader_subtitle') }}
         </p>

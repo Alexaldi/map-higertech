@@ -14,7 +14,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch scroll-reveal scroll-reveal-scale">
             {{-- Tab Buttons --}}
-            <div class="lg:col-span-5 space-y-3" id="pillar-tabs">
+            <div class="lg:col-span-5 space-y-3" id="pillar-tabs" role="tablist"
+                aria-label="{{ __('landing.pillar_label') }}">
                 @php
                     $pillars = [
                         [
@@ -61,7 +62,9 @@
                 @endphp
 
                 @foreach ($pillars as $i => $pillar)
-                    <button type="button"
+                    <button type="button" role="tab" id="pillar-tab-{{ $i }}"
+                        aria-controls="pillar-display-body" aria-selected="{{ $i === 0 ? 'true' : 'false' }}"
+                        tabindex="{{ $i === 0 ? '0' : '-1' }}"
                         class="pillar-btn w-full text-left p-4 rounded-2xl transition-all flex items-center gap-4 cursor-pointer {{ $i === 0 ? 'bg-blue-50/90 dark:bg-blue-900/30 border-2 border-blue-500 dark:border-cyan-500' : 'bg-slate-50 dark:bg-[#131D36] border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800' }}"
                         data-index="{{ $i }}" data-title="{{ $pillar['title'] }}"
                         data-badge="{{ $pillar['badge'] }}" data-desc="{{ $pillar['desc'] }}"
@@ -109,7 +112,8 @@
             <div class="lg:col-span-7">
                 <div
                     class="rounded-3xl border border-blue-200 dark:border-slate-800 bg-gradient-to-br from-blue-50/60 via-slate-50 to-indigo-50/40 dark:from-[#131D36] dark:via-[#0E1628] dark:to-[#0B1120] p-6 sm:p-10 shadow-sm min-h-[380px] flex flex-col justify-between relative overflow-hidden">
-                    <div id="pillar-display-body" class="space-y-5 relative z-10 transition-all duration-200"
+                    <div id="pillar-display-body" role="tabpanel" aria-labelledby="pillar-tab-0"
+                        class="space-y-5 relative z-10 transition-all duration-200"
                         style="transition: opacity 0.2s ease, transform 0.2s ease;">
                         <div class="flex items-center gap-3">
                             <div id="pillar-display-icon-box"

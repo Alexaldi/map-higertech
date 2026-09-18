@@ -7,7 +7,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
 
             {{-- Text Content --}}
-            <div class="space-y-6 scroll-reveal">
+            <div class="space-y-6">
                 <h1
                     class="text-4xl sm:text-5xl lg:text-[48px] font-extrabold tracking-tight leading-[1.15] text-slate-900 dark:text-white">
                     {{ __('landing.hero_title') }}<br>
@@ -63,7 +63,7 @@
             </div>
 
             {{-- Hero Visual Presentation (Clean 3D showcase without card container) --}}
-            <div class="relative flex flex-col items-center justify-center scroll-reveal scroll-reveal-delay-1">
+            <div class="relative flex flex-col items-center justify-center">
                 {{-- Ambient Background Glow behind 3D Unit --}}
                 <div
                     class="absolute -top-10 w-72 h-72 sm:w-80 sm:h-80 bg-cyan-500/15 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none">
@@ -86,7 +86,7 @@
                         <source srcset="{{ asset('images/products/hero-unit.webp') }}" type="image/webp">
                         <img src="{{ asset('images/products/hero-unit.png') }}"
                             alt="Higertech Telemetry Field Monitoring Unit" width="512" height="384"
-                            fetchpriority="high" decoding="async"
+                            fetchpriority="high" loading="eager" decoding="async"
                             class="w-full max-h-72 sm:max-h-84 object-contain relative z-10 animate-float-subtle drop-shadow-2xl transition-transform duration-500 hover:scale-105">
                     </picture>
                 </div>

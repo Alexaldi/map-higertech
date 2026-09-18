@@ -34,10 +34,5 @@ class AppServiceProvider extends ServiceProvider
         View::composer('landing.partials.clients', function ($view): void {
             $view->with('clients', app(ClientPartnerService::class)->getActive());
         });
-
-        // Provide site settings globally to layouts and landing partials
-        View::composer(['landing.*', 'layouts.*'], function ($view): void {
-            $view->with('siteSettings', app(SiteSettingService::class)->all());
-        });
     }
 }

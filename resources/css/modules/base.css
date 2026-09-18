@@ -59,12 +59,20 @@ button {
     background: #334155;
 }
 
-* {
+html,
+body,
+.overflow-y-auto,
+.overflow-x-auto,
+[data-station-list] {
     scrollbar-width: thin;
     scrollbar-color: #cbd5e1 transparent;
 }
 
-.dark * {
+html.dark,
+.dark body,
+.dark .overflow-y-auto,
+.dark .overflow-x-auto,
+.dark [data-station-list] {
     scrollbar-color: #1e293b transparent;
 }
 

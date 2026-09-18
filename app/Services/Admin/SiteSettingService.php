@@ -10,6 +10,8 @@ class SiteSettingService
 {
     public const CACHE_KEY = 'site_settings.all';
 
+    private ?array $memorySettings = null;
+
     public function __construct(private readonly SiteSettingRepository $repository) {}
 
     /**
@@ -17,7 +19,11 @@ class SiteSettingService
      */
     public function all(): array
     {
-        return Cache::rememberForever(self::CACHE_KEY, function (): array {
+        if ($this->memorySettings !== null) {
+            return $this->memorySettings;
+        }
+
+        return $this->memorySettings = Cache::rememberForever(self::CACHE_KEY, function (): array {
             try {
                 return $this->repository->getAllKeyValue();
             } catch (\Throwable) {
@@ -49,6 +55,7 @@ class SiteSettingService
 
     public function flushCache(): void
     {
+        $this->memorySettings = null;
         Cache::forget(self::CACHE_KEY);
     }
 }
