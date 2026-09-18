@@ -50,7 +50,9 @@
                     class="side-menu__icon fe fe-briefcase"></i><span class="side-menu__label">Mitra & Klien</span></a>
             <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-cpu"></i><span
                     class="side-menu__label">Produk</span></a>
-            <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-file-text"></i><span
+            <a class="side-menu__item {{ request()->routeIs('admin.articles.*') ? 'active pointer-events-none cursor-default select-none' : '' }}"
+                href="{{ route('admin.articles.index') }}" {!! request()->routeIs('admin.articles.*') ? 'aria-current="page" tabindex="-1"' : '' !!}><i
+                    class="side-menu__icon fe fe-file-text"></i><span
                     class="side-menu__label">Artikel</span></a>
         </li>
     </ul>
