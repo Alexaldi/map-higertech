@@ -35,6 +35,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with('clients', app(ClientPartnerService::class)->getActive());
         });
 
+        // Provide latest/featured articles to landing page articles section
+        View::composer('landing.partials.articles', function ($view): void {
+            $view->with('homeArticles', app(\App\Services\Admin\ArticleService::class)->getFeaturedOrLatest(4));
+        });
+
         // Provide site settings globally to layouts and landing partials
         View::composer(['landing.*', 'layouts.*'], function ($view): void {
             $view->with('siteSettings', app(SiteSettingService::class)->all());

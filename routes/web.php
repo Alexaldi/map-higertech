@@ -3,18 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClientPartnerController;
 use App\Http\Controllers\Admin\InternshipApplicationController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\ArticleController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
 Route::view('/products', 'products.index')->name('products');
-Route::view('/articles', 'articles.index')->name('articles');
-Route::view('/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari', 'articles.pch-bendungkaret')
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
+Route::get('/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari', [ArticleController::class, 'show'])
+    ->defaults('slug', 'pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari')
     ->name('articles.pch-bendungkaret');
+Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 Route::view('/tutorials', 'tutorials.index')->name('tutorials');
 Route::redirect('/Article', '/articles');
 Route::redirect('/article/pemasangan-pos-curah-hujan-(pch)-bendungkaret-tawangsari', '/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari');
@@ -58,6 +62,7 @@ Route::middleware(['auth', 'prevent-back'])
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('categories', CategoryController::class)->except('show');
     Route::resource('clients', ClientPartnerController::class)->except('show');
+    Route::resource('articles', AdminArticleController::class);
     Route::get('internships/{internship}/letter', [InternshipApplicationController::class, 'downloadLetter'])->name('internships.letter');
     Route::get('internships/{internship}/letter/preview', [InternshipApplicationController::class, 'previewLetter'])->name('internships.letter.preview');
     Route::resource('internships', InternshipApplicationController::class)->except(['create', 'store', 'edit']);
