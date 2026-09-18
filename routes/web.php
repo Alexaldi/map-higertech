@@ -9,7 +9,9 @@ use App\Http\Controllers\Admin\ClientPartnerController;
 use App\Http\Controllers\Admin\InternshipApplicationController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\TutorialController as AdminTutorialController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\TutorialController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
@@ -19,7 +21,8 @@ Route::get('/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari', [
     ->defaults('slug', 'pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari')
     ->name('articles.pch-bendungkaret');
 Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
-Route::view('/tutorials', 'tutorials.index')->name('tutorials');
+Route::get('/tutorials', [TutorialController::class, 'index'])->name('tutorials');
+Route::get('/tutorials/{slug}', [TutorialController::class, 'show'])->name('tutorials.show');
 Route::redirect('/Article', '/articles');
 Route::redirect('/article/pemasangan-pos-curah-hujan-(pch)-bendungkaret-tawangsari', '/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari');
 Route::redirect('/Tutorial', '/tutorials');
@@ -63,6 +66,7 @@ Route::middleware(['auth', 'prevent-back'])
     Route::resource('categories', CategoryController::class)->except('show');
     Route::resource('clients', ClientPartnerController::class)->except('show');
     Route::resource('articles', AdminArticleController::class);
+    Route::resource('tutorials', AdminTutorialController::class);
     Route::get('internships/{internship}/letter', [InternshipApplicationController::class, 'downloadLetter'])->name('internships.letter');
     Route::get('internships/{internship}/letter/preview', [InternshipApplicationController::class, 'previewLetter'])->name('internships.letter.preview');
     Route::resource('internships', InternshipApplicationController::class)->except(['create', 'store', 'edit']);
