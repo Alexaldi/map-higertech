@@ -54,6 +54,10 @@
                 href="{{ route('admin.articles.index') }}" {!! request()->routeIs('admin.articles.*') ? 'aria-current="page" tabindex="-1"' : '' !!}><i
                     class="side-menu__icon fe fe-file-text"></i><span
                     class="side-menu__label">Artikel</span></a>
+            <a class="side-menu__item {{ request()->routeIs('admin.tutorials.*') ? 'active pointer-events-none cursor-default select-none' : '' }}"
+                href="{{ route('admin.tutorials.index') }}" {!! request()->routeIs('admin.tutorials.*') ? 'aria-current="page" tabindex="-1"' : '' !!}><i
+                    class="side-menu__icon fe fe-book-open"></i><span
+                    class="side-menu__label">Tutorial & Panduan</span></a>
         </li>
     </ul>
 </aside>
