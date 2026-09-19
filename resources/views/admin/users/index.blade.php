@@ -27,7 +27,7 @@
                         <tbody>
                             @forelse ($users as $user)
                                 <tr>
-                                    <td></td>
+                                    <td>{{ $loop->iteration }}</td>
 
                                     <td>
                                         <h6 class="mb-0 fs-14 fw-semibold">
@@ -122,4 +122,12 @@
         </div>
     </div><!-- COL END -->
 </div>
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#data-table').DataTable();
+    });
+</script>
+@endpush
 @endsection

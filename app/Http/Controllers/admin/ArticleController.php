@@ -9,6 +9,7 @@ use App\Services\Admin\ArticleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 
 class ArticleController extends Controller
 {
@@ -23,7 +24,7 @@ class ArticleController extends Controller
 
     public function create(): View
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::artikel()->orderBy('name')->get();
 
         return view('admin.articles.form', compact('categories'));
     }
@@ -44,7 +45,7 @@ class ArticleController extends Controller
 
     public function edit(Article $article): View
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::artikel()->orderBy('name')->get();
 
         return view('admin.articles.form', compact('article', 'categories'));
     }
@@ -81,7 +82,10 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255'],
-            'category_id' => ['nullable', 'exists:categories,id'],
+            'category_id' => [
+                'nullable',
+                Rule::exists('categories', 'id')->where('tipe', 'artikel'), 
+            ],
             'category' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['nullable', 'string'],
             'content' => ['required', 'string'],
@@ -101,6 +105,15 @@ class ArticleController extends Controller
         ]);
 
         $validated['is_featured'] = $request->boolean('is_featured');
+
+        // kategori baru dari input teks bebas ("+ Ketik Kategori Lainnya...")
+        if (! empty($validated['category']) && empty($validated['category_id'])) {
+            $cat = Category::firstOrCreate(
+                ['name' => $validated['category']],
+                ['tipe' => 'artikel']
+            );
+            $validated['category_id'] = $cat->id;
+        }
 
         // If category_id is selected, synchronize the category name string as well
         if (! empty($validated['category_id'])) {

@@ -10,6 +10,8 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\Admin\ClientPartnerService;
 use App\Services\Admin\SiteSettingService;
 use Illuminate\Support\Facades\View;
+use App\Repositories\Admin\Contracts\ProductRepositoryInterface;
+use App\Repositories\Admin\ProductRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         if (file_exists(app_path('Helpers/setting.php'))) {
             require_once app_path('Helpers/setting.php');
         }
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
     }
 
     /**

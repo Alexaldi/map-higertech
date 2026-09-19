@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\TutorialController as AdminTutorialController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\TutorialController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\ProductController as GuestProductsController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
@@ -31,6 +33,9 @@ Route::get('/internship', [\App\Http\Controllers\InternshipController::class, 'i
 Route::post('/internship/apply', [\App\Http\Controllers\InternshipController::class, 'apply'])->name('internship.apply');
 Route::get('/internship/track', [\App\Http\Controllers\InternshipController::class, 'track'])->name('internship.track');
 Route::get('/internship/letter/{code}', [\App\Http\Controllers\InternshipController::class, 'downloadLetter'])->name('internship.letter');
+
+// products
+Route::get('/products', [GuestProductsController::class, 'index'])->name('products');
 
 // Map page
 Route::view('/map', 'map.index')->name('map');
@@ -72,4 +77,5 @@ Route::middleware(['auth', 'prevent-back'])
     Route::resource('internships', InternshipApplicationController::class)->except(['create', 'store', 'edit']);
     Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');
+    Route::resource('products', ProductController::class);
 });
