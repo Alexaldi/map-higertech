@@ -100,4 +100,12 @@
             </div>
         </div>
     </div>
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#data-table').DataTable();
+    });
+</script>
+@endpush
 @endsection

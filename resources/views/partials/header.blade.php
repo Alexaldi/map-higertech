@@ -218,13 +218,16 @@
                     <div
                         class="absolute left-0 top-full mt-1 w-60 rounded-2xl bg-white dark:bg-[#131D36] shadow-2xl border border-slate-200/80 dark:border-slate-700 py-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         <div class="py-1">
-                            <a href="{{ route('products') }}"
-                                class="flex items-center justify-between px-4 py-2 text-xs font-semibold
-                                {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 bg-blue-50/60 dark:bg-blue-900/30 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400' }} transition"
-                                {!! $isProducts ? 'aria-current="page" tabindex="-1"' : '' !!}>
-                                <span>Hidrologi</span>
-                            </a>
-                            <a href="https://higertech.com/Product/Hidrologi" class="hidden" aria-hidden="true"></a>
+                            @forelse ($productCategories as $cat)
+                                <a href="{{ route('products', ['category' => $cat->id]) }}"
+                                    class="flex items-center justify-between px-4 py-2 text-xs font-semibold
+                                    {{ request('category') == $cat->id ? 'text-blue-600 dark:text-cyan-400 bg-blue-50/60 dark:bg-blue-900/30 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400' }} transition"
+                                    {!! request('category') == $cat->id ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                                    <span>{{ $cat->name }}</span>
+                                </a>
+                            @empty
+                                <span class="block px-4 py-2 text-xs text-slate-400">Belum ada kategori</span>
+                            @endforelse
                         </div>
                     </div>
                 </div>

@@ -33,6 +33,20 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tipe" class="form-label">Tipe Kategori</label>
+                                <select class="form-control @error('tipe') is-invalid @enderror" id="tipe" name="tipe">
+                                    <option value="" disabled {{ old('tipe', $category->tipe ?? '') === '' ? 'selected' : '' }}>-- Pilih Tipe --</option>
+                                    <option value="produk" {{ old('tipe', $category->tipe ?? '') === 'produk' ? 'selected' : '' }}>Produk</option>
+                                    <option value="artikel" {{ old('tipe', $category->tipe ?? '') === 'artikel' ? 'selected' : '' }}>Artikel</option>
+                                </select>
+                                <small class="text-muted fs-12">Menentukan kategori ini muncul di form Produk atau Artikel.</small>
+                                @error('tipe')
+                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="description" class="form-label">Deskripsi <span class="text-muted fs-12">(opsional)</span></label>

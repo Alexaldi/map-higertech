@@ -1,15 +1,15 @@
 @extends('admin.layouts.app')
-@section('title', 'Kategori | Higertech Karya Sinergi')
+@section('title', 'Produk | Higertech Karya Sinergi')
 @section('content')
 <div class="row mt-5">
     <div class="col-12 col-sm-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title mb-0">Daftar Kategori</h3>
+                <h3 class="card-title mb-0">Daftar Produk</h3>
 
-                <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
                     <i class="fe fe-plus me-1"></i>
-                    Tambah Kategori
+                    Tambah Produk
                 </a>
             </div>
             <div class="card-body">
@@ -18,26 +18,57 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Sub Nama</th>
-                                <th>Deskripsi</th>
+                                <th>Gambar</th>
+                                <th>Produk</th>
+                                <th>Kategori</th>
+                                <th>Status</th>
                                 <th>Dibuat</th>
-                                <th>Terakhir Diubah</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($categories as $category)
+                            @forelse ($products as $product)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $category->name }}</td>
-                                    <td>{{ $category->sub_nama }}</td>
-                                    <td>{{ $category->description ?: '-' }}</td>
-                                    <td>{{ strtolower($category->created_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}</td>
-                                    <td>{{ strtolower($category->updated_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}</td>
+
                                     <td>
+                                        <img
+                                            src="{{ $product->image_url }}"
+                                            alt="{{ $product->title }}"
+                                            style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;"
+                                            onerror="this.src='https://placehold.co/60x60/e2e8f0/94a3b8?text=No+Image'"
+                                        >
+                                    </td>
+
+                                    <td>
+                                        <h6 class="mb-0 fs-14 fw-semibold">
+                                            {{ $product->title }}
+                                        </h6>
+                                        <span class="fs-12 text-muted">
+                                            {{ $product->slug }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {{ $product->category->name ?? '-' }}
+                                    </td>
+
+                                    <td>
+                                        @if ($product->is_active)
+                                            <span class="badge bg-success">Aktif</span>
+                                        @else
+                                            <span class="badge bg-secondary">Nonaktif</span>
+                                        @endif
+                                    </td>
+
+                                    <td>
+                                        {{ strtolower($product->created_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}
+                                    </td>
+
+                                    <td>
+                                        <!-- edit -->
                                         <a
-                                            href="{{ route('admin.categories.edit', $category) }}"
+                                            href="{{ route('admin.products.edit', $product) }}"
                                             class="btn btn-primary btn-sm rounded-11 me-2 d-inline-flex align-items-center justify-content-center"
                                             data-bs-toggle="tooltip"
                                             data-bs-original-title="Edit"
@@ -57,13 +88,16 @@
                                                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/>
                                             </svg>
                                         </a>
+
+                                        <!-- delete -->
                                         <form
-                                            action="{{ route('admin.categories.destroy', $category) }}"
+                                            action="{{ route('admin.products.destroy', $product) }}"
                                             method="POST"
                                             class="d-inline delete-form"
                                         >
                                             @csrf
                                             @method('DELETE')
+
                                             <button
                                                 type="submit"
                                                 class="btn btn-danger btn-sm rounded-11 d-inline-flex align-items-center justify-content-center"
@@ -93,7 +127,9 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center">Belum ada kategori.</td>
+                                    <td colspan="7" class="text-center">
+                                        Belum ada produk.
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -101,7 +137,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div><!-- COL END -->
 </div>
 
 @push('scripts')
