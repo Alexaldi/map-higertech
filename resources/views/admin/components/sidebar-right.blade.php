@@ -21,11 +21,22 @@
                                 <img alt="user-img" class="avatar avatar-xl brround mx-auto text-center" src="{{ asset('admin/assets/images/faces/6.jpg') }}"><span class="avatar-status profile-status bg-green"></span>
                             </div>
                             <div class="user-info mg-t-20">
-                                <h6 class="fw-semibold  mt-2 mb-0">Mintrona Pechon</h6>
-                                <span class="mb-0 text-muted fs-12">Premium Member</span>
+                                <h6 class="fw-semibold  mt-2 mb-0">{{ Auth::user()->name }}</h6> 
+                                <span class="mb-0 text-muted fs-12">Admin Higertech</span>
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="dropdown-item d-flex border-bottom border-top d-none"id="pwa-install-btn">
+                        <div class="d-flex">
+                            <i class="fe fe-download me-3 tx-20 text-muted"></i>
+                            <div class="pt-1">
+                                <h6 class="mb-0" id="pwa-install-title">Install Aplikasi</h6>
+                                <p class="tx-12 mb-0 text-muted" id="pwa-install-description">
+                                    Tambahkan ke Home Screen
+                                </p>
+                            </div>
+                        </div>
+                    </button>
                     <form action="{{ route('admin.logout') }}" method="POST">
                         @csrf
 
@@ -43,95 +54,6 @@
                             </div>
                         </button>
                     </form>
-                </div>
-                <div class="tab-pane" id="side3">
-                    <a class="dropdown-item bg-gray-100 pd-y-10" href="#">
-                        Account Settings
-                    </a>
-                    <div class="card-body">
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Updates Automatically</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Allow Location Map</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Show Contacts</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Show Notication</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Show Tasks Statistics</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Show Email Notification</span>
-                            </label>
-                        </div>
-                    </div>
-                    <a class="dropdown-item bg-gray-100 pd-y-10" href="#">
-                        General Settings
-                    </a>
-                    <div class="card-body">
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Show User Online</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Website Notication</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Show Recent activity</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Logout Automatically</span>
-                            </label>
-                        </div>
-                        <div class="form-group mg-b-10">
-                            <label class="custom-switch ps-0">
-                                <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input" checked>
-                                <span class="custom-switch-indicator"></span>
-                                <span class="custom-switch-description mg-l-10">Aloow All Notifications</span>
-                            </label>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

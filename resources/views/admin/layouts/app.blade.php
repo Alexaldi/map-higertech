@@ -12,6 +12,11 @@
     <meta name="keywords"
         content="admin, dashboard, dashboard ui, admin dashboard template, admin panel dashboard, admin panel html, admin panel html template, admin panel template, admin ui templates, administrative templates, best admin dashboard, best admin templates, bootstrap 4 admin template, bootstrap admin dashboard, bootstrap admin panel, html css admin templates, html5 admin template, premium bootstrap templates, responsive admin template, template admin bootstrap 4, themeforest html">
 
+    <!-- PWA -->
+    <meta name="theme-color" content="#1e3a8a">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/pwa/icon-192.png') }}">
+
     <!-- TITLE -->
     <title>@yield('title', 'Admin | Higertech Karya Sinergi')</title>
 

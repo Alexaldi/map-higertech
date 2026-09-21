@@ -1,0 +1,13 @@
+{
+    "name": "Higertech Admin",
+    "short_name": "Higertech Admin",
+    "start_url": "/admin/dashboard",
+    "scope": "/admin/",
+    "display": "standalone",
+    "background_color": "#0B1120",
+    "theme_color": "#1e3a8a",
+    "icons": [
+        { "src": "/images/pwa/icon-192.png", "sizes": "192x192", "type": "image/png" },
+        { "src": "/images/pwa/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    ]
+}
