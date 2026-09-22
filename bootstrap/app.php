@@ -19,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\SecurityHeaders::class,
         ]);
 
+        $middleware->redirectTo(
+            guests: '/login',
+            users: '/admin/dashboard',
+        );
+
         $middleware->alias([
             'prevent-back' => \App\Http\Middleware\PreventBackHistory::class,
         ]);
