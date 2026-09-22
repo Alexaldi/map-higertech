@@ -52,7 +52,7 @@ class WhatsAppService
 
         try {
             $headers = ['Content-Type' => 'application/json'];
-            if ($this->deviceId) {
+            if (! empty($this->deviceId) && $this->deviceId !== 'default') {
                 $headers['X-Device-Id'] = $this->deviceId;
             }
 
@@ -102,7 +102,7 @@ class WhatsAppService
 
         try {
             $headers = [];
-            if ($this->deviceId) {
+            if (! empty($this->deviceId) && $this->deviceId !== 'default') {
                 $headers['X-Device-Id'] = $this->deviceId;
             }
 
