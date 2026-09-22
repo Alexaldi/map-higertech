@@ -315,6 +315,21 @@
 
             {{-- Right: INAPROC Badge (Desktop) + Mobile Menu Button --}}
             <div class="flex items-center gap-3">
+                @auth
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-blue-500/40 bg-blue-50/80 dark:bg-blue-950/60 dark:border-cyan-500/40 text-blue-700 dark:text-cyan-300 hover:bg-blue-100 dark:hover:bg-blue-900/60 transition shadow-sm text-xs font-bold"
+                        aria-label="Panel Dashboard Admin">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <svg class="w-4 h-4 text-blue-600 dark:text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                        </svg>
+                        <span>Dashboard Admin</span>
+                    </a>
+                @endauth
+
                 <a href="https://katalog.inaproc.id/higertech-karya-sinergi" target="_blank"
                     rel="noopener noreferrer"
                     class="inaproc-link hidden xl:inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-red-200 dark:border-red-900/50 bg-gradient-to-r from-red-50 to-amber-50/50 dark:from-red-950/40 dark:to-[#1a1215] text-slate-800 dark:text-slate-100 hover:border-red-400 transition shadow-sm"
@@ -360,6 +375,23 @@
     <div id="site-mobile-drawer"
         class="hidden xl:hidden bg-white/98 dark:bg-[#0c1427]/98 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800 shadow-xl transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 space-y-3">
+            @auth
+                <div class="pb-2 mb-2 border-b border-slate-200/80 dark:border-slate-800">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-blue-600 dark:bg-cyan-600 text-white font-bold text-xs shadow-sm">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                            </svg>
+                            <span>Dashboard Admin</span>
+                        </span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    </a>
+                </div>
+            @endauth
             <nav class="flex flex-col space-y-1 text-[13px] font-semibold text-slate-700 dark:text-slate-200"
                 aria-label="Menu Mobile">
                 {{-- Home --}}
