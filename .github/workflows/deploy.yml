@@ -22,18 +22,18 @@ jobs:
           script: |
             echo "🚀 Memulai proses deploy..."
             cd ~/map-higertech
-            
+
             echo "📥 Menarik kode terbaru dari GitHub..."
             git pull origin master
-            
+
             echo "🔄 Refresh autoloading..."
             docker compose exec -T app composer dump-autoload
-            
+
             echo "⚡ Membersihkan dan menyusun cache production..."
             docker compose exec -T app php artisan optimize:clear
             docker compose exec -T app php artisan optimize
-            
+
             echo "🗄️ Menjalankan migrasi database..."
             docker compose exec -T app php artisan migrate --force
-            
+
             echo "✅ Deploy selesai dengan sukses!"
