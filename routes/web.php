@@ -15,6 +15,7 @@ use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProductController as GuestProductsController;
 use App\Http\Controllers\auth\LoginActivityController;
+use App\Http\Controllers\admin\DashboardController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
@@ -63,9 +64,8 @@ Route::middleware(['auth', 'prevent-back'])
     ->name('admin.')
     ->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
     Route::resource('users', UsersController::class);
     Route::get('/login-activity', [LoginActivityController::class, 'index'])
         ->name('login-activity');
