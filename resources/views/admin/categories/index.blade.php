@@ -18,6 +18,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tipe Kategori</th>
                                 <th>Nama</th>
                                 <th>Sub Nama</th>
                                 <th>Deskripsi</th>
@@ -30,6 +31,7 @@
                             @forelse ($categories as $category)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $category->tipe }}</td>
                                     <td>{{ $category->name }}</td>
                                     <td>{{ $category->sub_nama }}</td>
                                     <td>{{ $category->description ?: '-' }}</td>

@@ -1,3 +1,8 @@
+@php
+    $articlesList = collect($homeArticles ?? []);
+@endphp
+
+@if ($articlesList->isNotEmpty())
 <section id="articles" class="py-20 bg-slate-50/50 dark:bg-[#0E1628] transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-12 scroll-reveal">
@@ -11,7 +16,6 @@
         </div>
 
         @php
-            $articlesList = collect($homeArticles ?? []);
             $art1 = $articlesList->get(0);
             $art2 = $articlesList->get(1);
             $art3 = $articlesList->get(2);
@@ -191,3 +195,4 @@
         </div>
     </div>
 </section>
+@endif
