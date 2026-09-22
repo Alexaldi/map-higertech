@@ -58,14 +58,14 @@ services:
     ports:
       - "3307:3306"       # 3307 di host supaya tidak konflik sama MySQL Windows
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: higertech
-      MYSQL_USER: higertech
-      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$${DB_ROOT_PASSWORD}"]
       timeout: 20s
       retries: 10
       interval: 5s
@@ -114,7 +114,7 @@ services:
       - "3000:3000"
     environment:
       - APP_PORT=3000
-      - APP_BASIC_AUTH=${GOWA_BASIC_AUTH_USERNAME:-admin}:${GOWA_BASIC_AUTH_PASSWORD:-admin123}
+      - APP_BASIC_AUTH=${GOWA_BASIC_AUTH_USERNAME}:${GOWA_BASIC_AUTH_PASSWORD}
     volumes:
       - gowa_data:/app/storages
     networks:
