@@ -14,8 +14,8 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProductController as GuestProductsController;
-use App\Http\Controllers\auth\LoginActivityController;
-use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\Auth\LoginActivityController;
+use App\Http\Controllers\Admin\DashboardController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
