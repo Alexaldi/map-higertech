@@ -1,0 +1,140 @@
+# =============================================
+# Higertech — Docker Compose (Local Dev)
+# =============================================
+# Mirrors VPS stack: PHP-FPM + Nginx + MySQL + Redis + Queue Worker
+#
+# Cara pakai:
+#   1. Copy .env.docker ke .env  (sekali aja)
+#   2. docker compose up -d --build
+#   3. docker compose exec app php artisan migrate --seed
+#   4. Buka http://localhost:8080
+#
+# =============================================
+
+services:
+
+  # ---- PHP Laravel App ----
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: higertech_app
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/html
+      - ./storage:/var/www/html/storage
+      # Exclude node_modules from Windows mount (WSL2 performance)
+      - /var/www/html/node_modules
+    environment:
+      - APP_ENV=local
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - higertech_net
+
+  # ---- Nginx Web Server ----
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: higertech_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - higertech_net
+
+  # ---- MySQL 8.0 Database ----
+  mysql:
+    image: mysql:8.0
+    container_name: higertech_mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"       # 3307 di host supaya tidak konflik sama MySQL Windows
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: higertech
+      MYSQL_USER: higertech
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret"]
+      timeout: 20s
+      retries: 10
+      interval: 5s
+    networks:
+      - higertech_net
+
+  # ---- Redis (Cache + Queue) ----
+  redis:
+    image: redis:7-alpine
+    container_name: higertech_redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"       # 6380 di host supaya tidak konflik sama Redis lain
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - higertech_net
+
+  # ---- Queue Worker ----
+  # Jalanin job async (SendWhatsAppNotification, dll)
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: higertech_queue
+    restart: unless-stopped
+    command: php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - higertech_net
+
+  # ---- GOWA (WhatsApp Gateway) ----
+  gowa:
+    image: aldinokemal2104/go-whatsapp-web-multidevice:latest
+    container_name: higertech_gowa
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - APP_PORT=3000
+      - APP_BASIC_AUTH=${GOWA_BASIC_AUTH_USERNAME:-admin}:${GOWA_BASIC_AUTH_PASSWORD:-admin123}
+    volumes:
+      - gowa_data:/app/storages
+    networks:
+      - higertech_net
+
+# =============================================
+# Volumes (persistent data)
+# =============================================
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  gowa_data:
+    driver: local
+
+# =============================================
+# Network
+# =============================================
+networks:
+  higertech_net:
+    driver: bridge
+

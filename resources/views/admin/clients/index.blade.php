@@ -32,10 +32,10 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($client->logo_url)
-                                                <div class="p-1 rounded bg-dark d-inline-block text-center"
-                                                    style="background-color: #1e293b !important; border: 1px solid #334155; min-width: 120px;">
+                                                <div class="p-2 bg-dark d-inline-block text-center"
+                                                    style="background-color: #1e293b !important; border: 1px solid #334155; min-width: 140px; border-radius: 6px !important;">
                                                     <img src="{{ $client->logo_url }}" alt="{{ $client->name }}"
-                                                        style="height: 32px; max-width: 130px; object-fit: contain;">
+                                                        style="height: 36px; max-width: 130px; object-fit: contain; border-radius: 2px;">
                                                 </div>
                                             @else
                                                 <span
@@ -101,11 +101,11 @@
         </div>
     </div>
 
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#data-table').DataTable();
-    });
-</script>
-@endpush
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#data-table').DataTable();
+            });
+        </script>
+    @endpush
 @endsection

@@ -53,22 +53,25 @@
                     class="side-menu__icon fe fe-cpu"></i><span class="side-menu__label">Produk</span></a>
             <a class="side-menu__item {{ request()->routeIs('admin.articles.*') ? 'active pointer-events-none cursor-default select-none' : '' }}"
                 href="{{ route('admin.articles.index') }}" {!! request()->routeIs('admin.articles.*') ? 'aria-current="page" tabindex="-1"' : '' !!}><i
-                    class="side-menu__icon fe fe-file-text"></i><span
-                    class="side-menu__label">Artikel</span></a>
+                    class="side-menu__icon fe fe-file-text"></i><span class="side-menu__label">Artikel</span></a>
             <a class="side-menu__item {{ request()->routeIs('admin.tutorials.*') ? 'active pointer-events-none cursor-default select-none' : '' }}"
                 href="{{ route('admin.tutorials.index') }}" {!! request()->routeIs('admin.tutorials.*') ? 'aria-current="page" tabindex="-1"' : '' !!}><i
-                    class="side-menu__icon fe fe-book-open"></i><span
-                    class="side-menu__label">Tutorial & Panduan</span></a>
+                    class="side-menu__icon fe fe-book-open"></i><span class="side-menu__label">Tutorial &
+                    Panduan</span></a>
         </li>
         <li>
             <h3>AKTIVITAS</h3>
         </li>
         <li>
             <a class="side-menu__item {{ request()->routeIs('admin.login-activity') ? 'active pointer-events-none cursor-default select-none' : '' }}"
-                href="{{ route('admin.login-activity') }}"
-                {!! request()->routeIs('admin.login-activity') ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                href="{{ route('admin.login-activity') }}" {!! request()->routeIs('admin.login-activity') ? 'aria-current="page" tabindex="-1"' : '' !!}>
                 <i class="side-menu__icon fe fe-clock"></i>
                 <span class="side-menu__label">Login Activity</span>
+            </a>
+            <a class="side-menu__item {{ request()->routeIs('admin.whatsapp-logs.*') ? 'active pointer-events-none cursor-default select-none' : '' }}"
+                href="{{ route('admin.whatsapp-logs.index') }}" {!! request()->routeIs('admin.whatsapp-logs.*') ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                <i class="side-menu__icon fe fe-message-circle"></i>
+                <span class="side-menu__label">Log WhatsApp</span>
             </a>
         </li>
     </ul>

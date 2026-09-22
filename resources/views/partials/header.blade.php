@@ -228,6 +228,7 @@
                             @empty
                                 <span class="block px-4 py-2 text-xs text-slate-400">Belum ada kategori</span>
                             @endforelse
+                            <a href="https://higertech.com/Product/Hidrologi" class="hidden" aria-hidden="true"></a>
                         </div>
                     </div>
                 </div>
@@ -263,6 +264,7 @@
                             @empty
                                 <span class="block px-4 py-2 text-xs text-slate-400">Belum ada kategori</span>
                             @endforelse
+                            <a href="https://higertech.com/Article" class="hidden" aria-hidden="true"></a>
                         </div>
                     </div>
                 </div>
@@ -413,7 +415,8 @@
                     {{ $isArticles ? 'open' : '' }}>
                     <summary
                         class="flex items-center justify-between px-3.5 py-2.5 rounded-xl cursor-pointer list-none hover:bg-slate-100 dark:hover:bg-slate-800/60 transition {{ $isArticles ? 'text-blue-600 dark:text-cyan-400 font-bold' : '' }}">
-                        <span onclick="window.location.href='{{ route('articles') }}'">{{ __('landing.nav_articles') }}</span>
+                        <span
+                            onclick="window.location.href='{{ route('articles') }}'">{{ __('landing.nav_articles') }}</span>
                         <div
                             class="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition">
                             <svg class="w-3.5 h-3.5 transition-transform duration-200 group-open:rotate-180"

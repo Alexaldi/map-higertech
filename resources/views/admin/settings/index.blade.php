@@ -360,6 +360,31 @@
                                                             <div class="text-danger mt-1 fs-12">{{ $message }}</div>
                                                         @enderror
                                                     </div>
+
+                                                    <div class="col-md-12">
+                                                        <label for="internship_wa_notification"
+                                                            class="form-label fs-12 font-weight-semibold text-dark mb-1">
+                                                            <i class="fe fe-message-circle me-1 text-success"></i> Nomor
+                                                            WhatsApp Notifikasi Admin (Pengajuan Baru):
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text bg-light fs-12"><i
+                                                                    class="fe fe-phone text-success"></i></span>
+                                                            <input type="text"
+                                                                class="form-control fs-12 @error('internship_wa_notification') is-invalid @enderror"
+                                                                id="internship_wa_notification"
+                                                                name="internship_wa_notification"
+                                                                value="{{ old('internship_wa_notification', $settings['internship_wa_notification'] ?? config('services.gowa.admin_number')) }}"
+                                                                placeholder="Contoh: 082112727546 atau 6282112727546">
+                                                        </div>
+                                                        <small class="text-muted d-block mt-1">
+                                                            Nomor tujuan notifikasi otomatis WhatsApp setiap ada berkas
+                                                            lamaran magang baru yang masuk.
+                                                        </small>
+                                                        @error('internship_wa_notification')
+                                                            <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

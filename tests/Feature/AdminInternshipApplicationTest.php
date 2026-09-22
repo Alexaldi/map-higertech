@@ -24,6 +24,10 @@ class AdminInternshipApplicationTest extends TestCase
             'email' => 'admin-magang@higertech.com',
             'password' => bcrypt('password123'),
         ]);
+
+        \Illuminate\Support\Facades\Http::fake([
+            '*' => \Illuminate\Support\Facades\Http::response(['status' => true, 'message' => 'ok'], 200),
+        ]);
     }
 
     public function test_guest_cannot_access_admin_internships(): void
@@ -331,5 +335,35 @@ class AdminInternshipApplicationTest extends TestCase
             ]);
 
         $this->assertDatabaseMissing('internship_applications', ['id' => $app->id]);
+    }
+
+    public function test_admin_accessing_single_internship_redirects_to_index_review(): void
+    {
+        $app = InternshipApplication::create([
+            'type' => 'university',
+            'name' => 'Gilang Aldiano',
+            'email' => 'gilangaldiano05@gmail.com',
+            'identity_number' => '10221045',
+            'institution' => 'Universitas Komputer Indonesia (UNIKOM)',
+            'major' => 'Teknik Informatika',
+            'grade_level' => 'Semester 5',
+            'phone' => '081297534130',
+            'duration' => '3 Bulan',
+            'start_date' => '2026-09-22',
+            'end_date' => '2026-10-31',
+            'track' => 'Web SCADA & GIS Telemetry Developer',
+            'status' => 'reviewing',
+        ]);
+
+        $response = $this->actingAs($this->admin)->get("/admin/internships/{$app->id}");
+
+        $response->assertRedirect('/admin/internships?review=' . $app->id);
+
+        $followed = $this->actingAs($this->admin)->get('/admin/internships?review=' . $app->id);
+        $followed->assertOk()
+            ->assertSee('Gilang Aldiano')
+            ->assertSee('10221045')
+            ->assertSee('081297534130')
+            ->assertSee('UNIKOM');
     }
 }

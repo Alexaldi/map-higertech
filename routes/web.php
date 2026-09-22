@@ -32,8 +32,12 @@ Route::redirect('/article/pemasangan-pos-curah-hujan-(pch)-bendungkaret-tawangsa
 Route::redirect('/Tutorial', '/tutorials');
 // Internship routes
 Route::get('/internship', [\App\Http\Controllers\InternshipController::class, 'index'])->name('internship');
-Route::post('/internship/apply', [\App\Http\Controllers\InternshipController::class, 'apply'])->name('internship.apply');
-Route::get('/internship/track', [\App\Http\Controllers\InternshipController::class, 'track'])->name('internship.track');
+Route::post('/internship/apply', [\App\Http\Controllers\InternshipController::class, 'apply'])
+    ->middleware('throttle:internship-apply')
+    ->name('internship.apply');
+Route::get('/internship/track', [\App\Http\Controllers\InternshipController::class, 'track'])
+    ->middleware('throttle:internship-track')
+    ->name('internship.track');
 Route::get('/internship/letter/{code}', [\App\Http\Controllers\InternshipController::class, 'downloadLetter'])->name('internship.letter');
 
 // products
@@ -55,6 +59,7 @@ Route::middleware('guest')->group(function () {
         ->name('login');
 
     Route::post('/login', [LoginController::class, 'login'])
+        ->middleware('throttle:login')
         ->name('login.store');
 });
 
@@ -69,6 +74,9 @@ Route::middleware(['auth', 'prevent-back'])
     Route::resource('users', UsersController::class);
     Route::get('/login-activity', [LoginActivityController::class, 'index'])
         ->name('login-activity');
+    Route::get('/whatsapp-logs', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'index'])->name('whatsapp-logs.index');
+    Route::delete('/whatsapp-logs/{whatsappLog}', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'destroy'])->name('whatsapp-logs.destroy');
+    Route::delete('/whatsapp-logs-clear', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'clear'])->name('whatsapp-logs.clear');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('categories', CategoryController::class)->except('show');

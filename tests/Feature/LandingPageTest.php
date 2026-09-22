@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LandingPageTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_landing_page_renders_successfully_with_default_id_locale(): void
     {
         $response = $this->get('/');
@@ -63,6 +65,8 @@ class LandingPageTest extends TestCase
 
     public function test_landing_page_embeds_live_map_preview_and_authentic_images(): void
     {
+        $this->seed(\Database\Seeders\ArticleSeeder::class);
+
         $response = $this->get('/');
 
         $response->assertOk()

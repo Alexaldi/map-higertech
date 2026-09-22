@@ -113,7 +113,7 @@ class InternshipController extends Controller
         ], [
             'type.required' => 'Jenis jalur pendaftaran harus ditentukan.',
             'name.required' => 'Nama lengkap ketua/pemohon wajib diisi.',
-            'identity_number.required' => 'NIM / NISN / NIK wajib diisi.',
+            'identity_number.required' => $request->input('type') === 'university' ? 'NIM Mahasiswa wajib diisi.' : 'NIS / NIK Siswa wajib diisi.',
             'institution.required' => 'Asal Universitas / Sekolah SMK wajib diisi.',
             'major.required' => 'Program Studi / Jurusan kuliah wajib diisi.',
             'grade_level.required' => 'Tingkat kelas / Semester wajib diisi.',
@@ -121,8 +121,8 @@ class InternshipController extends Controller
             'phone.required' => 'Nomor WhatsApp aktif wajib diisi.',
             'start_date.after_or_equal' => 'Tanggal mulai magang tidak boleh sebelum hari ini.',
             'end_date.after_or_equal' => 'Tanggal selesai magang harus sama dengan atau setelah tanggal mulai magang.',
-            'file_identity.required' => 'Scan KTP / Kartu Pelajar / KTM wajib diunggah.',
-            'file_transcript.required' => 'Transkrip Nilai / Rapor wajib diunggah (Format PDF).',
+            'file_identity.required' => $request->input('type') === 'university' ? 'Scan KTM (Kartu Tanda Mahasiswa) / Scan KTP wajib diunggah.' : 'Scan Kartu Pelajar (atau Scan KTP) wajib diunggah.',
+            'file_transcript.required' => $request->input('type') === 'university' ? 'Transkrip Nilai Akademik wajib diunggah (Format PDF).' : 'Transkrip Nilai / Rapor wajib diunggah (Format PDF).',
             'file_identity.max' => 'Ukuran berkas identitas maksimal 3MB.',
             'file_recommendation.max' => 'Ukuran berkas surat pengantar maksimal 3MB.',
             'file_transcript.max' => 'Ukuran berkas transkrip nilai maksimal 3MB.',
@@ -132,10 +132,10 @@ class InternshipController extends Controller
             'file_transcript.mimes' => 'Transkrip Nilai harus berformat PDF.',
             'file_cv.mimes' => 'CV harus berformat PDF.',
             'members.*.name.required_with' => 'Nama setiap anggota tim wajib diisi.',
-            'members.*.identity_number.required_with' => 'NIM / NISN setiap anggota tim wajib diisi.',
+            'members.*.identity_number.required_with' => $request->input('type') === 'university' ? 'NIM setiap anggota tim wajib diisi.' : 'NIS / NIK setiap anggota tim wajib diisi.',
             'members.*.email.required_with' => 'Alamat email setiap anggota tim wajib diisi.',
             'members.*.email.email' => 'Format alamat email anggota tim tidak valid (contoh: nama@email.com).',
-            'members.*.file_identity.required_with' => 'Scan Kartu Pelajar / KTM setiap anggota tim wajib diunggah.',
+            'members.*.file_identity.required_with' => $request->input('type') === 'university' ? 'Scan KTM / KTP setiap anggota tim wajib diunggah.' : 'Scan Kartu Pelajar / KTP setiap anggota tim wajib diunggah.',
             'members.*.file_cv.required_with' => 'Berkas CV / Portofolio setiap anggota tim wajib diunggah (Format PDF).',
             'members.*.file_transcript.required_with' => 'Transkrip Nilai / Rapor setiap anggota tim wajib diunggah (Format PDF).',
             'members.*.file_identity.mimes' => 'Kartu identitas anggota tim harus berformat PDF atau gambar (JPG/PNG).',
@@ -163,11 +163,22 @@ class InternshipController extends Controller
         if (! empty($validated['start_date']) && ! empty($validated['end_date'])) {
             $start = Carbon::parse($validated['start_date']);
             $end = Carbon::parse($validated['end_date']);
-            $diffMonths = round($start->diffInMonths($end));
-            $diffDays = $start->diffInDays($end);
+            $diffDays = $start->diffInDays($end) + 1;
+            $fullMonths = intdiv($diffDays, 30);
+            $remDays = $diffDays % 30;
+
+            if ($diffDays < 28) {
+                $calcDuration = "{$diffDays} Hari";
+            } elseif ($remDays <= 2) {
+                $calcDuration = max(1, $fullMonths) . ' Bulan';
+            } elseif ($remDays >= 28) {
+                $calcDuration = ($fullMonths + 1) . ' Bulan';
+            } else {
+                $calcDuration = "{$fullMonths} Bulan {$remDays} Hari";
+            }
 
             if (empty($validated['duration'])) {
-                $validated['duration'] = $diffMonths > 0 ? "{$diffMonths} Bulan" : "{$diffDays} Hari";
+                $validated['duration'] = $calcDuration;
             }
             if (empty($validated['start_period'])) {
                 $validated['start_period'] = $start->format('Y-m');
@@ -195,11 +206,11 @@ class InternshipController extends Controller
 
         $regCode = $application->registration_code;
 
-         // Kirim notifikasi WA ke admin (fail-safe)
+         // Kirim notifikasi WA ke admin secara asinkron (non-blocking, tidak menahan loading browser)
         try {
-            $this->waService->notifyNewInternshipApplication($application);
+            \App\Jobs\SendWhatsAppNotification::dispatchAsync($application->id, 'new_application');
         } catch (\Throwable $e) {
-            Log::warning('Gagal kirim notifikasi WA: ' . $e->getMessage());
+            Log::warning('Gagal dispatch notifikasi WA: ' . $e->getMessage());
         }
 
         return response()->json([

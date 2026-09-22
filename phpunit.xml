@@ -32,5 +32,10 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <env name="ADMIN_EMAIL" value="testadmin@higertech.com"/>
+        <env name="ADMIN_PASSWORD" value="password123"/>
+        <env name="GOWA_API_URL" value="http://localhost:3000"/>
+        <env name="GOWA_BASIC_AUTH_USERNAME" value="testadmin"/>
+        <env name="GOWA_BASIC_AUTH_PASSWORD" value="testpassword"/>
     </php>
 </phpunit>

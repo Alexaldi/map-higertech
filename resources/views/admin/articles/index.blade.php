@@ -8,7 +8,8 @@
                 <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
                         <h3 class="card-title mb-1">Daftar Artikel & Panduan</h3>
-                        <p class="text-muted fs-12 mb-0">Kelola artikel publikasi, panduan instalasi, dan dokumentasi proyek telemetri.</p>
+                        <p class="text-muted fs-12 mb-0">Kelola artikel publikasi, panduan instalasi, dan dokumentasi proyek
+                            telemetri.</p>
                     </div>
 
                     <a href="{{ route('admin.articles.create') }}" class="btn btn-primary">
@@ -36,15 +37,16 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            <div class="rounded overflow-hidden bg-slate-100 border text-center"
-                                                style="width: 80px; height: 50px;">
+                                            <div class="overflow-hidden bg-slate-100 border text-center"
+                                                style="width: 80px; height: 50px; border-radius: 6px !important;">
                                                 <img src="{{ $article->image_url }}" alt="{{ $article->title }}"
                                                     style="width: 100%; height: 100%; object-fit: cover;">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="d-flex flex-column">
-                                                <span class="font-weight-semibold text-wrap fs-14" style="max-width: 380px;">
+                                                <span class="font-weight-semibold text-wrap fs-14"
+                                                    style="max-width: 380px;">
                                                     {{ $article->title }}
                                                 </span>
                                                 <small class="text-muted text-truncate" style="max-width: 380px;">
@@ -53,11 +55,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span class="badge bg-blue-transparent text-primary border border-primary px-2 py-1">
+                                            <span
+                                                class="badge bg-blue-transparent text-primary border border-primary px-2 py-1">
                                                 {{ $article->category_name }}
                                             </span>
                                             @if ($article->is_featured)
-                                                <span class="badge bg-warning-transparent text-warning border border-warning px-2 py-1 ms-1"
+                                                <span
+                                                    class="badge bg-warning-transparent text-warning border border-warning px-2 py-1 ms-1"
                                                     title="Artikel Unggulan">
                                                     <i class="fe fe-star me-1"></i>Unggulan
                                                 </span>
@@ -66,11 +70,13 @@
                                         <td>{{ $article->author ?: 'Tim Higertech' }}</td>
                                         <td>
                                             @if ($article->status === 'published')
-                                                <span class="badge bg-success-transparent text-success border border-success px-2 py-1">
+                                                <span
+                                                    class="badge bg-success-transparent text-success border border-success px-2 py-1">
                                                     Publik
                                                 </span>
                                             @else
-                                                <span class="badge bg-warning-transparent text-warning border border-warning px-2 py-1">
+                                                <span
+                                                    class="badge bg-warning-transparent text-warning border border-warning px-2 py-1">
                                                     Draf
                                                 </span>
                                             @endif
@@ -135,6 +141,5 @@
         </div>
     </div>
 
-    
-@endsection
 
+@endsection

@@ -34,6 +34,9 @@
         })();
     </script>
 
+    {{-- SweetAlert2 (Local bundle with styles) --}}
+    <script src="{{ asset('admin/assets/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('head')

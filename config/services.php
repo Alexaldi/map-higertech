@@ -36,9 +36,11 @@ return [
     ],
 
     'gowa' => [
-        'url' => env('GOWA_URL', 'http://127.0.0.1:3000'),
+        'url' => env('GOWA_URL', env('GOWA_API_URL', 'http://127.0.0.1:3000')),
         'device_id' => env('GOWA_DEVICE_ID'),
         'admin_number' => env('WHATSAPP_ADMIN_NUMBER'),
+        'username' => env('GOWA_BASIC_AUTH_USERNAME'),
+        'password' => env('GOWA_BASIC_AUTH_PASSWORD'),
     ],
 
 ];

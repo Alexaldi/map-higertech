@@ -90,14 +90,23 @@ export function initInternship() {
             }
 
             const diffTime = Math.abs(end - start);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-            const approxMonths = Math.round(diffDays / 30.4);
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
             let durationText = '';
-            if (approxMonths >= 1) {
-                durationText = `${approxMonths} Bulan (${diffDays} Hari)`;
-            } else {
+            if (diffDays < 28) {
                 durationText = `${diffDays} Hari`;
+            } else {
+                const fullMonths = Math.floor(diffDays / 30);
+                const remDays = diffDays % 30;
+
+                if (remDays <= 2) {
+                    const m = Math.max(1, fullMonths);
+                    durationText = `${m} Bulan`;
+                } else if (remDays >= 28) {
+                    durationText = `${fullMonths + 1} Bulan`;
+                } else {
+                    durationText = `${fullMonths} Bulan ${remDays} Hari`;
+                }
             }
 
             if (durationInput) durationInput.value = durationText;
@@ -278,6 +287,13 @@ export function initInternship() {
                 }
             });
 
+            trigger.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    openPanel();
+                }
+            });
+
             if (searchInput) {
                 searchInput.addEventListener('input', function (e) {
                     filterOptions(this.value);
@@ -288,27 +304,48 @@ export function initInternship() {
                 searchInput.addEventListener('keydown', function (e) {
                     if (e.key === 'Escape') {
                         closePanel();
-                    } else if (e.key === 'Enter') {
-                        e.preventDefault();
+                        trigger.focus();
+                    } else if (e.key === 'Tab' || e.key === 'Enter') {
                         const query = this.value.trim();
-                        const visibleOptions = Array.from(list.querySelectorAll('.combobox-option:not(.combobox-other):not(.hidden)'));
-                        if (visibleOptions.length === 1) {
+                        const visibleOptions = Array.from(list ? list.querySelectorAll('.combobox-option:not(.combobox-other):not(.hidden)') : []);
+                        if (visibleOptions.length > 0) {
+                            e.preventDefault();
                             visibleOptions[0].click();
+                            trigger.focus();
                         } else if (query) {
-                            selectOption('Lainnya', query ? `Lainnya: ${query}` : 'Lainnya (Input Manual)', true, query);
+                            e.preventDefault();
+                            selectOption('Lainnya', `Lainnya: ${query}`, true, query);
+                            if (otherInput) otherInput.focus();
+                        } else if (e.key === 'Tab') {
+                            closePanel();
                         }
+                    } else if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const firstVisible = list ? list.querySelector('.combobox-option:not(.hidden)') : null;
+                        if (firstVisible) firstVisible.focus();
                     }
                 });
             }
 
             if (list) {
                 list.querySelectorAll('.combobox-option').forEach(opt => {
+                    opt.setAttribute('tabindex', '0');
                     opt.addEventListener('click', function (e) {
                         e.stopPropagation();
                         const val = this.getAttribute('data-value');
                         const text = this.textContent.trim();
                         const isOther = this.classList.contains('combobox-other') || val === 'Lainnya';
                         selectOption(val, text, isOther);
+                    });
+                    opt.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' || e.key === 'Tab') {
+                            e.preventDefault();
+                            this.click();
+                            trigger.focus();
+                        } else if (e.key === 'Escape') {
+                            closePanel();
+                            trigger.focus();
+                        }
                     });
                 });
             }
@@ -398,7 +435,7 @@ export function initInternship() {
         // Validate required fields
         const requiredFields = [
             { name: 'name', label: 'Nama Lengkap' },
-            { name: 'identity_number', label: isSmk ? 'NISN / NIK' : 'NIM / NIK' },
+            { name: 'identity_number', label: isSmk ? 'NIS / NIK Siswa' : 'NIM Mahasiswa' },
             { name: 'phone', label: 'Nomor WhatsApp' },
             { name: 'institution', label: isSmk ? 'Asal Sekolah SMK' : 'Asal Perguruan Tinggi' },
             { name: 'grade_level', label: isSmk ? 'Tingkat Kelas' : 'Semester Aktif' },
@@ -432,7 +469,7 @@ export function initInternship() {
                     return;
                 }
                 if (!idVal) {
-                    showFormError(`<strong>Data Anggota Belum Lengkap:</strong> ${isSmk ? 'NISN / NIK' : 'NIM / NIK'} Anggota #${memberNum} wajib diisi.`);
+                    showFormError(`<strong>Data Anggota Belum Lengkap:</strong> ${isSmk ? 'NIS / NIK' : 'NIM'} Anggota #${memberNum} wajib diisi.`);
                     return;
                 }
                 if (!emailVal || !emailRegex.test(emailVal)) {
@@ -661,12 +698,12 @@ export function initInternship() {
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Lengkap Siswa/Mahasiswa: <span class="text-rose-500">*</span></label>
-                    <input type="text" name="members[${idx}][name]" required class="member-input-name w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="Contoh: Muhammad Rayhan">
+                    <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">${isSmk ? 'Nama Lengkap Siswa' : 'Nama Lengkap Mahasiswa'}: <span class="text-rose-500">*</span></label>
+                    <input type="text" name="members[${idx}][name]" required class="member-input-name w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="${isSmk ? 'Contoh: Muhammad Rayhan' : 'Contoh: Muhammad Rayhan'}">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">${isSmk ? 'NISN / NIK' : 'NIM / NIK'}: <span class="text-rose-500">*</span></label>
-                    <input type="text" name="members[${idx}][identity_number]" required class="member-input-id w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs font-mono focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="Contoh: 10221045">
+                    <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">${isSmk ? 'NIS / NIK Siswa' : 'NIM Mahasiswa'}: <span class="text-rose-500">*</span></label>
+                    <input type="text" name="members[${idx}][identity_number]" required class="member-input-id w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs font-mono focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="${isSmk ? 'Contoh: 12345 / 3204...' : 'Contoh: 10221045'}">
                 </div>
                 <div class="sm:col-span-2">
                     <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Email Aktif: <span class="text-rose-500">*</span></label>
@@ -755,6 +792,15 @@ export function initInternship() {
         if (resultEl) resultEl.classList.add('hidden');
 
         if (!query) {
+            if (window.Swal) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Pencarian Kosong',
+                    text: 'Silakan masukkan nomor registrasi, NIM/NISN, nomor WhatsApp, atau email Anda.',
+                    confirmButtonText: 'Mengerti',
+                    confirmButtonColor: '#0284c7',
+                });
+            }
             if (alertEl) {
                 alertEl.className = 'p-3 rounded-xl border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 text-xs block';
                 alertEl.textContent = 'Silakan masukkan nomor registrasi, NIM/NISN, nomor WhatsApp, atau email Anda.';
@@ -924,16 +970,36 @@ export function initInternship() {
 
                 if (resultEl) resultEl.classList.remove('hidden');
             } else {
+                const notFoundMsg = data.message || 'Data pendaftaran magang tidak ditemukan. Pastikan nomor registrasi atau data kontak yang dimasukkan sudah sesuai.';
+                if (window.Swal) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Data Tidak Ditemukan',
+                        text: notFoundMsg,
+                        confirmButtonText: 'Coba Lagi',
+                        confirmButtonColor: '#0284c7',
+                    });
+                }
                 if (alertEl) {
                     alertEl.className = 'p-3 rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-xs block';
-                    alertEl.textContent = data.message || 'Data pendaftaran magang tidak ditemukan. Pastikan nomor registrasi atau data kontak yang dimasukkan sudah sesuai.';
+                    alertEl.textContent = notFoundMsg;
                 }
             }
         } catch (err) {
             console.error('Tracking error:', err);
+            const errMsg = 'Gagal menghubungi server pelacakan. Silakan periksa koneksi internet Anda.';
+            if (window.Swal) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan',
+                    text: errMsg,
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#0284c7',
+                });
+            }
             if (alertEl) {
                 alertEl.className = 'p-3 rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-xs block';
-                alertEl.textContent = 'Gagal menghubungi server pelacakan. Silakan periksa koneksi internet Anda.';
+                alertEl.textContent = errMsg;
             }
         } finally {
             if (btnEl) {
@@ -948,7 +1014,17 @@ export function initInternship() {
         const code = codeEl ? codeEl.textContent.trim() : lastRegisteredCode;
         if (code) {
             navigator.clipboard.writeText(code).then(() => {
-                alert('Nomor registrasi disalin: ' + code);
+                if (window.Swal) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil Disalin!',
+                        text: `Nomor registrasi ${code} telah disalin ke clipboard.`,
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+                } else {
+                    alert('Nomor registrasi disalin: ' + code);
+                }
             }).catch(() => {
                 prompt('Salin nomor registrasi berikut:', code);
             });

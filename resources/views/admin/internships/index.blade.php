@@ -332,6 +332,8 @@
                                                 'name' => $app->name,
                                                 'email' => $app->email,
                                                 'phone' => $app->phone,
+                                                'identity_number' => $app->identity_number,
+                                                'type' => $app->type,
                                                 'type_label' => $app->type_label,
                                                 'is_group' => (bool) $app->is_group,
                                                 'team_count' => $app->all_members->count(),
@@ -379,7 +381,8 @@
                                             ];
                                         @endphp
                                         <button type="button" class="btn btn-primary btn-sm rounded-11 btn-review-app"
-                                            data-app="{{ json_encode($appPayload) }}" title="Tinjau & Putuskan">
+                                            data-id="{{ $app->id }}" data-app="{{ json_encode($appPayload) }}"
+                                            title="Tinjau & Putuskan">
                                             <i class="fe fe-edit-3"></i> Tinjau
                                         </button>
 
@@ -454,15 +457,32 @@
                         <div class="card-body p-3">
                             <div class="row g-2">
                                 <div class="col-md-6">
-                                    <label class="text-muted small text-uppercase fw-semibold mb-0">Nama Lengkap</label>
+                                    <label class="text-muted small text-uppercase fw-semibold mb-0">Nama Lengkap &
+                                        Identitas</label>
                                     <div class="fw-bold text-dark fs-15" id="rev-name">-</div>
-                                    <div class="small text-muted" id="rev-contact">-</div>
+                                    <div class="mt-1 d-flex flex-wrap align-items-center gap-1">
+                                        <span class="badge bg-white text-dark border font-monospace"
+                                            id="rev-identity">-</span>
+                                    </div>
+                                    <div class="mt-2 d-flex flex-wrap align-items-center gap-1">
+                                        <a href="#" id="rev-wa-link" target="_blank"
+                                            class="btn btn-success btn-sm py-0 px-2 rounded-pill d-inline-flex align-items-center gap-1 text-white shadow-none"
+                                            title="Chat WhatsApp">
+                                            <i class="fa fa-whatsapp"></i> <span id="rev-phone-text">-</span>
+                                        </a>
+                                        <a href="#" id="rev-email-link"
+                                            class="btn btn-outline-primary btn-sm py-0 px-2 rounded-pill d-inline-flex align-items-center gap-1 shadow-none"
+                                            title="Kirim Email">
+                                            <i class="fe fe-mail"></i> <span id="rev-email-text">-</span>
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="text-muted small text-uppercase fw-semibold mb-0">Institusi &
                                         Tingkat</label>
                                     <div class="fw-bold text-dark" id="rev-institution">-</div>
                                     <div class="small text-muted" id="rev-major">-</div>
+                                    <div class="small text-muted mt-1" id="rev-inst-extra">-</div>
                                 </div>
                                 <div class="col-md-6 mt-2">
                                     <label class="text-muted small text-uppercase fw-semibold mb-0">Peminatan
@@ -870,9 +890,41 @@
             // Set modal info
             $('#modal-sub-code').text('Kode Registrasi: ' + (data.code || '-'));
             $('#rev-name').text((data.name || '-') + (data.type_label ? ' (' + data.type_label + ')' : ''));
-            $('#rev-contact').text((data.phone || '-') + ' • ' + (data.email || '-'));
+            var idLabel = data.is_smk ? 'NIS / NIK: ' : 'NIM: ';
+            $('#rev-identity').text(idLabel + (data.identity_number || '-'));
+
+            var cleanPhone = (data.phone || '').replace(/[^0-9]/g, '');
+            if (cleanPhone.startsWith('0')) {
+                cleanPhone = '62' + cleanPhone.substring(1);
+            }
+
+            if (data.phone) {
+                $('#rev-phone-text').text(data.phone);
+                var waGreeting = encodeURIComponent('Halo ' + (data.name || '') +
+                    ', kami dari Tim Pembina Magang PT Higertech Karya Sinergi terkait permohonan magang Anda (' +
+                    (data.code || '') + ')...');
+                $('#rev-wa-link').attr('href', 'https://wa.me/' + cleanPhone + '?text=' + waGreeting).removeClass(
+                    'd-none');
+            } else {
+                $('#rev-wa-link').addClass('d-none');
+            }
+
+            if (data.email) {
+                $('#rev-email-text').text(data.email);
+                $('#rev-email-link').attr('href', 'mailto:' + data.email).removeClass('d-none');
+            } else {
+                $('#rev-email-link').addClass('d-none');
+            }
+
             $('#rev-institution').text(data.institution || '-');
             $('#rev-major').text((data.major ? data.major + ' • ' : '') + (data.grade_level || ''));
+
+            var instExtra = [];
+            if (data.head_of_program) instExtra.push('Kaprodi: ' + data.head_of_program);
+            if (data.reference_number) instExtra.push('Surat: ' + data.reference_number);
+            if (data.institution_address) instExtra.push('Alamat: ' + data.institution_address);
+            $('#rev-inst-extra').text(instExtra.length ? instExtra.join(' • ') : '');
+
             $('#rev-track').text(data.track || '-');
             $('#rev-period').text((data.period || '-') + (data.duration ? ' (' + data.duration + ')' : ''));
 
@@ -887,10 +939,13 @@
                         '<span class="badge bg-light text-dark border">Anggota</span>';
                     var docs = [];
                     if (m.doc_identity) {
+                        var idDocBadge = data.is_smk ? 'Kartu Pelajar' : 'KTM';
                         docs.push(
                             '<button type="button" class="btn btn-outline-primary btn-sm py-0 px-2 btn-preview-doc" data-url="' +
-                            m.doc_identity + '" data-title="KTM/KTP - ' + escapeHtml(m.name) +
-                            '" title="Lihat Identitas"><i class="fe fe-credit-card me-1"></i>KTM</button>'
+                            m.doc_identity + '" data-title="' + idDocBadge + '/KTP - ' + escapeHtml(m
+                                .name) +
+                            '" title="Lihat Identitas"><i class="fe fe-credit-card me-1"></i>' +
+                            idDocBadge + '</button>'
                         );
                     }
                     if (m.doc_cv) {
@@ -909,6 +964,16 @@
                     var docsHtml = docs.length > 0 ? docs.join(' ') :
                         '<span class="text-muted small">-</span>';
 
+                    var mCleanPhone = (m.phone || '').replace(/[^0-9]/g, '');
+                    if (mCleanPhone.startsWith('0')) {
+                        mCleanPhone = '62' + mCleanPhone.substring(1);
+                    }
+                    var memberPhoneHtml = m.phone ?
+                        '<a href="https://wa.me/' + mCleanPhone +
+                        '" target="_blank" class="text-success text-decoration-none fw-semibold d-inline-flex align-items-center gap-1"><i class="fa fa-whatsapp"></i> ' +
+                        escapeHtml(m.phone) + '</a>' :
+                        '<span class="text-muted">-</span>';
+
                     tbody.append(
                         '<tr>' +
                         '<td class="text-center">' + (idx + 1) + '</td>' +
@@ -916,7 +981,7 @@
                         '<td class="font-monospace small">' + escapeHtml(m.identity_number || '-') +
                         '</td>' +
                         '<td>' + roleBadge + '</td>' +
-                        '<td class="small">' + escapeHtml(m.phone || '-') +
+                        '<td class="small">' + memberPhoneHtml +
                         '<br><span class="text-muted">' + escapeHtml(m.email || '-') + '</span></td>' +
                         '<td class="text-center">' + docsHtml + '</td>' +
                         '</tr>'
@@ -971,8 +1036,40 @@
             // Set letter settings
             $('#rev-acceptance-number').val(data.acceptance_number || '');
             $('#rev-acceptance-date').val(data.acceptance_date || '');
-            $('#rev-head-of-program').val(data.head_of_program || '');
-            $('#rev-institution-address').val(data.institution_address || '');
+
+            // Auto-prefill Kaprodi / Kepala Sekolah jika belum pernah diisi manual
+            var autoHead = data.head_of_program;
+            if (!autoHead) {
+                if (data.is_smk) {
+                    autoHead = data.major ? 'Kepala Program Keahlian ' + data.major : (data.institution ?
+                        'Kepala ' + data.institution : 'Kepala Sekolah');
+                } else {
+                    autoHead = data.major ? 'Ketua Program Studi ' + data.major : 'Ketua Jurusan';
+                }
+            }
+            $('#rev-head-of-program').val(autoHead);
+
+            // Auto-prefill Alamat Kampus / Sekolah dari daftar institusi umum
+            var autoAddress = data.institution_address;
+            if (!autoAddress && data.institution) {
+                var knownAddresses = {
+                    'Institut Teknologi Bandung (ITB)': 'Jl. Ganesa No. 10, Bandung',
+                    'Universitas Padjadjaran (UNPAD)': 'Jl. Dipati Ukur No. 35, Bandung',
+                    'Universitas Pendidikan Indonesia (UPI)': 'Jl. Dr. Setiabudi No. 229, Bandung',
+                    'Politeknik Negeri Bandung (POLBAN)': 'Jl. Gegerkalong Hilir, Ds. Ciwaruga, Bandung',
+                    'Telkom University (Tel-U)': 'Jl. Telekomunikasi No. 1, Terusan Buahbatu, Bandung',
+                    'Universitas Komputer Indonesia (UNIKOM)': 'Jl. Dipati Ukur No. 112-116, Bandung',
+                    'Institut Teknologi Nasional (ITENAS) Bandung': 'Jl. PKH. Mustofa No. 23, Bandung',
+                    'Universitas Pasundan (UNPAS)': 'Jl. Tamansari No. 6-8, Bandung',
+                    'Universitas Islam Bandung (UNISBA)': 'Jl. Tamansari No. 1, Bandung',
+                    'SMKN 1 Cimahi (Teknologi & Industri)': 'Jl. Mahar Martanegara No. 48, Cimahi',
+                    'SMKN 2 Bandung': 'Jl. Ciliwung No. 4, Bandung',
+                    'SMKN 4 Bandung (Teknologi Informasi & Kelistrikan)': 'Jl. Kliningan No. 6, Bandung',
+                };
+                autoAddress = knownAddresses[data.institution] || 'Bandung';
+            }
+            $('#rev-institution-address').val(autoAddress || '');
+
             $('#rev-reference-number').val(data.reference_number || '');
             $('#rev-reference-date').val(data.reference_date || '');
 
@@ -1031,6 +1128,20 @@
         $('#modal-review').on('hidden.bs.modal', function() {
             $('#inline-preview-box').addClass('d-none');
             $('#inline-preview-frame').attr('src', '');
+            var btn = $('#btn-submit-decision');
+            btn.prop('disabled', false).html('<i class="fe fe-save me-1"></i> Simpan Keputusan');
+        });
+
+        // Prevent duplicate submit on review form
+        $('#form-review-internship').on('submit', function(e) {
+            var btn = $('#btn-submit-decision');
+            if (btn.prop('disabled')) {
+                e.preventDefault();
+                return false;
+            }
+            btn.prop('disabled', true).html(
+                '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Menyimpan...'
+            );
         });
 
         // Handle SweetAlert2 Delete Confirmation for Internship Application
@@ -1108,5 +1219,16 @@
                 }
             });
         });
+
+        // Auto-open review modal if review or open query parameter is present in URL
+        var autoReviewId = '{{ request('review') ?? request('open') }}';
+        if (autoReviewId) {
+            var targetBtn = $('.btn-review-app[data-id="' + autoReviewId + '"]');
+            if (targetBtn.length) {
+                setTimeout(function() {
+                    targetBtn.trigger('click');
+                }, 200);
+            }
+        }
     </script>
 @endpush

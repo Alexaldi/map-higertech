@@ -361,6 +361,12 @@ function bindSearchSuggestions(elements, state, map) {
         if (event.key === 'Escape') {
             event.stopPropagation();
             hide();
+        } else if (event.key === 'Tab' && !elements.searchSuggestions.hidden) {
+            const firstSuggestion = elements.searchSuggestions.querySelector('[data-station-id]');
+            if (firstSuggestion) {
+                event.preventDefault();
+                firstSuggestion.click();
+            }
         }
     });
     document.addEventListener('click', (event) => {

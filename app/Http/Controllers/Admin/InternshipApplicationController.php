@@ -38,7 +38,7 @@ class InternshipApplicationController extends Controller
     /**
      * Show detailed data of an application (used by modal or AJAX preview).
      */
-    public function show(InternshipApplication $internship): JsonResponse|View
+    public function show(InternshipApplication $internship): JsonResponse|RedirectResponse
     {
         if (request()->wantsJson() || request()->ajax()) {
             return response()->json([
@@ -109,7 +109,7 @@ class InternshipApplicationController extends Controller
             ]);
         }
 
-        return view('admin.internships.show', compact('internship'));
+        return redirect()->route('admin.internships.index', ['review' => $internship->id]);
     }
 
     /**
@@ -145,6 +145,15 @@ class InternshipApplicationController extends Controller
                 'reference_date' => $validated['reference_date'] ?? null,
             ], fn($v) => !is_null($v))
         );
+
+        // Kirim notifikasi WhatsApp otomatis ke pelamar secara asinkron (non-blocking) jika diterima/ditolak
+        if (in_array($validated['status'], ['accepted', 'rejected'])) {
+            try {
+                \App\Jobs\SendWhatsAppNotification::dispatchAsync($internship->id, 'status_update');
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('GOWA WA notification dispatch failed: ' . $e->getMessage());
+            }
+        }
 
         $statusText = match ($validated['status']) {
             'accepted' => 'Diterima',

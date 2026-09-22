@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class MapPageTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_map_page_renders_the_public_monitoring_shell(): void
     {
         $this->get('/map')

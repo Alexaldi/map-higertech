@@ -1,0 +1,56 @@
+# =============================================
+# .dockerignore — Higertech
+# Exclude file yang tidak perlu masuk Docker image
+# Biar build context kecil dan build lebih cepat
+# =============================================
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Vite output (di-build ulang di Dockerfile)
+public/build
+public/hot
+
+# Laravel cache (dibuat ulang di container)
+bootstrap/cache/*.php
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+storage/logs/*.log
+
+# Test & Dev tools
+tests
+phpunit.xml
+.phpunit.cache
+.phpunit.result.cache
+
+# Docker files sendiri
+Dockerfile
+docker-compose.yml
+docker-compose*.yml
+.dockerignore
+docker/
+
+# Editor & OS
+.vscode
+.idea
+.cursor
+.DS_Store
+Thumbs.db
+*.log
+
+# Env files (inject via docker-compose environment)
+.env
+.env.*
+
+# Vendor (di-install ulang di Dockerfile)
+# JANGAN ignore vendor kalau mau skip composer install di build
+# vendor/
+

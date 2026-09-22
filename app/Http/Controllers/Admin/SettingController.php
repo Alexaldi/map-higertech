@@ -40,6 +40,7 @@ class SettingController extends Controller
             'social_linkedin' => ['nullable', 'url', 'max:255'],
             'social_youtube' => ['nullable', 'url', 'max:255'],
             'internship_enabled' => ['nullable', 'in:0,1'],
+            'internship_wa_notification' => ['nullable', 'string', 'max:50'],
             'internship_closed_message' => ['nullable', 'string', 'max:1000'],
             'internship_tracks_smk' => ['nullable', 'string', 'max:2000'],
             'internship_tracks_univ' => ['nullable', 'string', 'max:2000'],
