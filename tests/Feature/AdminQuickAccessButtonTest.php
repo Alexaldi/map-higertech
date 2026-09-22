@@ -34,3 +34,4 @@ class AdminQuickAccessButtonTest extends TestCase
         $response->assertSee('Dashboard Admin');
     }
 }
+

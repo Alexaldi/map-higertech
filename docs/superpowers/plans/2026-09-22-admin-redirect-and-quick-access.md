@@ -29,6 +29,7 @@ graph TD
 **Tech Stack:** Laravel 13, Blade, Tailwind CSS v4, PHPUnit.
 
 ## Global Constraints
+
 - Laravel 13.x native architecture (`bootstrap/app.php`)
 - Strict PSR-4 naming (`App\Http\Controllers\Auth`)
 - Backward compatible with all 65 existing tests
@@ -39,16 +40,19 @@ graph TD
 ### Task 1: Configure Native Middleware Redirection & Automated Feature Tests
 
 **Files:**
+
 - Modify: `bootstrap/app.php`
 - Create: `tests/Feature/AdminAuthRedirectionTest.php`
 
 **Interfaces:**
+
 - Consumes: `Illuminate\Foundation\Configuration\Middleware::redirectTo()`
 - Produces: `guests -> /login`, `users -> /admin/dashboard`
 
 - [ ] **Step 1: Write the failing feature test**
 
 Create `tests/Feature/AdminAuthRedirectionTest.php`:
+
 ```php
 <?php
 
@@ -88,6 +92,7 @@ Expected: FAIL on `test_authenticated_admin_accessing_login_page_is_redirected_t
 - [ ] **Step 3: Update `bootstrap/app.php`**
 
 Modify `bootstrap/app.php` inside `withMiddleware`:
+
 ```php
         $middleware->redirectTo(
             guests: '/login',
@@ -112,16 +117,19 @@ git commit -m "feat(auth): configure native middleware redirect for guests and a
 ### Task 2: Add "Dashboard Admin" Button to Public Header Navigation & Tests
 
 **Files:**
+
 - Modify: `resources/views/partials/header.blade.php:315-360`
 - Create: `tests/Feature/AdminQuickAccessButtonTest.php`
 
 **Interfaces:**
+
 - Consumes: Blade `@auth` / `@endauth`, `route('admin.dashboard')`
 - Produces: Responsive button in desktop header and mobile drawer
 
 - [ ] **Step 1: Write the failing feature test**
 
 Create `tests/Feature/AdminQuickAccessButtonTest.php`:
+
 ```php
 <?php
 
@@ -167,6 +175,7 @@ Expected: FAIL on `test_public_header_renders_admin_dashboard_button_for_authent
 Add the `@auth` button next to INAPROC link in desktop view and inside the mobile drawer:
 
 In Desktop Action area:
+
 ```blade
 @auth
     <a href="{{ route('admin.dashboard') }}"
@@ -185,6 +194,7 @@ In Desktop Action area:
 ```
 
 In Mobile Drawer area:
+
 ```blade
 @auth
     <div class="pb-2 mb-2 border-b border-slate-200/80 dark:border-slate-800">
