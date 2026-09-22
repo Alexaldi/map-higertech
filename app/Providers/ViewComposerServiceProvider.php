@@ -12,6 +12,7 @@ class ViewComposerServiceProvider extends ServiceProvider
     {
         View::composer('partials.header', function ($view) {
             $view->with('productCategories', Category::produk()->orderBy('name')->get());
+            $view->with('articleCategories', Category::artikel()->orderBy('name')->get());
         });
     }
 }

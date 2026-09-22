@@ -60,5 +60,16 @@
                     class="side-menu__icon fe fe-book-open"></i><span
                     class="side-menu__label">Tutorial & Panduan</span></a>
         </li>
+        <li>
+            <h3>AKTIVITAS</h3>
+        </li>
+        <li>
+            <a class="side-menu__item {{ request()->routeIs('admin.login-activity') ? 'active pointer-events-none cursor-default select-none' : '' }}"
+                href="{{ route('admin.login-activity') }}"
+                {!! request()->routeIs('admin.login-activity') ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                <i class="side-menu__icon fe fe-clock"></i>
+                <span class="side-menu__label">Login Activity</span>
+            </a>
+        </li>
     </ul>
 </aside>

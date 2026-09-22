@@ -236,9 +236,36 @@
                     @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_projects') }}</a>
 
-                <a href="{{ route('articles') }}" data-nav-target="articles"
-                    class="nav-link {{ $isArticles ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
-                    {!! $isArticles ? 'aria-current="page" tabindex="-1"' : '' !!}>{{ __('landing.nav_articles') }}</a>
+                {{-- Articles Dropdown --}}
+                <div class="nav-dropdown relative group {{ $isArticles ? 'is-active' : '' }}">
+                    <button type="button" onclick="window.location.href='{{ route('articles') }}'"
+                        class="nav-dropdown-btn flex items-center gap-1 py-2 transition
+                        {{ $isArticles
+                            ? 'is-active text-blue-600 dark:text-cyan-400 font-bold'
+                            : 'hover:text-blue-600 dark:hover:text-cyan-400' }}">
+                        <span>{{ __('landing.nav_articles') }}</span>
+                        <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition"
+                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                            aria-hidden="true">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div
+                        class="absolute left-0 top-full mt-1 w-60 rounded-2xl bg-white dark:bg-[#131D36] shadow-2xl border border-slate-200/80 dark:border-slate-700 py-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div class="py-1">
+                            @forelse ($articleCategories as $cat)
+                                <a href="{{ route('articles', ['category' => $cat->id]) }}"
+                                    class="flex items-center justify-between px-4 py-2 text-xs font-semibold
+                                    {{ request('category') == $cat->id ? 'text-blue-600 dark:text-cyan-400 bg-blue-50/60 dark:bg-blue-900/30 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400' }} transition"
+                                    {!! request('category') == $cat->id ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                                    <span>{{ $cat->name }}</span>
+                                </a>
+                            @empty
+                                <span class="block px-4 py-2 text-xs text-slate-400">Belum ada kategori</span>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
 
                 <a href="{{ route('tutorials') }}" data-nav-target="contact"
                     class="nav-link {{ $isTutorials ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
@@ -361,11 +388,15 @@
                     </summary>
                     <div
                         class="pl-3 pr-1 py-1.5 space-y-1 text-xs border-l-2 border-blue-500/30 dark:border-cyan-500/30 ml-4 my-1">
-                        <a href="{{ route('products') }}"
-                            class="flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-900/40 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800' }}"
-                            {!! $isProducts ? 'aria-current="page" tabindex="-1"' : '' !!}>
-                            <span>Hidrologi</span>
-                        </a>
+                        @forelse ($productCategories as $cat)
+                            <a href="{{ route('products', ['category' => $cat->id]) }}"
+                                class="flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition {{ request('category') == $cat->id ? 'text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-900/40 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800' }}"
+                                {!! request('category') == $cat->id ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                                <span>{{ $cat->name }}</span>
+                            </a>
+                        @empty
+                            <span class="block px-3 py-2 text-slate-400">Belum ada kategori</span>
+                        @endforelse
                     </div>
                 </details>
 
@@ -376,12 +407,35 @@
                     <span>{{ __('landing.nav_projects') }}</span>
                 </a>
 
-                {{-- Articles --}}
-                <a href="{{ $isHome ? '#articles' : 'https://higertech.com/Article' }}"
-                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
-                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition">
-                    <span>{{ __('landing.nav_articles') }}</span>
-                </a>
+                {{-- Articles Accordion with Dropdown --}}
+                <details
+                    class="group rounded-xl transition {{ $isArticles ? 'bg-blue-50/40 dark:bg-blue-950/20' : '' }}"
+                    {{ $isArticles ? 'open' : '' }}>
+                    <summary
+                        class="flex items-center justify-between px-3.5 py-2.5 rounded-xl cursor-pointer list-none hover:bg-slate-100 dark:hover:bg-slate-800/60 transition {{ $isArticles ? 'text-blue-600 dark:text-cyan-400 font-bold' : '' }}">
+                        <span onclick="window.location.href='{{ route('articles') }}'">{{ __('landing.nav_articles') }}</span>
+                        <div
+                            class="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition">
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200 group-open:rotate-180"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                aria-hidden="true">
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                        </div>
+                    </summary>
+                    <div
+                        class="pl-3 pr-1 py-1.5 space-y-1 text-xs border-l-2 border-blue-500/30 dark:border-cyan-500/30 ml-4 my-1">
+                        @forelse ($articleCategories as $cat)
+                            <a href="{{ route('articles', ['category' => $cat->id]) }}"
+                                class="flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition {{ request('category') == $cat->id ? 'text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-900/40 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800' }}"
+                                {!! request('category') == $cat->id ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                                <span>{{ $cat->name }}</span>
+                            </a>
+                        @empty
+                            <span class="block px-3 py-2 text-slate-400">Belum ada kategori</span>
+                        @endforelse
+                    </div>
+                </details>
 
                 {{-- Download --}}
                 <a href="{{ $isHome ? '#contact' : 'https://higertech.com/Tutorial' }}"
