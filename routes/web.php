@@ -14,6 +14,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProductController as GuestProductsController;
+use App\Http\Controllers\auth\LoginActivityController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
@@ -66,6 +67,8 @@ Route::middleware(['auth', 'prevent-back'])
         return view('admin.dashboard.index');
     })->name('dashboard');
     Route::resource('users', UsersController::class);
+    Route::get('/login-activity', [LoginActivityController::class, 'index'])
+        ->name('login-activity');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('categories', CategoryController::class)->except('show');

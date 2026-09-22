@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\LoginLog;
 
 class LoginController extends Controller
 {
@@ -28,10 +29,26 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            LoginLog::create([
+                'user_id' => Auth::id(),
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'status' => 'success',
+                'login_at' => now(),
+            ]);
+
             return redirect()->intended(
                 route('admin.dashboard')
             );
         }
+
+        LoginLog::create([
+            'user_id' => null,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'status' => 'failed',
+            'login_at' => now(),
+        ]);
 
         return back()
             ->withErrors([
