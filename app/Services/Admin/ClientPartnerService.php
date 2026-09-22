@@ -43,11 +43,11 @@ class ClientPartnerService
 
                 return $this->memoryActive = $collection;
             }
-
-            return $this->memoryActive = $this->repository->getActive();
         } catch (\Throwable) {
-            return $this->memoryActive = new Collection();
+            // fallback to direct repository call on error
         }
+
+        return $this->memoryActive = $this->repository->getActive();
     }
 
     public function flushCache(): void

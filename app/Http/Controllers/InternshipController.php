@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Services\Admin\InternshipApplicationService;
+use App\Services\WhatsAppService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-
 class InternshipController extends Controller
 {
     public function __construct(
-        private readonly InternshipApplicationService $service
+        private readonly InternshipApplicationService $service,
+        private readonly WhatsAppService $waService
     ) {}
 
     /**
@@ -192,6 +194,13 @@ class InternshipController extends Controller
         $application = $this->service->registerApplication($validated, $files, $membersData, $membersFiles);
 
         $regCode = $application->registration_code;
+
+         // Kirim notifikasi WA ke admin (fail-safe)
+        try {
+            $this->waService->notifyNewInternshipApplication($application);
+        } catch (\Throwable $e) {
+            Log::warning('Gagal kirim notifikasi WA: ' . $e->getMessage());
+        }
 
         return response()->json([
             'success' => true,

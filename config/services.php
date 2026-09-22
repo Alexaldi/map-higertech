@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'gowa' => [
+        'url' => env('GOWA_URL', 'http://127.0.0.1:3000'),
+        'device_id' => env('GOWA_DEVICE_ID'),
+        'admin_number' => env('WHATSAPP_ADMIN_NUMBER'),
+    ],
+
 ];
