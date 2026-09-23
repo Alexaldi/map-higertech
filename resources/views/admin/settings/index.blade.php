@@ -190,18 +190,22 @@
                                                     atau menghapus media sosial kapan saja.</p>
                                             </div>
                                             <div class="d-flex align-items-center gap-1">
-                                                <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5"
+                                                <button type="button"
+                                                    class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5"
                                                     onclick="addSocialRow()">
                                                     <i class="fe fe-plus"></i> Tambah Media Sosial
                                                 </button>
                                                 <div class="dropdown">
-                                                    <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle dropdown-toggle-split"
-                                                        data-bs-toggle="dropdown" aria-expanded="false" title="Pilih platform spesifik">
+                                                    <button type="button"
+                                                        class="btn btn-outline-primary btn-sm dropdown-toggle dropdown-toggle-split"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"
+                                                        title="Pilih platform spesifik">
                                                         <span class="visually-hidden">Pilih Platform</span>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end shadow-lg p-2.5 border-0"
                                                         style="width: 300px; max-height: 280px; overflow-y: auto; z-index: 1060;">
-                                                        <div class="text-muted fs-11 font-weight-semibold text-uppercase tracking-wider border-bottom pb-1 mb-2 px-1">
+                                                        <div
+                                                            class="text-muted fs-11 font-weight-semibold text-uppercase tracking-wider border-bottom pb-1 mb-2 px-1">
                                                             Pilih Platform Medsos:</div>
                                                         <div class="row g-1">
                                                             @foreach ($availablePlatforms as $platKey => $plat)
@@ -209,11 +213,13 @@
                                                                     <button type="button"
                                                                         class="btn btn-sm btn-outline-light text-dark border w-100 d-flex align-items-center gap-2 p-1.5 fs-12 text-start rounded-2"
                                                                         onclick="addSocialRow('{{ $platKey }}')">
-                                                                        <span class="d-inline-flex align-items-center justify-content-center flex-shrink-0"
+                                                                        <span
+                                                                            class="d-inline-flex align-items-center justify-content-center flex-shrink-0"
                                                                             style="width: 20px; height: 20px;">
                                                                             {!! $plat['icon'] !!}
                                                                         </span>
-                                                                        <span class="text-truncate">{{ $plat['name'] }}</span>
+                                                                        <span
+                                                                            class="text-truncate">{{ $plat['name'] }}</span>
                                                                     </button>
                                                                 </div>
                                                             @endforeach
@@ -230,17 +236,23 @@
                                         <div id="social-empty-state"
                                             class="text-center py-5 border rounded-3 bg-light d-none">
                                             <div class="mb-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"
+                                                    viewBox="0 0 24 24" fill="none" stroke="#9ca3af"
+                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                                     <circle cx="18" cy="5" r="3"></circle>
                                                     <circle cx="6" cy="12" r="3"></circle>
                                                     <circle cx="18" cy="19" r="3"></circle>
-                                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49">
+                                                    </line>
+                                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49">
+                                                    </line>
                                                 </svg>
                                             </div>
                                             <h6 class="font-weight-bold text-dark mb-1">Belum Ada Akun Media Sosial</h6>
-                                            <p class="text-muted fs-12 mb-3">Daftar media sosial masih kosong. Anda dapat menambahkan tautan WhatsApp, Instagram, LinkedIn, YouTube, dll.</p>
-                                            <button type="button" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5"
+                                            <p class="text-muted fs-12 mb-3">Daftar media sosial masih kosong. Anda dapat
+                                                menambahkan tautan WhatsApp, Instagram, LinkedIn, YouTube, dll.</p>
+                                            <button type="button"
+                                                class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5"
                                                 onclick="addSocialRow()">
                                                 <i class="fe fe-plus"></i> Tambah Media Sosial Sekarang
                                             </button>
@@ -547,7 +559,8 @@
 
         function addSocialRow(platformKey = null) {
             if (!platformKey) {
-                const existingPlats = Array.from(document.querySelectorAll('.social-row input[name$="[platform]"]')).map(i => i.value);
+                const existingPlats = Array.from(document.querySelectorAll('.social-row input[name$="[platform]"]')).map(
+                    i => i.value);
                 const unadded = Object.keys(availablePlatforms).find(k => !existingPlats.includes(k));
                 platformKey = unadded || 'whatsapp';
             }
