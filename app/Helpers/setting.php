@@ -106,9 +106,10 @@ if (!function_exists('setting_social_links')) {
         $raw = setting('social_links');
         $platforms = social_platforms();
 
-        if ($raw) {
+        // 1. If dynamic social_links is configured in database (even if empty '[]')
+        if ($raw !== null) {
             $decoded = is_string($raw) ? json_decode($raw, true) : $raw;
-            if (is_array($decoded) && !empty($decoded)) {
+            if (is_array($decoded)) {
                 $result = [];
                 foreach ($decoded as $item) {
                     if (empty($item['url'])) {
@@ -125,44 +126,24 @@ if (!function_exists('setting_social_links')) {
                         'icon' => $meta['icon'],
                     ];
                 }
-                if (!empty($result)) {
-                    return $result;
-                }
+                return $result;
             }
         }
 
-        // Fallback to legacy individual settings
-        $defaults = [
-            [
-                'platform' => 'whatsapp',
-                'label' => 'WhatsApp',
-                'url' => setting('social_whatsapp', 'https://wa.me/628112332182'),
-            ],
-            [
-                'platform' => 'instagram',
-                'label' => 'Instagram',
-                'url' => setting('social_instagram', 'https://instagram.com'),
-            ],
-            [
-                'platform' => 'linkedin',
-                'label' => 'LinkedIn',
-                'url' => setting('social_linkedin', 'https://linkedin.com'),
-            ],
-            [
-                'platform' => 'youtube',
-                'label' => 'YouTube',
-                'url' => setting('social_youtube', 'https://youtube.com'),
-            ],
-        ];
-
+        // 2. Fallback to legacy individual settings ONLY if social_links was never set (null)
+        // and only if the URL is a real configured URL (not generic placeholder)
+        $legacyKeys = ['whatsapp', 'instagram', 'linkedin', 'youtube'];
+        $placeholders = ['https://instagram.com', 'https://linkedin.com', 'https://youtube.com', '#'];
         $result = [];
-        foreach ($defaults as $def) {
-            if ($def['url'] && $def['url'] !== '#') {
-                $meta = $platforms[$def['platform']];
+
+        foreach ($legacyKeys as $platKey) {
+            $legacyUrl = setting('social_' . $platKey);
+            if (!empty($legacyUrl) && !in_array(rtrim($legacyUrl, '/'), $placeholders) && !in_array($legacyUrl, $placeholders)) {
+                $meta = $platforms[$platKey] ?? $platforms['globe'];
                 $result[] = [
-                    'platform' => $def['platform'],
-                    'label' => $def['label'],
-                    'url' => $def['url'],
+                    'platform' => $platKey,
+                    'label' => $meta['name'],
+                    'url' => $legacyUrl,
                     'hover_class' => $meta['hover_class'],
                     'icon' => $meta['icon'],
                 ];

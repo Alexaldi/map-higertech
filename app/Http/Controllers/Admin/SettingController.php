@@ -55,7 +55,7 @@ class SettingController extends Controller
             $validated['internship_enabled'] = $request->input('internship_enabled') === '1' ? '1' : '0';
         }
 
-        if ($request->has('social_links')) {
+        if ($request->has('social_links_present') || $request->has('social_links')) {
             $cleaned = [];
             foreach ($request->input('social_links', []) as $row) {
                 if (! empty($row['url'])) {
@@ -65,22 +65,13 @@ class SettingController extends Controller
                         'label' => $row['label'] ?? '',
                         'url' => $row['url'],
                     ];
-
-                    if ($plat === 'whatsapp') {
-                        $validated['social_whatsapp'] = $row['url'];
-                    }
-                    if ($plat === 'instagram') {
-                        $validated['social_instagram'] = $row['url'];
-                    }
-                    if ($plat === 'linkedin') {
-                        $validated['social_linkedin'] = $row['url'];
-                    }
-                    if ($plat === 'youtube') {
-                        $validated['social_youtube'] = $row['url'];
-                    }
                 }
             }
             $validated['social_links'] = json_encode($cleaned);
+            $validated['social_whatsapp'] = collect($cleaned)->firstWhere('platform', 'whatsapp')['url'] ?? null;
+            $validated['social_instagram'] = collect($cleaned)->firstWhere('platform', 'instagram')['url'] ?? null;
+            $validated['social_linkedin'] = collect($cleaned)->firstWhere('platform', 'linkedin')['url'] ?? null;
+            $validated['social_youtube'] = collect($cleaned)->firstWhere('platform', 'youtube')['url'] ?? null;
         } elseif (! empty($validated['social_whatsapp']) || ! empty($validated['social_instagram'])) {
             // Build social_links from legacy single fields if submitted directly
             $legacyLinks = [];

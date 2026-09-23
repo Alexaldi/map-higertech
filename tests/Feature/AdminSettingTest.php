@@ -93,4 +93,37 @@ class AdminSettingTest extends TestCase
             ->assertSee('https://tiktok.com/@higertech')
             ->assertSee('https://facebook.com/higertech');
     }
+
+    public function test_admin_can_clear_all_social_media_links_and_footer_does_not_show_dummy_links(): void
+    {
+        // First submit with links
+        $this->actingAs($this->admin)->put('/admin/settings', [
+            'contact_email' => 'contact@higertech.com',
+            'contact_phone' => '022-2101-0299',
+            'social_links_present' => '1',
+            'social_links' => [
+                ['platform' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/myhigertech'],
+            ],
+        ]);
+
+        $this->assertCount(1, setting_social_links());
+
+        // Now clear all links (submitting social_links_present with empty social_links)
+        $response = $this->actingAs($this->admin)->put('/admin/settings', [
+            'contact_email' => 'contact@higertech.com',
+            'contact_phone' => '022-2101-0299',
+            'social_links_present' => '1',
+        ]);
+
+        $response->assertRedirect('/admin/settings');
+
+        // Verify setting_social_links() is completely empty
+        $this->assertCount(0, setting_social_links());
+
+        // Verify landing page does not render dummy/fallback instagram or linkedin links
+        $landing = $this->get('/');
+        $landing->assertOk()
+            ->assertDontSee('https://instagram.com/myhigertech')
+            ->assertDontSee('https://linkedin.com');
+    }
 }

@@ -38,6 +38,18 @@ class SiteSettingSeeder extends Seeder
 
             // Social Media
             [
+                'key' => 'social_links',
+                'value' => json_encode([
+                    [
+                        'platform' => 'whatsapp',
+                        'label' => 'WhatsApp',
+                        'url' => 'https://wa.me/628112332182',
+                    ],
+                ]),
+                'group' => 'social',
+                'type' => 'json',
+            ],
+            [
                 'key' => 'social_whatsapp',
                 'value' => 'https://wa.me/628112332182',
                 'group' => 'social',
@@ -45,19 +57,19 @@ class SiteSettingSeeder extends Seeder
             ],
             [
                 'key' => 'social_instagram',
-                'value' => 'https://instagram.com',
+                'value' => null,
                 'group' => 'social',
                 'type' => 'url',
             ],
             [
                 'key' => 'social_linkedin',
-                'value' => 'https://linkedin.com',
+                'value' => null,
                 'group' => 'social',
                 'type' => 'url',
             ],
             [
                 'key' => 'social_youtube',
-                'value' => 'https://youtube.com',
+                'value' => null,
                 'group' => 'social',
                 'type' => 'url',
             ],
