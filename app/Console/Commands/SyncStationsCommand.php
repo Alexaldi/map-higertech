@@ -73,3 +73,4 @@ class SyncStationsCommand extends Command
         }
     }
 }
+

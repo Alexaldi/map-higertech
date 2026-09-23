@@ -390,3 +390,4 @@ class PosMonitoringService
         return null;
     }
 }
+

@@ -95,3 +95,4 @@ class PosMonitoringSyncTest extends TestCase
             ->assertExitCode(0);
     }
 }
+
