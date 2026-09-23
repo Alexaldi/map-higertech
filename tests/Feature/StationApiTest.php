@@ -42,7 +42,7 @@ class StationApiTest extends TestCase
             ->assertJsonPath('data.0.latitude', -6.2)
             ->assertJsonPath('data.0.longitude', 106.8166667)
             ->assertJsonPath('data.0.regency_name', null)
-            ->assertJsonPath('data.0.device_id', 'DEVICE-***-001')
+            ->assertJsonPath('data.0.device_id', 'ARR-DUMMY-001')
             ->assertJsonPath('data.0.latest_reading', null)
             ->assertJsonPath('meta.organizations.0.code', 'BTN-BARAT')
             ->assertJsonPath('meta.organizations.0.name', 'Balai Telemetri Barat');

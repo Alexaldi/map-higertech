@@ -19,23 +19,10 @@ class StationResource extends JsonResource
             'balai_name' => $this->balai_name,
             'province_name' => $this->province_name,
             'regency_name' => $this->regency_name,
-            'device_id' => $this->maskedDeviceId(),
+            'device_id' => $this->device_id,
             'device_status' => $this->device_status,
             'reading_at' => $this->reading_at?->toIso8601String(),
             'latest_reading' => $this->latest_reading,
         ];
-    }
-
-    private function maskedDeviceId(): ?string
-    {
-        if (! $this->device_id) {
-            return null;
-        }
-
-        $separator = strrpos($this->device_id, '-');
-
-        return $separator === false
-            ? 'DEVICE-***'
-            : 'DEVICE-***'.substr($this->device_id, $separator);
     }
 }
