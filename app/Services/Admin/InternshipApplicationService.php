@@ -53,7 +53,7 @@ class InternshipApplicationService
         foreach (['file_identity', 'file_recommendation', 'file_cv', 'file_transcript'] as $field) {
             if (! empty($files[$field]) && $files[$field] instanceof UploadedFile) {
                 $filename = Str::slug($data['name']) . '-' . Str::random(8) . '.' . $files[$field]->getClientOriginalExtension();
-                $path = $files[$field]->storeAs("internships/{$type}/{$year}", $filename, 'public');
+                $path = $files[$field]->storeAs("internships/{$type}/{$year}", $filename, 'local');
                 $data[$field] = $path;
             }
         }
@@ -87,17 +87,17 @@ class InternshipApplicationService
 
                 if (! empty($memFiles['file_identity']) && $memFiles['file_identity'] instanceof UploadedFile) {
                     $filename = Str::slug($member['name']) . '-id-' . Str::random(8) . '.' . $memFiles['file_identity']->getClientOriginalExtension();
-                    $memIdentity = $memFiles['file_identity']->storeAs("internships/{$type}/{$year}", $filename, 'public');
+                    $memIdentity = $memFiles['file_identity']->storeAs("internships/{$type}/{$year}", $filename, 'local');
                 }
 
                 if (! empty($memFiles['file_cv']) && $memFiles['file_cv'] instanceof UploadedFile) {
                     $filename = Str::slug($member['name']) . '-cv-' . Str::random(8) . '.' . $memFiles['file_cv']->getClientOriginalExtension();
-                    $memCv = $memFiles['file_cv']->storeAs("internships/{$type}/{$year}", $filename, 'public');
+                    $memCv = $memFiles['file_cv']->storeAs("internships/{$type}/{$year}", $filename, 'local');
                 }
 
                 if (! empty($memFiles['file_transcript']) && $memFiles['file_transcript'] instanceof UploadedFile) {
                     $filename = Str::slug($member['name']) . '-trans-' . Str::random(8) . '.' . $memFiles['file_transcript']->getClientOriginalExtension();
-                    $memTranscript = $memFiles['file_transcript']->storeAs("internships/{$type}/{$year}", $filename, 'public');
+                    $memTranscript = $memFiles['file_transcript']->storeAs("internships/{$type}/{$year}", $filename, 'local');
                 }
 
                 $application->members()->create([
@@ -228,16 +228,24 @@ class InternshipApplicationService
     {
         // Delete uploaded files of application
         foreach (['file_identity', 'file_recommendation', 'file_cv', 'file_transcript'] as $field) {
-            if ($application->{$field} && Storage::disk('public')->exists($application->{$field})) {
-                Storage::disk('public')->delete($application->{$field});
+            if (!empty($application->{$field})) {
+                if (Storage::disk('local')->exists($application->{$field})) {
+                    Storage::disk('local')->delete($application->{$field});
+                } elseif (Storage::disk('public')->exists($application->{$field})) {
+                    Storage::disk('public')->delete($application->{$field});
+                }
             }
         }
 
         // Delete uploaded files of members
         foreach ($application->members as $member) {
             foreach (['file_identity', 'file_cv', 'file_transcript'] as $field) {
-                if ($member->{$field} && Storage::disk('public')->exists($member->{$field})) {
-                    Storage::disk('public')->delete($member->{$field});
+                if (!empty($member->{$field})) {
+                    if (Storage::disk('local')->exists($member->{$field})) {
+                        Storage::disk('local')->delete($member->{$field});
+                    } elseif (Storage::disk('public')->exists($member->{$field})) {
+                        Storage::disk('public')->delete($member->{$field});
+                    }
                 }
             }
         }

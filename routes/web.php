@@ -85,6 +85,8 @@ Route::middleware(['auth', 'prevent-back'])
     Route::resource('tutorials', AdminTutorialController::class);
     Route::get('internships/{internship}/letter', [InternshipApplicationController::class, 'downloadLetter'])->name('internships.letter');
     Route::get('internships/{internship}/letter/preview', [InternshipApplicationController::class, 'previewLetter'])->name('internships.letter.preview');
+    Route::get('internships/{internship}/document/{field}', [InternshipApplicationController::class, 'document'])->name('internships.document');
+    Route::get('internships/{internship}/members/{member}/document/{field}', [InternshipApplicationController::class, 'memberDocument'])->name('internships.members.document');
     Route::resource('internships', InternshipApplicationController::class)->except(['create', 'store', 'edit']);
     Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');

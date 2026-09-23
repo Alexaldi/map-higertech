@@ -227,25 +227,25 @@ class InternshipApplication extends Model
 
     public function getFileIdentityUrlAttribute(): ?string
     {
-        return $this->resolveFileUrl($this->file_identity);
+        return $this->resolveFileUrl($this->file_identity, 'identity');
     }
 
     public function getFileRecommendationUrlAttribute(): ?string
     {
-        return $this->resolveFileUrl($this->file_recommendation);
+        return $this->resolveFileUrl($this->file_recommendation, 'recommendation');
     }
 
     public function getFileCvUrlAttribute(): ?string
     {
-        return $this->resolveFileUrl($this->file_cv);
+        return $this->resolveFileUrl($this->file_cv, 'cv');
     }
 
     public function getFileTranscriptUrlAttribute(): ?string
     {
-        return $this->resolveFileUrl($this->file_transcript);
+        return $this->resolveFileUrl($this->file_transcript, 'transcript');
     }
 
-    private function resolveFileUrl(?string $path): ?string
+    private function resolveFileUrl(?string $path, string $field): ?string
     {
         if (! $path) {
             return null;
@@ -253,6 +253,10 @@ class InternshipApplication extends Model
 
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
             return $path;
+        }
+
+        if ($this->id) {
+            return route('admin.internships.document', ['internship' => $this->id, 'field' => $field]);
         }
 
         return url('storage/' . ltrim($path, '/'));

@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\InternshipApplication;
+use App\Models\InternshipMember;
 use App\Services\Admin\InternshipApplicationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class InternshipApplicationController extends Controller
 {
@@ -89,7 +92,6 @@ class InternshipApplicationController extends Controller
                     ]),
                     'documents' => [
                         'identity' => [
-                            'name' => $internship->type === 'vocational' ? 'Kartu Pelajar / KTP' : 'KTM / KTP Mahasiswa',
                             'name' => $internship->type === 'vocational' ? 'Kartu Pelajar' : 'KTM Mahasiswa',
                             'url' => $internship->file_identity_url,
                         ],
@@ -200,6 +202,67 @@ class InternshipApplicationController extends Controller
         $filename = 'Surat_Balasan_Magang_' . Str::slug($internship->name) . '.pdf';
 
         return $pdf->stream($filename);
+    }
+
+    /**
+     * Securely stream a private document for the leader/single applicant.
+     */
+    public function document(InternshipApplication $internship, string $field): SymfonyResponse
+    {
+        $fieldMap = [
+            'identity' => $internship->file_identity,
+            'recommendation' => $internship->file_recommendation,
+            'cv' => $internship->file_cv,
+            'transcript' => $internship->file_transcript,
+        ];
+
+        $path = $fieldMap[$field] ?? null;
+
+        return $this->respondWithFile($path);
+    }
+
+    /**
+     * Securely stream a private document for a team member.
+     */
+    public function memberDocument(InternshipApplication $internship, InternshipMember $member, string $field): SymfonyResponse
+    {
+        if ($member->internship_application_id !== $internship->id) {
+            abort(404, 'Anggota tim tidak sesuai dengan data pendaftaran.');
+        }
+
+        $fieldMap = [
+            'identity' => $member->file_identity,
+            'cv' => $member->file_cv,
+            'transcript' => $member->file_transcript,
+        ];
+
+        $path = $fieldMap[$field] ?? null;
+
+        return $this->respondWithFile($path);
+    }
+
+    private function respondWithFile(?string $path): SymfonyResponse
+    {
+        if (! $path) {
+            abort(404, 'Berkas dokumen belum diunggah.');
+        }
+
+        // Check local (private) disk first, fallback to public disk for legacy uploads
+        $disk = Storage::disk('local')->exists($path)
+            ? 'local'
+            : (Storage::disk('public')->exists($path) ? 'public' : null);
+
+        if (! $disk) {
+            abort(404, 'Berkas fisik tidak ditemukan di penyimpanan server.');
+        }
+
+        $mimeType = Storage::disk($disk)->mimeType($path) ?: 'application/octet-stream';
+        $filename = basename($path);
+
+        return Storage::disk($disk)->response($path, $filename, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        ]);
     }
 
     /**

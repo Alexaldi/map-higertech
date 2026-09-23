@@ -172,7 +172,7 @@ return [
     'btn_copy_code' => 'Copy Registration Code',
     'btn_track_now' => 'Track Status Now',
     'track_download_loa' => 'Download Digital LOA (PDF, 420 KB)',
-    'track_btn_wa' => 'Contact via WhatsApp',
+    'track_btn_wa' => 'Contact Internship Admin',
     'track_btn_close' => 'Close',
 
     // Form Types & Period

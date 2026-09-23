@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -122,7 +123,6 @@ class InternshipController extends Controller
             'phone.required' => 'Nomor WhatsApp aktif wajib diisi.',
             'start_date.after_or_equal' => 'Tanggal mulai magang tidak boleh sebelum hari ini.',
             'end_date.after_or_equal' => 'Tanggal selesai magang harus sama dengan atau setelah tanggal mulai magang.',
-            'file_identity.required' => $request->input('type') === 'university' ? 'Scan KTM (Kartu Tanda Mahasiswa) / Scan KTP wajib diunggah.' : 'Scan Kartu Pelajar (atau Scan KTP) wajib diunggah.',
             'file_identity.required' => $request->input('type') === 'university' ? 'Scan KTM (Kartu Tanda Mahasiswa) wajib diunggah.' : 'Scan Kartu Pelajar wajib diunggah.',
             'file_transcript.required' => $request->input('type') === 'university' ? 'Transkrip Nilai Akademik wajib diunggah (Format PDF).' : 'Transkrip Nilai / Rapor wajib diunggah (Format PDF).',
             'file_identity.max' => 'Ukuran berkas identitas maksimal 3MB.',
@@ -134,11 +134,9 @@ class InternshipController extends Controller
             'file_transcript.mimes' => 'Transkrip Nilai harus berformat PDF.',
             'file_cv.mimes' => 'CV harus berformat PDF.',
             'members.*.name.required_with' => 'Nama setiap anggota tim wajib diisi.',
-            'members.*.identity_number.required_with' => $request->input('type') === 'university' ? 'NIM setiap anggota tim wajib diisi.' : 'NIS / NIK setiap anggota tim wajib diisi.',
             'members.*.identity_number.required_with' => $request->input('type') === 'university' ? 'NIM setiap anggota tim wajib diisi.' : 'NIS / NISN setiap anggota tim wajib diisi.',
             'members.*.email.required_with' => 'Alamat email setiap anggota tim wajib diisi.',
             'members.*.email.email' => 'Format alamat email anggota tim tidak valid (contoh: nama@email.com).',
-            'members.*.file_identity.required_with' => $request->input('type') === 'university' ? 'Scan KTM / KTP setiap anggota tim wajib diunggah.' : 'Scan Kartu Pelajar / KTP setiap anggota tim wajib diunggah.',
             'members.*.file_identity.required_with' => $request->input('type') === 'university' ? 'Scan KTM setiap anggota tim wajib diunggah.' : 'Scan Kartu Pelajar setiap anggota tim wajib diunggah.',
             'members.*.file_cv.required_with' => 'Berkas CV / Portofolio setiap anggota tim wajib diunggah (Format PDF).',
             'members.*.file_transcript.required_with' => 'Transkrip Nilai / Rapor setiap anggota tim wajib diunggah (Format PDF).',
@@ -206,10 +204,21 @@ class InternshipController extends Controller
             $membersFiles = $request->file('members');
         }
 
-        $application = $this->service->registerApplication($validated, $files, $membersData, $membersFiles);
+        // Prevent concurrent duplicate submissions (same identity & type within 10 seconds)
+        $lockKey = 'apply_lock_' . md5($validated['type'] . '_' . $validated['identity_number']);
+        $lock = Cache::lock($lockKey, 10);
+
+        if (! $lock->get()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pendaftaran Anda sedang diproses oleh sistem. Mohon tidak menekan tombol kirim berulang kali.',
+            ], 429);
+        }
+
         try {
             $application = $this->service->registerApplication($validated, $files, $membersData, $membersFiles);
         } catch (\Throwable $e) {
+            $lock->release();
             Log::error('Pendaftaran magang gagal diproses: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);

@@ -16,7 +16,7 @@ class InternshipTeamApplicationTest extends TestCase
 
     public function test_can_submit_group_internship_application_with_team_members(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $payload = [
             'type' => 'university',
@@ -235,7 +235,7 @@ class InternshipTeamApplicationTest extends TestCase
 
     public function test_individual_application_with_stray_empty_members_succeeds_smoothly(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $payload = [
             'type' => 'vocational',

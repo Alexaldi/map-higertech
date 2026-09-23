@@ -208,8 +208,7 @@ class WhatsAppService
         $sent = $this->sendMessage($this->adminNumber, $message);
 
         // 1. Berkas CV
-        if (! empty($application->file_cv) && Storage::disk('public')->exists($application->file_cv)) {
-            $cvPath = Storage::disk('public')->path($application->file_cv);
+        if ($cvPath = $this->resolveDiskPath($application->file_cv)) {
             $this->sendFile(
                 $this->adminNumber,
                 $cvPath,
@@ -219,8 +218,7 @@ class WhatsAppService
         }
 
         // 2. Berkas Surat Pengantar / Rekomendasi
-        if (! empty($application->file_recommendation) && Storage::disk('public')->exists($application->file_recommendation)) {
-            $recPath = Storage::disk('public')->path($application->file_recommendation);
+        if ($recPath = $this->resolveDiskPath($application->file_recommendation)) {
             $this->sendFile(
                 $this->adminNumber,
                 $recPath,
@@ -229,10 +227,8 @@ class WhatsAppService
             );
         }
 
-        // 3. Berkas Identitas (KTP / KTM / Kartu Pelajar)
         // 3. Berkas Identitas (KTM / Kartu Pelajar)
-        if (! empty($application->file_identity) && Storage::disk('public')->exists($application->file_identity)) {
-            $idPath = Storage::disk('public')->path($application->file_identity);
+        if ($idPath = $this->resolveDiskPath($application->file_identity)) {
             $idLabel = $application->type === 'university' ? 'KTM (Kartu Mahasiswa)' : 'Kartu Pelajar';
             $this->sendFile(
                 $this->adminNumber,
@@ -243,8 +239,7 @@ class WhatsAppService
         }
 
         // 4. Berkas Transkrip / Rapor
-        if (! empty($application->file_transcript) && Storage::disk('public')->exists($application->file_transcript)) {
-            $trPath = Storage::disk('public')->path($application->file_transcript);
+        if ($trPath = $this->resolveDiskPath($application->file_transcript)) {
             $this->sendFile(
                 $this->adminNumber,
                 $trPath,
@@ -254,6 +249,26 @@ class WhatsAppService
         }
 
         return $sent;
+    }
+
+    /**
+     * Resolve full disk path checking local (private) disk first, then public disk.
+     */
+    private function resolveDiskPath(?string $path): ?string
+    {
+        if (empty($path)) {
+            return null;
+        }
+
+        if (Storage::disk('local')->exists($path)) {
+            return Storage::disk('local')->path($path);
+        }
+
+        if (Storage::disk('public')->exists($path)) {
+            return Storage::disk('public')->path($path);
+        }
+
+        return null;
     }
 
     /**

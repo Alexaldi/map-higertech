@@ -29,7 +29,7 @@ class InternshipApplicationTest extends TestCase
 
     public function test_vocational_smk_application_can_be_submitted_successfully(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $payload = [
             'type' => 'vocational',
@@ -66,12 +66,12 @@ class InternshipApplicationTest extends TestCase
         $this->assertStringStartsWith('INT-SMK', $response->json('registration_code'));
 
         $this->assertNotNull($app->file_identity);
-        Storage::disk('public')->assertExists($app->file_identity);
+        Storage::disk('local')->assertExists($app->file_identity);
     }
 
     public function test_university_student_application_can_be_submitted_successfully(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $payload = [
             'type' => 'university',
@@ -118,7 +118,7 @@ class InternshipApplicationTest extends TestCase
 
     public function test_application_can_be_submitted_without_recommendation_letter(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $payload = [
             'type' => 'vocational',
@@ -207,7 +207,7 @@ class InternshipApplicationTest extends TestCase
 
     public function test_smk_application_with_custom_institution_other_can_be_submitted_successfully(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $payload = [
             'type' => 'vocational',
@@ -235,7 +235,7 @@ class InternshipApplicationTest extends TestCase
 
     public function test_university_application_with_custom_institution_other_can_be_submitted_successfully(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $payload = [
             'type' => 'university',

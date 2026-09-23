@@ -369,6 +369,10 @@ export function initInternship() {
     async function submitInternshipForm(e, type) {
         e.preventDefault();
         const form = e.target;
+        if (form.dataset.submitting === 'true') {
+            return;
+        }
+
         const isSmk = type === 'smk';
         const alertBox = document.getElementById(isSmk ? 'alert-form-smk' : 'alert-form-mahasiswa');
         const submitBtn = document.getElementById(isSmk ? 'btn-submit-smk' : 'btn-submit-mahasiswa');
@@ -435,12 +439,10 @@ export function initInternship() {
         // Validate required fields
         const requiredFields = [
             { name: 'name', label: 'Nama Lengkap' },
-            { name: 'identity_number', label: isSmk ? 'NIS / NIK Siswa' : 'NIM Mahasiswa' },
             { name: 'identity_number', label: isSmk ? 'NIS / NISN Siswa' : 'NIM Mahasiswa' },
             { name: 'phone', label: 'Nomor WhatsApp' },
             { name: 'institution', label: isSmk ? 'Asal Sekolah SMK' : 'Asal Perguruan Tinggi' },
             { name: 'grade_level', label: isSmk ? 'Tingkat Kelas' : 'Semester Aktif' },
-            { name: 'file_identity', label: isSmk ? 'Kartu Pelajar / KTP' : 'KTM / KTP' },
             { name: 'file_identity', label: isSmk ? 'Kartu Pelajar' : 'KTM' },
             { name: 'file_transcript', label: isSmk ? 'Transkrip / Rapor' : 'Transkrip Nilai' },
         ];
@@ -471,7 +473,6 @@ export function initInternship() {
                     return;
                 }
                 if (!idVal) {
-                    showFormError(`<strong>Data Anggota Belum Lengkap:</strong> ${isSmk ? 'NIS / NIK' : 'NIM'} Anggota #${memberNum} wajib diisi.`);
                     showFormError(`<strong>Data Anggota Belum Lengkap:</strong> ${isSmk ? 'NIS / NISN' : 'NIM'} Anggota #${memberNum} wajib diisi.`);
                     return;
                 }
@@ -480,7 +481,6 @@ export function initInternship() {
                     return;
                 }
                 if (!fileId) {
-                    showFormError(`<strong>Berkas Anggota Belum Lengkap:</strong> ${isSmk ? 'Kartu Pelajar / KTP' : 'KTM / KTP'} Anggota #${memberNum} wajib diunggah.`);
                     showFormError(`<strong>Berkas Anggota Belum Lengkap:</strong> ${isSmk ? 'Kartu Pelajar' : 'KTM'} Anggota #${memberNum} wajib diunggah.`);
                     return;
                 }
@@ -550,8 +550,11 @@ export function initInternship() {
         if (durationInput && durationInput.value) formData.set('duration', durationInput.value);
         if (periodInput && periodInput.value) formData.set('start_period', periodInput.value);
 
+        form.dataset.submitting = 'true';
+        form.style.pointerEvents = 'none';
         if (submitBtn) {
             submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
             submitBtn.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -608,8 +611,11 @@ export function initInternship() {
             console.error('Submission error:', err);
             showFormError('<strong>Gagal Mengirim:</strong> Koneksi bermasalah atau server tidak dapat dijangkau. Silakan periksa jaringan Anda.');
         } finally {
+            delete form.dataset.submitting;
+            form.style.pointerEvents = '';
             if (submitBtn) {
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
                 submitBtn.innerHTML = originalBtnContent;
             }
         }
@@ -706,8 +712,6 @@ export function initInternship() {
                     <input type="text" name="members[${idx}][name]" required class="member-input-name w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="${isSmk ? 'Contoh: Muhammad Rayhan' : 'Contoh: Muhammad Rayhan'}">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">${isSmk ? 'NIS / NIK Siswa' : 'NIM Mahasiswa'}: <span class="text-rose-500">*</span></label>
-                    <input type="text" name="members[${idx}][identity_number]" required class="member-input-id w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs font-mono focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="${isSmk ? 'Contoh: 12345 / 3204...' : 'Contoh: 10221045'}">
                     <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">${isSmk ? 'NIS / NISN Siswa' : 'NIM Mahasiswa'}: <span class="text-rose-500">*</span></label>
                     <input type="text" name="members[${idx}][identity_number]" required class="member-input-id w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs font-mono focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="${isSmk ? 'Contoh: 12345 / 0054...' : 'Contoh: 10221045'}">
                 </div>
@@ -716,7 +720,6 @@ export function initInternship() {
                     <input type="email" name="members[${idx}][email]" required class="member-input-email w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-[#0c1626] text-slate-900 dark:text-white px-3 py-2 text-xs focus:ring-2 ${isSmk ? 'focus:ring-blue-500' : 'focus:ring-cyan-500'}" placeholder="Contoh: rayhan@mail.com">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">${isSmk ? 'Kartu Pelajar / KTP' : 'KTM / KTP'} <span class="text-rose-500">*</span> <span class="text-slate-400 font-normal">(PDF/Foto)</span>:</label>
                     <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">${isSmk ? 'Kartu Pelajar' : 'KTM (Kartu Tanda Mahasiswa)'} <span class="text-rose-500">*</span> <span class="text-slate-400 font-normal">(PDF/Foto)</span>:</label>
                     <input type="file" name="members[${idx}][file_identity]" required accept=".pdf,image/*" class="member-input-doc-id block w-full text-[11px] text-slate-500 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold ${isSmk ? 'file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-950 dark:file:text-blue-300' : 'file:bg-cyan-50 file:text-cyan-700 dark:file:bg-cyan-950 dark:file:text-cyan-300'} cursor-pointer">
                 </div>
@@ -973,6 +976,15 @@ export function initInternship() {
                     } else {
                         notesContainer.classList.add('hidden');
                     }
+                }
+
+                // Update WhatsApp button with dynamic registration code inquiry
+                const waBtn = document.getElementById('result-wa-btn');
+                if (waBtn && app.registration_code) {
+                    const rawWa = waBtn.getAttribute('href') || '';
+                    const baseWa = rawWa.split('?')[0];
+                    const msg = encodeURIComponent(`Halo Admin Higertech, saya ingin menanyakan perihal status seleksi pendaftaran magang dengan No. Registrasi: ${app.registration_code} (${app.name} - ${app.institution}).`);
+                    waBtn.href = `${baseWa}?text=${msg}`;
                 }
 
                 if (resultEl) resultEl.classList.remove('hidden');

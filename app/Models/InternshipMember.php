@@ -33,20 +33,20 @@ class InternshipMember extends Model
 
     public function getFileIdentityUrlAttribute(): ?string
     {
-        return $this->resolveFileUrl($this->file_identity);
+        return $this->resolveFileUrl($this->file_identity, 'identity');
     }
 
     public function getFileCvUrlAttribute(): ?string
     {
-        return $this->resolveFileUrl($this->file_cv);
+        return $this->resolveFileUrl($this->file_cv, 'cv');
     }
 
     public function getFileTranscriptUrlAttribute(): ?string
     {
-        return $this->resolveFileUrl($this->file_transcript);
+        return $this->resolveFileUrl($this->file_transcript, 'transcript');
     }
 
-    private function resolveFileUrl(?string $path): ?string
+    private function resolveFileUrl(?string $path, string $field): ?string
     {
         if (! $path) {
             return null;
@@ -54,6 +54,14 @@ class InternshipMember extends Model
 
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
             return $path;
+        }
+
+        if ($this->internship_application_id && $this->id) {
+            return route('admin.internships.members.document', [
+                'internship' => $this->internship_application_id,
+                'member' => $this->id,
+                'field' => $field,
+            ]);
         }
 
         return url('storage/' . ltrim($path, '/'));
