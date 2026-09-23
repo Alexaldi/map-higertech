@@ -230,11 +230,74 @@
                                         </div>
 
                                         <div id="social-rows-container" class="d-flex flex-column gap-3">
-                                            {{-- Rows dynamically populated via JS --}}
+                                            @foreach ($socialLinks ?? [] as $index => $item)
+                                                @php
+                                                    $platKey = $item['platform'] ?? 'globe';
+                                                    $currentPlat = $availablePlatforms[$platKey] ?? ($availablePlatforms['globe'] ?? ['name' => 'Lainnya', 'icon' => '', 'placeholder' => 'https://...']);
+                                                    $label = $item['label'] ?? ($currentPlat['name'] ?? '');
+                                                    $url = $item['url'] ?? '';
+                                                @endphp
+                                                <div class="card border shadow-none mb-0 social-row" id="social-row-{{ $index }}">
+                                                    <div class="card-body p-3">
+                                                        <div class="row align-items-center g-2">
+                                                            <div class="col-md-2 col-sm-3 col-4">
+                                                                <label class="form-label fs-12 text-muted mb-1">Pilih Icon</label>
+                                                                <div class="dropdown">
+                                                                    <button type="button" class="btn btn-light border text-dark w-100 d-flex align-items-center justify-content-center gap-1.5 py-1 px-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="platform-btn-{{ $index }}" style="height: 38px; background: #fff;" title="Pilih Icon Media Sosial">
+                                                                        <span id="platform-icon-display-{{ $index }}" class="d-inline-flex align-items-center justify-content-center">
+                                                                            {!! $currentPlat['icon'] ?? '' !!}
+                                                                        </span>
+                                                                    </button>
+                                                                    <input type="hidden" name="social_links[{{ $index }}][platform]" id="platform-input-{{ $index }}" value="{{ $platKey }}">
+                                                                    <div class="dropdown-menu shadow-lg p-2.5 border-0" style="width: 245px; max-height: 220px; overflow-y: auto; z-index: 1060;">
+                                                                        <div class="text-muted fs-11 px-1 py-1 font-weight-semibold text-uppercase tracking-wider border-bottom mb-2">Pilih Icon Medsos:</div>
+                                                                        <div class="d-flex flex-wrap gap-2 justify-content-start p-1">
+                                                                            @foreach ($availablePlatforms as $optKey => $plat)
+                                                                                <button type="button" class="btn btn-sm p-1 d-flex align-items-center justify-content-center rounded-3 border btn-icon-choice {{ $optKey === $platKey ? 'border-primary bg-primary-transparent' : 'border-light bg-light' }}"
+                                                                                    data-key="{{ $optKey }}"
+                                                                                    title="{{ $plat['name'] }}"
+                                                                                    onclick="selectPlatform('{{ $optKey }}', {{ $index }})"
+                                                                                    style="width: 38px; height: 38px; transition: transform 0.15s ease;">
+                                                                                    <span class="d-inline-flex align-items-center justify-content-center pointer-events-none">
+                                                                                        {!! $plat['icon'] !!}
+                                                                                    </span>
+                                                                                </button>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-sm-4 col-8">
+                                                                <label class="form-label fs-12 text-muted mb-1">Nama / Label</label>
+                                                                <input type="text" name="social_links[{{ $index }}][label]" class="form-control social-label" value="{{ $label }}" placeholder="Contoh: Instagram Resmi">
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-4 col-10">
+                                                                <label class="form-label fs-12 text-muted mb-1">Tautan / URL</label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text"><i class="fe fe-link"></i></span>
+                                                                    <input type="url" name="social_links[{{ $index }}][url]" class="form-control social-url" value="{{ $url }}" placeholder="{{ $currentPlat['placeholder'] ?? 'https://...' }}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-1 col-sm-1 col-2 text-center">
+                                                                <label class="form-label fs-12 text-muted mb-1 d-none d-md-block">Aksi</label>
+                                                                <button type="button" class="btn btn-danger btn-sm rounded-11 d-inline-flex align-items-center justify-content-center w-100" style="height: 38px;" title="Hapus Media Sosial" onclick="removeSocialRow({{ $index }})">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                                        <path d="M19 6l-1 14H6L5 6"></path>
+                                                                        <path d="M10 11v6"></path>
+                                                                        <path d="M14 11v6"></path>
+                                                                        <path d="M9 6V4h6v2"></path>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
 
                                         <div id="social-empty-state"
-                                            class="text-center py-5 border rounded-3 bg-light d-none">
+                                            class="text-center py-5 border rounded-3 bg-light {{ !empty($socialLinks) && count($socialLinks) > 0 ? 'd-none' : '' }}">
                                             <div class="mb-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"
                                                     viewBox="0 0 24 24" fill="none" stroke="#9ca3af"
@@ -467,11 +530,10 @@
         </div>
     </div>
 
+@push('scripts')
     <script>
         const availablePlatforms = @json($availablePlatforms ?? social_platforms());
-        const initialSocialLinks = @json($socialLinks ?? []);
-
-        let rowIndex = 0;
+        let rowIndex = {{ count($socialLinks ?? []) }};
 
         function renderSocialRow(data = {}) {
             const container = document.getElementById('social-rows-container');
@@ -592,8 +654,10 @@
             const plat = availablePlatforms[key];
             if (!plat) return;
 
-            document.getElementById(`platform-input-${id}`).value = key;
-            document.getElementById(`platform-icon-display-${id}`).innerHTML = plat.icon;
+            const input = document.getElementById(`platform-input-${id}`);
+            const display = document.getElementById(`platform-icon-display-${id}`);
+            if (input) input.value = key;
+            if (display) display.innerHTML = plat.icon;
 
             const row = document.getElementById(`social-row-${id}`);
             if (row) {
@@ -628,6 +692,8 @@
         function updateEmptyState() {
             const container = document.getElementById('social-rows-container');
             const emptyState = document.getElementById('social-empty-state');
+            if (!container || !emptyState) return;
+
             if (container.children.length === 0) {
                 emptyState.classList.remove('d-none');
             } else {
@@ -635,12 +701,11 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if (initialSocialLinks && initialSocialLinks.length > 0) {
-                initialSocialLinks.forEach(link => renderSocialRow(link));
-            } else {
-                updateEmptyState();
-            }
-        });
+        window.renderSocialRow = renderSocialRow;
+        window.addSocialRow = addSocialRow;
+        window.removeSocialRow = removeSocialRow;
+        window.selectPlatform = selectPlatform;
+        window.updateEmptyState = updateEmptyState;
     </script>
+@endpush
 @endsection
