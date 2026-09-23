@@ -540,7 +540,8 @@
                                 <div class="card border p-2 h-100 mb-0 shadow-none bg-white">
                                     <div class="d-flex align-items-center gap-2 mb-2">
                                         <i class="fe fe-credit-card fs-16 text-primary"></i>
-                                        <div class="small fw-bold text-truncate" id="label-doc-id">KTM / Kartu Pelajar</div>
+                                        <div class="small fw-bold text-truncate" id="label-doc-id">KTM / Kartu Pelajar
+                                        </div>
                                     </div>
                                     <div class="d-flex gap-1 mt-auto">
                                         <button type="button" class="btn btn-primary btn-sm flex-grow-1 btn-preview-doc"

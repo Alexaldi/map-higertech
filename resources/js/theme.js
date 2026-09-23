@@ -10,11 +10,13 @@ const STORAGE_KEY = 'higertech_theme';
  * Apply theme to <html> element.
  * Called immediately (inline in <head>) to prevent flash of wrong theme.
  */
+export function applyTheme() {
 export function applyTheme(notify = true) {
   const saved = localStorage.getItem(STORAGE_KEY);
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = saved === 'dark' || (saved === null && prefersDark);
   document.documentElement.classList.toggle('dark', isDark);
+  return isDark ? 'dark' : 'light';
   const theme = isDark ? 'dark' : 'light';
   if (notify && typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('theme-changed', { detail: theme }));
@@ -32,6 +34,7 @@ export function setTheme(theme) {
   } else {
     localStorage.setItem(STORAGE_KEY, theme);
   }
+  applyTheme();
   applyTheme(true);
   syncThemeButtons();
 }
