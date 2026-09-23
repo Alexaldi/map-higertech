@@ -132,7 +132,7 @@ class StationSeeder extends Seeder
                     'river_area_name' => 'WS Nusantara '.(($number % 7) + 1),
                     'watershed_name' => $number % 6 === 0 ? null : 'DAS Cakrawala '.(($number % 10) + 1),
                     'device_id' => sprintf('%s-DUMMY-%03d', $type, $number),
-                    'device_status' => $number % 6 === 0 ? 'offline' : 'online',
+                    'device_status' => 'online',
                     'timezone' => $offset <= 20 ? 'Asia/Jakarta' : ($offset <= 34 ? 'Asia/Makassar' : 'Asia/Jayapura'),
                     'reading_at' => now()->subMinutes($number * 3),
                     'latest_reading' => $number % 50 === 0 ? null : StationFactory::telemetryFor($type, $number),

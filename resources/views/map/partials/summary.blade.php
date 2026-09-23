@@ -14,11 +14,6 @@
         <span><small>{{ __('map.online') }}</small><strong id="summary-online">—</strong></span>
     </div>
 
-    <div class="network-status__metric network-status__metric--offline">
-        <i aria-hidden="true"></i>
-        <span><small>{{ __('map.offline') }}</small><strong id="summary-offline">—</strong></span>
-    </div>
-
     <details id="network-details" class="network-details">
         <summary aria-label="Buka rincian jaringan">
             <span>{{ __('map.details') }}</span>
