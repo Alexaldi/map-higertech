@@ -1249,6 +1249,10 @@
     font-family: inherit;
 }
 
+:is(.dark, .dark *) .leaflet-container {
+    background: #0B1120;
+}
+
 #preview-station-map .leaflet-pane {
     z-index: 1 !important;
 }

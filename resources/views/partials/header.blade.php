@@ -233,8 +233,7 @@
                     </div>
                 </div>
 
-                <a href="{{ $isHome ? '#map-section' : 'https://higertech.com/#services' }}"
-                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
+                <a href="{{ $isHome ? '#map-section' : route('home') . '#map-section' }}"
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_projects') }}</a>
 
                 {{-- Articles Dropdown --}}
@@ -437,8 +436,7 @@
                 </details>
 
                 {{-- Projects --}}
-                <a href="{{ $isHome ? '#map-section' : 'https://higertech.com/#services' }}"
-                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
+                <a href="{{ $isHome ? '#map-section' : route('home') . '#map-section' }}"
                     class="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition">
                     <span>{{ __('landing.nav_projects') }}</span>
                 </a>

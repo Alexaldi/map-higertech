@@ -87,6 +87,7 @@
                         <div class="grid grid-cols-3 gap-1.5" data-status-filters>
                             <button class="filter-chip is-active" type="button" data-status="">Semua</button>
                             <button class="filter-chip" type="button" data-status="online">Online</button>
+                            <button class="filter-chip" type="button" data-status="offline">Offline</button>
                         </div>
                     </fieldset>
 

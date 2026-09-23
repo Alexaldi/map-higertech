@@ -103,16 +103,30 @@
             <div class="lg:col-span-5 space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     @php
+                        $landingCounts = \Illuminate\Support\Facades\Cache::remember('landing_map_stats', 300, function () {
+                            return [
+                                'awlr' => \App\Models\Station::whereIn('station_type', ['AWLR', 'AWLR_ARR'])->count(),
+                                'arr' => \App\Models\Station::whereIn('station_type', ['ARR', 'AWLR_ARR'])->count(),
+                                'aws' => \App\Models\Station::where('station_type', 'AWS')->count(),
+                                'agencies' => \App\Models\Station::whereNotNull('balai_name')->distinct()->count('balai_name'),
+                            ];
+                        });
+
+                        $awlrCount = ($landingCounts['awlr'] ?? 0) > 0 ? $landingCounts['awlr'] . '+' : '500+';
+                        $arrCount = ($landingCounts['arr'] ?? 0) > 0 ? $landingCounts['arr'] . '+' : '300+';
+                        $awsCount = ($landingCounts['aws'] ?? 0) > 0 ? $landingCounts['aws'] . '+' : '60+';
+                        $agencyCount = ($landingCounts['agencies'] ?? 0) > 0 ? $landingCounts['agencies'] . '+' : '75+';
+
                         $stats = [
                             [
-                                'count' => '500+',
+                                'count' => $awlrCount,
                                 'label' => __('landing.map_stat_awlr'),
                                 'color' => 'text-blue-600 dark:text-cyan-400',
                                 'bg' => 'bg-blue-50 dark:bg-blue-900/40',
                                 'icon' => '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
                             ],
                             [
-                                'count' => '300+',
+                                'count' => $arrCount,
                                 'label' => __('landing.map_stat_arr'),
                                 'color' => 'text-cyan-600 dark:text-cyan-400',
                                 'bg' => 'bg-cyan-50 dark:bg-cyan-900/40',
@@ -120,7 +134,7 @@
                                     '<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M16 14v6M8 14v6M12 16v6"/>',
                             ],
                             [
-                                'count' => '60+',
+                                'count' => $awsCount,
                                 'label' => __('landing.map_stat_aws'),
                                 'color' => 'text-amber-500 dark:text-amber-400',
                                 'bg' => 'bg-amber-50 dark:bg-amber-900/40',
@@ -128,7 +142,7 @@
                                     '<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M12 7a5 5 0 1 0 5 5"/>',
                             ],
                             [
-                                'count' => '75+',
+                                'count' => $agencyCount,
                                 'label' => __('landing.map_stat_agencies'),
                                 'color' => 'text-emerald-500 dark:text-emerald-400',
                                 'bg' => 'bg-emerald-50 dark:bg-emerald-900/40',

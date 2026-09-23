@@ -10,12 +10,16 @@ const STORAGE_KEY = 'higertech_theme';
  * Apply theme to <html> element.
  * Called immediately (inline in <head>) to prevent flash of wrong theme.
  */
-export function applyTheme() {
+export function applyTheme(notify = true) {
   const saved = localStorage.getItem(STORAGE_KEY);
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = saved === 'dark' || (saved === null && prefersDark);
   document.documentElement.classList.toggle('dark', isDark);
-  return isDark ? 'dark' : 'light';
+  const theme = isDark ? 'dark' : 'light';
+  if (notify && typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('theme-changed', { detail: theme }));
+  }
+  return theme;
 }
 
 /**
@@ -28,7 +32,7 @@ export function setTheme(theme) {
   } else {
     localStorage.setItem(STORAGE_KEY, theme);
   }
-  applyTheme();
+  applyTheme(true);
   syncThemeButtons();
 }
 
@@ -59,6 +63,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
   if (!localStorage.getItem(STORAGE_KEY)) {
     document.documentElement.classList.toggle('dark', e.matches);
     syncThemeButtons();
+    window.dispatchEvent(new CustomEvent('theme-changed', { detail: e.matches ? 'dark' : 'light' }));
   }
 });
 
@@ -68,6 +73,8 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
 export function toggleTheme() {
   const isDark = document.documentElement.classList.toggle('dark');
   localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light');
+  const theme = isDark ? 'dark' : 'light';
+  window.dispatchEvent(new CustomEvent('theme-changed', { detail: theme }));
   syncThemeButtons();
 }
 
@@ -78,4 +85,6 @@ window.toggleTheme = toggleTheme;
 // Auto-sync button state setiap halaman selesai dimuat
 document.addEventListener('DOMContentLoaded', () => {
   syncThemeButtons();
+  const isDark = document.documentElement.classList.contains('dark');
+  window.dispatchEvent(new CustomEvent('theme-changed', { detail: isDark ? 'dark' : 'light' }));
 });
