@@ -233,32 +233,56 @@
                                             @foreach ($socialLinks ?? [] as $index => $item)
                                                 @php
                                                     $platKey = $item['platform'] ?? 'globe';
-                                                    $currentPlat = $availablePlatforms[$platKey] ?? ($availablePlatforms['globe'] ?? ['name' => 'Lainnya', 'icon' => '', 'placeholder' => 'https://...']);
+                                                    $currentPlat =
+                                                        $availablePlatforms[$platKey] ??
+                                                        ($availablePlatforms['globe'] ?? [
+                                                            'name' => 'Lainnya',
+                                                            'icon' => '',
+                                                            'placeholder' => 'https://...',
+                                                        ]);
                                                     $label = $item['label'] ?? ($currentPlat['name'] ?? '');
                                                     $url = $item['url'] ?? '';
                                                 @endphp
-                                                <div class="card border shadow-none mb-0 social-row" id="social-row-{{ $index }}">
+                                                <div class="card border shadow-none mb-0 social-row"
+                                                    id="social-row-{{ $index }}">
                                                     <div class="card-body p-3">
                                                         <div class="row align-items-center g-2">
                                                             <div class="col-md-2 col-sm-3 col-4">
-                                                                <label class="form-label fs-12 text-muted mb-1">Pilih Icon</label>
+                                                                <label class="form-label fs-12 text-muted mb-1">Pilih
+                                                                    Icon</label>
                                                                 <div class="dropdown">
-                                                                    <button type="button" class="btn btn-light border text-dark w-100 d-flex align-items-center justify-content-center gap-1.5 py-1 px-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="platform-btn-{{ $index }}" style="height: 38px; background: #fff;" title="Pilih Icon Media Sosial">
-                                                                        <span id="platform-icon-display-{{ $index }}" class="d-inline-flex align-items-center justify-content-center">
+                                                                    <button type="button"
+                                                                        class="btn btn-light border text-dark w-100 d-flex align-items-center justify-content-center gap-1.5 py-1 px-2 dropdown-toggle"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false"
+                                                                        id="platform-btn-{{ $index }}"
+                                                                        style="height: 38px; background: #fff;"
+                                                                        title="Pilih Icon Media Sosial">
+                                                                        <span
+                                                                            id="platform-icon-display-{{ $index }}"
+                                                                            class="d-inline-flex align-items-center justify-content-center">
                                                                             {!! $currentPlat['icon'] ?? '' !!}
                                                                         </span>
                                                                     </button>
-                                                                    <input type="hidden" name="social_links[{{ $index }}][platform]" id="platform-input-{{ $index }}" value="{{ $platKey }}">
-                                                                    <div class="dropdown-menu shadow-lg p-2.5 border-0" style="width: 245px; max-height: 220px; overflow-y: auto; z-index: 1060;">
-                                                                        <div class="text-muted fs-11 px-1 py-1 font-weight-semibold text-uppercase tracking-wider border-bottom mb-2">Pilih Icon Medsos:</div>
-                                                                        <div class="d-flex flex-wrap gap-2 justify-content-start p-1">
+                                                                    <input type="hidden"
+                                                                        name="social_links[{{ $index }}][platform]"
+                                                                        id="platform-input-{{ $index }}"
+                                                                        value="{{ $platKey }}">
+                                                                    <div class="dropdown-menu shadow-lg p-2.5 border-0"
+                                                                        style="width: 245px; max-height: 220px; overflow-y: auto; z-index: 1060;">
+                                                                        <div
+                                                                            class="text-muted fs-11 px-1 py-1 font-weight-semibold text-uppercase tracking-wider border-bottom mb-2">
+                                                                            Pilih Icon Medsos:</div>
+                                                                        <div
+                                                                            class="d-flex flex-wrap gap-2 justify-content-start p-1">
                                                                             @foreach ($availablePlatforms as $optKey => $plat)
-                                                                                <button type="button" class="btn btn-sm p-1 d-flex align-items-center justify-content-center rounded-3 border btn-icon-choice {{ $optKey === $platKey ? 'border-primary bg-primary-transparent' : 'border-light bg-light' }}"
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm p-1 d-flex align-items-center justify-content-center rounded-3 border btn-icon-choice {{ $optKey === $platKey ? 'border-primary bg-primary-transparent' : 'border-light bg-light' }}"
                                                                                     data-key="{{ $optKey }}"
                                                                                     title="{{ $plat['name'] }}"
                                                                                     onclick="selectPlatform('{{ $optKey }}', {{ $index }})"
                                                                                     style="width: 38px; height: 38px; transition: transform 0.15s ease;">
-                                                                                    <span class="d-inline-flex align-items-center justify-content-center pointer-events-none">
+                                                                                    <span
+                                                                                        class="d-inline-flex align-items-center justify-content-center pointer-events-none">
                                                                                         {!! $plat['icon'] !!}
                                                                                     </span>
                                                                                 </button>
@@ -268,20 +292,39 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3 col-sm-4 col-8">
-                                                                <label class="form-label fs-12 text-muted mb-1">Nama / Label</label>
-                                                                <input type="text" name="social_links[{{ $index }}][label]" class="form-control social-label" value="{{ $label }}" placeholder="Contoh: Instagram Resmi">
+                                                                <label class="form-label fs-12 text-muted mb-1">Nama /
+                                                                    Label</label>
+                                                                <input type="text"
+                                                                    name="social_links[{{ $index }}][label]"
+                                                                    class="form-control social-label"
+                                                                    value="{{ $label }}"
+                                                                    placeholder="Contoh: Instagram Resmi">
                                                             </div>
                                                             <div class="col-md-6 col-sm-4 col-10">
-                                                                <label class="form-label fs-12 text-muted mb-1">Tautan / URL</label>
+                                                                <label class="form-label fs-12 text-muted mb-1">Tautan /
+                                                                    URL</label>
                                                                 <div class="input-group">
-                                                                    <span class="input-group-text"><i class="fe fe-link"></i></span>
-                                                                    <input type="url" name="social_links[{{ $index }}][url]" class="form-control social-url" value="{{ $url }}" placeholder="{{ $currentPlat['placeholder'] ?? 'https://...' }}" required>
+                                                                    <span class="input-group-text"><i
+                                                                            class="fe fe-link"></i></span>
+                                                                    <input type="url"
+                                                                        name="social_links[{{ $index }}][url]"
+                                                                        class="form-control social-url"
+                                                                        value="{{ $url }}"
+                                                                        placeholder="{{ $currentPlat['placeholder'] ?? 'https://...' }}"
+                                                                        required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-1 col-sm-1 col-2 text-center">
-                                                                <label class="form-label fs-12 text-muted mb-1 d-none d-md-block">Aksi</label>
-                                                                <button type="button" class="btn btn-danger btn-sm rounded-11 d-inline-flex align-items-center justify-content-center w-100" style="height: 38px;" title="Hapus Media Sosial" onclick="removeSocialRow({{ $index }})">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                <label
+                                                                    class="form-label fs-12 text-muted mb-1 d-none d-md-block">Aksi</label>
+                                                                <button type="button"
+                                                                    class="btn btn-danger btn-sm rounded-11 d-inline-flex align-items-center justify-content-center w-100"
+                                                                    style="height: 38px;" title="Hapus Media Sosial"
+                                                                    onclick="removeSocialRow({{ $index }})">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                        height="16" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round">
                                                                         <polyline points="3 6 5 6 21 6"></polyline>
                                                                         <path d="M19 6l-1 14H6L5 6"></path>
                                                                         <path d="M10 11v6"></path>
@@ -530,28 +573,28 @@
         </div>
     </div>
 
-@push('scripts')
-    <script>
-        const availablePlatforms = @json($availablePlatforms ?? social_platforms());
-        let rowIndex = {{ count($socialLinks ?? []) }};
+    @push('scripts')
+        <script>
+            const availablePlatforms = @json($availablePlatforms ?? social_platforms());
+            let rowIndex = {{ count($socialLinks ?? []) }};
 
-        function renderSocialRow(data = {}) {
-            const container = document.getElementById('social-rows-container');
+            function renderSocialRow(data = {}) {
+                const container = document.getElementById('social-rows-container');
 
-            const platKey = data.platform || 'whatsapp';
-            const label = data.label !== undefined ? data.label : (availablePlatforms[platKey]?.name || '');
-            const url = data.url || '';
+                const platKey = data.platform || 'whatsapp';
+                const label = data.label !== undefined ? data.label : (availablePlatforms[platKey]?.name || '');
+                const url = data.url || '';
 
-            const currentPlat = availablePlatforms[platKey] || availablePlatforms['globe'] || {
-                name: 'Pilih',
-                icon: '',
-                placeholder: 'https://...'
-            };
+                const currentPlat = availablePlatforms[platKey] || availablePlatforms['globe'] || {
+                    name: 'Pilih',
+                    icon: '',
+                    placeholder: 'https://...'
+                };
 
-            let iconPaletteItems = '';
-            for (const [key, plat] of Object.entries(availablePlatforms)) {
-                const isSelected = key === platKey ? 'border-primary bg-primary-transparent' : 'border-light bg-light';
-                iconPaletteItems += `
+                let iconPaletteItems = '';
+                for (const [key, plat] of Object.entries(availablePlatforms)) {
+                    const isSelected = key === platKey ? 'border-primary bg-primary-transparent' : 'border-light bg-light';
+                    iconPaletteItems += `
                     <button type="button" class="btn btn-sm p-1 d-flex align-items-center justify-content-center rounded-3 border btn-icon-choice ${isSelected}"
                         data-key="${key}"
                         title="${plat.name}"
@@ -562,12 +605,12 @@
                         </span>
                     </button>
                 `;
-            }
+                }
 
-            const rowDiv = document.createElement('div');
-            rowDiv.className = 'card border shadow-none mb-0 social-row';
-            rowDiv.id = `social-row-${rowIndex}`;
-            rowDiv.innerHTML = `
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'card border shadow-none mb-0 social-row';
+                rowDiv.id = `social-row-${rowIndex}`;
+                rowDiv.innerHTML = `
                 <div class="card-body p-3">
                     <div class="row align-items-center g-2">
                         <div class="col-md-2 col-sm-3 col-4">
@@ -614,98 +657,98 @@
                 </div>
             `;
 
-            container.appendChild(rowDiv);
-            rowIndex++;
-            updateEmptyState();
-        }
-
-        function addSocialRow(platformKey = null) {
-            if (!platformKey) {
-                const existingPlats = Array.from(document.querySelectorAll('.social-row input[name$="[platform]"]')).map(
-                    i => i.value);
-                const unadded = Object.keys(availablePlatforms).find(k => !existingPlats.includes(k));
-                platformKey = unadded || 'whatsapp';
-            }
-            const plat = availablePlatforms[platformKey] || availablePlatforms['whatsapp'];
-            renderSocialRow({
-                platform: platformKey,
-                label: plat ? plat.name : '',
-                url: ''
-            });
-            setTimeout(() => {
-                const rows = document.querySelectorAll('.social-row');
-                const last = rows[rows.length - 1];
-                if (last) {
-                    const urlInp = last.querySelector('.social-url');
-                    if (urlInp) urlInp.focus();
-                }
-            }, 50);
-        }
-
-        function removeSocialRow(id) {
-            const row = document.getElementById(`social-row-${id}`);
-            if (row) {
-                row.remove();
+                container.appendChild(rowDiv);
+                rowIndex++;
                 updateEmptyState();
             }
-        }
 
-        function selectPlatform(key, id) {
-            const plat = availablePlatforms[key];
-            if (!plat) return;
-
-            const input = document.getElementById(`platform-input-${id}`);
-            const display = document.getElementById(`platform-icon-display-${id}`);
-            if (input) input.value = key;
-            if (display) display.innerHTML = plat.icon;
-
-            const row = document.getElementById(`social-row-${id}`);
-            if (row) {
-                row.querySelectorAll('.btn-icon-choice').forEach(b => {
-                    b.classList.remove('border-primary', 'bg-primary-transparent');
-                    b.classList.add('border-light', 'bg-light');
+            function addSocialRow(platformKey = null) {
+                if (!platformKey) {
+                    const existingPlats = Array.from(document.querySelectorAll('.social-row input[name$="[platform]"]')).map(
+                        i => i.value);
+                    const unadded = Object.keys(availablePlatforms).find(k => !existingPlats.includes(k));
+                    platformKey = unadded || 'whatsapp';
+                }
+                const plat = availablePlatforms[platformKey] || availablePlatforms['whatsapp'];
+                renderSocialRow({
+                    platform: platformKey,
+                    label: plat ? plat.name : '',
+                    url: ''
                 });
-                const activeBtn = row.querySelector(`.btn-icon-choice[data-key="${key}"]`);
-                if (activeBtn) {
-                    activeBtn.classList.add('border-primary', 'bg-primary-transparent');
-                    activeBtn.classList.remove('border-light', 'bg-light');
-                }
+                setTimeout(() => {
+                    const rows = document.querySelectorAll('.social-row');
+                    const last = rows[rows.length - 1];
+                    if (last) {
+                        const urlInp = last.querySelector('.social-url');
+                        if (urlInp) urlInp.focus();
+                    }
+                }, 50);
+            }
 
-                const urlInput = row.querySelector('.social-url');
-                const labelInput = row.querySelector('.social-label');
-                if (urlInput) {
-                    urlInput.placeholder = plat.placeholder;
-                }
-                if (labelInput && (!labelInput.value || Object.values(availablePlatforms).some(p => p.name === labelInput
-                        .value))) {
-                    labelInput.value = plat.name;
-                }
-
-                const btn = document.getElementById(`platform-btn-${id}`);
-                if (btn && window.bootstrap && bootstrap.Dropdown) {
-                    const dropdown = bootstrap.Dropdown.getInstance(btn);
-                    if (dropdown) dropdown.hide();
+            function removeSocialRow(id) {
+                const row = document.getElementById(`social-row-${id}`);
+                if (row) {
+                    row.remove();
+                    updateEmptyState();
                 }
             }
-        }
 
-        function updateEmptyState() {
-            const container = document.getElementById('social-rows-container');
-            const emptyState = document.getElementById('social-empty-state');
-            if (!container || !emptyState) return;
+            function selectPlatform(key, id) {
+                const plat = availablePlatforms[key];
+                if (!plat) return;
 
-            if (container.children.length === 0) {
-                emptyState.classList.remove('d-none');
-            } else {
-                emptyState.classList.add('d-none');
+                const input = document.getElementById(`platform-input-${id}`);
+                const display = document.getElementById(`platform-icon-display-${id}`);
+                if (input) input.value = key;
+                if (display) display.innerHTML = plat.icon;
+
+                const row = document.getElementById(`social-row-${id}`);
+                if (row) {
+                    row.querySelectorAll('.btn-icon-choice').forEach(b => {
+                        b.classList.remove('border-primary', 'bg-primary-transparent');
+                        b.classList.add('border-light', 'bg-light');
+                    });
+                    const activeBtn = row.querySelector(`.btn-icon-choice[data-key="${key}"]`);
+                    if (activeBtn) {
+                        activeBtn.classList.add('border-primary', 'bg-primary-transparent');
+                        activeBtn.classList.remove('border-light', 'bg-light');
+                    }
+
+                    const urlInput = row.querySelector('.social-url');
+                    const labelInput = row.querySelector('.social-label');
+                    if (urlInput) {
+                        urlInput.placeholder = plat.placeholder;
+                    }
+                    if (labelInput && (!labelInput.value || Object.values(availablePlatforms).some(p => p.name === labelInput
+                            .value))) {
+                        labelInput.value = plat.name;
+                    }
+
+                    const btn = document.getElementById(`platform-btn-${id}`);
+                    if (btn && window.bootstrap && bootstrap.Dropdown) {
+                        const dropdown = bootstrap.Dropdown.getInstance(btn);
+                        if (dropdown) dropdown.hide();
+                    }
+                }
             }
-        }
 
-        window.renderSocialRow = renderSocialRow;
-        window.addSocialRow = addSocialRow;
-        window.removeSocialRow = removeSocialRow;
-        window.selectPlatform = selectPlatform;
-        window.updateEmptyState = updateEmptyState;
-    </script>
-@endpush
+            function updateEmptyState() {
+                const container = document.getElementById('social-rows-container');
+                const emptyState = document.getElementById('social-empty-state');
+                if (!container || !emptyState) return;
+
+                if (container.children.length === 0) {
+                    emptyState.classList.remove('d-none');
+                } else {
+                    emptyState.classList.add('d-none');
+                }
+            }
+
+            window.renderSocialRow = renderSocialRow;
+            window.addSocialRow = addSocialRow;
+            window.removeSocialRow = removeSocialRow;
+            window.selectPlatform = selectPlatform;
+            window.updateEmptyState = updateEmptyState;
+        </script>
+    @endpush
 @endsection
