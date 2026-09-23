@@ -114,6 +114,7 @@ class InternshipController extends Controller
             'type.required' => 'Jenis jalur pendaftaran harus ditentukan.',
             'name.required' => 'Nama lengkap ketua/pemohon wajib diisi.',
             'identity_number.required' => $request->input('type') === 'university' ? 'NIM Mahasiswa wajib diisi.' : 'NIS / NIK Siswa wajib diisi.',
+            'identity_number.required' => $request->input('type') === 'university' ? 'NIM Mahasiswa wajib diisi.' : 'NIS / NISN Siswa wajib diisi.',
             'institution.required' => 'Asal Universitas / Sekolah SMK wajib diisi.',
             'major.required' => 'Program Studi / Jurusan kuliah wajib diisi.',
             'grade_level.required' => 'Tingkat kelas / Semester wajib diisi.',
@@ -122,6 +123,7 @@ class InternshipController extends Controller
             'start_date.after_or_equal' => 'Tanggal mulai magang tidak boleh sebelum hari ini.',
             'end_date.after_or_equal' => 'Tanggal selesai magang harus sama dengan atau setelah tanggal mulai magang.',
             'file_identity.required' => $request->input('type') === 'university' ? 'Scan KTM (Kartu Tanda Mahasiswa) / Scan KTP wajib diunggah.' : 'Scan Kartu Pelajar (atau Scan KTP) wajib diunggah.',
+            'file_identity.required' => $request->input('type') === 'university' ? 'Scan KTM (Kartu Tanda Mahasiswa) wajib diunggah.' : 'Scan Kartu Pelajar wajib diunggah.',
             'file_transcript.required' => $request->input('type') === 'university' ? 'Transkrip Nilai Akademik wajib diunggah (Format PDF).' : 'Transkrip Nilai / Rapor wajib diunggah (Format PDF).',
             'file_identity.max' => 'Ukuran berkas identitas maksimal 3MB.',
             'file_recommendation.max' => 'Ukuran berkas surat pengantar maksimal 3MB.',
@@ -133,9 +135,11 @@ class InternshipController extends Controller
             'file_cv.mimes' => 'CV harus berformat PDF.',
             'members.*.name.required_with' => 'Nama setiap anggota tim wajib diisi.',
             'members.*.identity_number.required_with' => $request->input('type') === 'university' ? 'NIM setiap anggota tim wajib diisi.' : 'NIS / NIK setiap anggota tim wajib diisi.',
+            'members.*.identity_number.required_with' => $request->input('type') === 'university' ? 'NIM setiap anggota tim wajib diisi.' : 'NIS / NISN setiap anggota tim wajib diisi.',
             'members.*.email.required_with' => 'Alamat email setiap anggota tim wajib diisi.',
             'members.*.email.email' => 'Format alamat email anggota tim tidak valid (contoh: nama@email.com).',
             'members.*.file_identity.required_with' => $request->input('type') === 'university' ? 'Scan KTM / KTP setiap anggota tim wajib diunggah.' : 'Scan Kartu Pelajar / KTP setiap anggota tim wajib diunggah.',
+            'members.*.file_identity.required_with' => $request->input('type') === 'university' ? 'Scan KTM setiap anggota tim wajib diunggah.' : 'Scan Kartu Pelajar setiap anggota tim wajib diunggah.',
             'members.*.file_cv.required_with' => 'Berkas CV / Portofolio setiap anggota tim wajib diunggah (Format PDF).',
             'members.*.file_transcript.required_with' => 'Transkrip Nilai / Rapor setiap anggota tim wajib diunggah (Format PDF).',
             'members.*.file_identity.mimes' => 'Kartu identitas anggota tim harus berformat PDF atau gambar (JPG/PNG).',
@@ -203,6 +207,18 @@ class InternshipController extends Controller
         }
 
         $application = $this->service->registerApplication($validated, $files, $membersData, $membersFiles);
+        try {
+            $application = $this->service->registerApplication($validated, $files, $membersData, $membersFiles);
+        } catch (\Throwable $e) {
+            Log::error('Pendaftaran magang gagal diproses: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kendala saat menyimpan data/berkas pendaftaran ke server. Pastikan format & ukuran berkas sesuai, lalu coba beberapa saat lagi.',
+            ], 500);
+        }
 
         $regCode = $application->registration_code;
 

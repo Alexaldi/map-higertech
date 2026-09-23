@@ -90,6 +90,7 @@ class InternshipApplicationController extends Controller
                     'documents' => [
                         'identity' => [
                             'name' => $internship->type === 'vocational' ? 'Kartu Pelajar / KTP' : 'KTM / KTP Mahasiswa',
+                            'name' => $internship->type === 'vocational' ? 'Kartu Pelajar' : 'KTM Mahasiswa',
                             'url' => $internship->file_identity_url,
                         ],
                         'recommendation' => [

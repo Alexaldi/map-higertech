@@ -270,7 +270,7 @@
                                         @if ($app->file_identity)
                                             <a href="{{ $app->file_identity_url }}" target="_blank"
                                                 class="btn btn-outline-secondary"
-                                                title="{{ $app->type === 'vocational' ? 'Kartu Pelajar / KTP' : 'KTM / KTP' }}">
+                                                title="{{ $app->type === 'vocational' ? 'Kartu Pelajar' : 'KTM' }}">
                                                 <i class="fe fe-user"></i>
                                             </a>
                                         @endif
@@ -540,11 +540,11 @@
                                 <div class="card border p-2 h-100 mb-0 shadow-none bg-white">
                                     <div class="d-flex align-items-center gap-2 mb-2">
                                         <i class="fe fe-credit-card fs-16 text-primary"></i>
-                                        <div class="small fw-bold text-truncate" id="label-doc-id">KTM / KTP</div>
+                                        <div class="small fw-bold text-truncate" id="label-doc-id">KTM / Kartu Pelajar</div>
                                     </div>
                                     <div class="d-flex gap-1 mt-auto">
                                         <button type="button" class="btn btn-primary btn-sm flex-grow-1 btn-preview-doc"
-                                            id="btn-view-id" data-url="#" data-title="KTM / KTP">
+                                            id="btn-view-id" data-url="#" data-title="KTM / Kartu Pelajar">
                                             <i class="fe fe-eye me-1"></i> Pratinjau
                                         </button>
                                         <a id="link-doc-id" href="#" target="_blank"
@@ -942,7 +942,7 @@
                         var idDocBadge = data.is_smk ? 'Kartu Pelajar' : 'KTM';
                         docs.push(
                             '<button type="button" class="btn btn-outline-primary btn-sm py-0 px-2 btn-preview-doc" data-url="' +
-                            m.doc_identity + '" data-title="' + idDocBadge + '/KTP - ' + escapeHtml(m
+                            m.doc_identity + '" data-title="' + idDocBadge + ' - ' + escapeHtml(m
                                 .name) +
                             '" title="Lihat Identitas"><i class="fe fe-credit-card me-1"></i>' +
                             idDocBadge + '</button>'
@@ -993,7 +993,7 @@
             }
 
             // Document labels & links for leader/single applicant
-            $('#label-doc-id').text(data.is_smk ? 'Kartu Pelajar / KTP' : 'KTM / KTP');
+            $('#label-doc-id').text(data.is_smk ? 'Kartu Pelajar' : 'KTM (Kartu Tanda Mahasiswa)');
             $('#label-doc-trans').text(data.is_smk ? 'Rapor Terakhir' : 'Transkrip Nilai');
 
             // Reset inline preview box
@@ -1015,8 +1015,8 @@
                 }
             }
 
-            setupDoc('#link-doc-id', '#btn-view-id', data.doc_identity, data.is_smk ? 'Kartu Pelajar / KTP' :
-                'KTM / KTP');
+            setupDoc('#link-doc-id', '#btn-view-id', data.doc_identity, data.is_smk ? 'Kartu Pelajar' :
+                'KTM (Kartu Tanda Mahasiswa)');
             setupDoc('#link-doc-rec', '#btn-view-rec', data.doc_rec, 'Surat Pengantar Kampus / Sekolah');
             setupDoc('#link-doc-cv', '#btn-view-cv', data.doc_cv, 'Curriculum Vitae / Portofolio');
             setupDoc('#link-doc-trans', '#btn-view-trans', data.doc_transcript, data.is_smk ? 'Rapor Terakhir' :

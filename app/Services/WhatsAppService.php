@@ -230,6 +230,7 @@ class WhatsAppService
         }
 
         // 3. Berkas Identitas (KTP / KTM / Kartu Pelajar)
+        // 3. Berkas Identitas (KTM / Kartu Pelajar)
         if (! empty($application->file_identity) && Storage::disk('public')->exists($application->file_identity)) {
             $idPath = Storage::disk('public')->path($application->file_identity);
             $idLabel = $application->type === 'university' ? 'KTM (Kartu Mahasiswa)' : 'Kartu Pelajar';
