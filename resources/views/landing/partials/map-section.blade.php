@@ -119,6 +119,7 @@
 
                         $stats = [
                             [
+                                'count' => '500+',
                                 'count' => $awlrCount,
                                 'label' => __('landing.map_stat_awlr'),
                                 'color' => 'text-blue-600 dark:text-cyan-400',
@@ -126,6 +127,7 @@
                                 'icon' => '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
                             ],
                             [
+                                'count' => '300+',
                                 'count' => $arrCount,
                                 'label' => __('landing.map_stat_arr'),
                                 'color' => 'text-cyan-600 dark:text-cyan-400',
@@ -134,6 +136,7 @@
                                     '<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M16 14v6M8 14v6M12 16v6"/>',
                             ],
                             [
+                                'count' => '60+',
                                 'count' => $awsCount,
                                 'label' => __('landing.map_stat_aws'),
                                 'color' => 'text-amber-500 dark:text-amber-400',
@@ -142,6 +145,7 @@
                                     '<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M12 7a5 5 0 1 0 5 5"/>',
                             ],
                             [
+                                'count' => '75+',
                                 'count' => $agencyCount,
                                 'label' => __('landing.map_stat_agencies'),
                                 'color' => 'text-emerald-500 dark:text-emerald-400',
