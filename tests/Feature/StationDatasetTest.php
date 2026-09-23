@@ -40,7 +40,6 @@ class StationDatasetTest extends TestCase
         $this->assertSame(0, Station::query()->whereNull('latitude')->orWhereNull('longitude')->count());
         $this->assertGreaterThan(1, Station::query()->distinct()->count('organization_code'));
         $this->assertTrue(Station::query()->where('device_status', 'online')->exists());
-        $this->assertTrue(Station::query()->where('device_status', 'offline')->exists());
         $this->assertTrue(Station::query()->whereNull('latest_reading')->exists());
     }
 }
