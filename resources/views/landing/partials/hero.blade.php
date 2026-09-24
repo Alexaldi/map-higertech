@@ -29,7 +29,6 @@
                     <div>
                         <div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">
                             {{ __('landing.hero_stat_sensor') }}</div>
-                        <div class="font-bold text-slate-900 dark:text-white text-sm">1,240+ Unit</div>
                         @php
                             $totalSensors = \Illuminate\Support\Facades\Cache::remember('hero_station_count', 300, function () {
                                 return \App\Models\Station::count();

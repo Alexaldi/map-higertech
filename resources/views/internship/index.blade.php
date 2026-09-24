@@ -527,7 +527,7 @@
         @endphp
 
         <!-- MODAL 1: Pendaftaran PKL SMK/MAK -->
-        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/75 overflow-y-auto"
+        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-md overflow-y-auto"
             id="modal-daftar-smk" onclick="if (event.target === this) closeModal('modal-daftar-smk');">
             <div
                 class="relative w-full max-w-2xl bg-white dark:bg-[#131D36] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
@@ -1004,7 +1004,7 @@
         </div>
 
         <!-- MODAL 2: Pendaftaran Internship Mahasiswa & Fresh Graduate -->
-        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/75 overflow-y-auto"
+        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-md overflow-y-auto"
             id="modal-daftar-mahasiswa" onclick="if (event.target === this) closeModal('modal-daftar-mahasiswa');">
             <div
                 class="relative w-full max-w-2xl bg-white dark:bg-[#131D36] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
@@ -1586,7 +1586,7 @@
         </div>
 
         <!-- MODAL 4: Konfirmasi Pendaftaran Sukses -->
-        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/75 overflow-y-auto"
+        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-md overflow-y-auto"
             id="modal-sukses-daftar" onclick="if (event.target === this) closeModal('modal-sukses-daftar');">
             <div
                 class="relative w-full max-w-lg bg-white dark:bg-[#131D36] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto p-6 sm:p-8 text-center space-y-5 animate-in fade-in duration-200">
@@ -1736,7 +1736,7 @@
         </datalist>
 
         <!-- MODAL 3: Pelacakan Status Berkas & Kelulusan (Real Dynamic Tracking) -->
-        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/75 overflow-y-auto"
+        <div class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-md overflow-y-auto"
             id="modal-lacak-status" onclick="if (event.target === this) closeModal('modal-lacak-status');">
             <div
                 class="relative w-full max-w-xl bg-white dark:bg-[#131D36] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
