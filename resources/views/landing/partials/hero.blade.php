@@ -39,7 +39,7 @@
                     <div>
                         <div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">
                             {{ __('landing.hero_stat_protocol') }}</div>
-                        <div class="font-bold text-slate-900 dark:text-cyan-400 text-sm">MQTT / MODBUS</div>
+                        <div class="font-bold text-slate-900 dark:text-cyan-400 text-sm">{{ __('landing.hero_stat_protocol_val') }}</div>
                     </div>
                 </div>
 
