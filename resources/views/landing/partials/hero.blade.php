@@ -18,6 +18,31 @@
                     {{ __('landing.hero_desc') }}
                 </p>
 
+                {{-- Stats Grid --}}
+                <div
+                    class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-white/80 dark:bg-[#131D36]/80 backdrop-blur-sm border border-slate-200/90 dark:border-slate-700 text-xs font-mono max-w-lg shadow-xs">
+                    <div>
+                        <div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">
+                            {{ __('landing.hero_stat_uptime') }}</div>
+                        <div class="font-bold text-slate-900 dark:text-emerald-400 text-sm">99.85%</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">
+                            {{ __('landing.hero_stat_sensor') }}</div>
+                        <div class="font-bold text-slate-900 dark:text-white text-sm">1,240+ Unit</div>
+                        @php
+                            $totalSensors = \Illuminate\Support\Facades\Cache::remember('hero_station_count', 300, function () {
+                                return \App\Models\Station::count();
+                            });
+                        @endphp
+                        <div class="font-bold text-slate-900 dark:text-white text-sm">{{ number_format($totalSensors ?: 1400) }}+ Unit</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] uppercase text-slate-500 dark:text-slate-400">
+                            {{ __('landing.hero_stat_protocol') }}</div>
+                        <div class="font-bold text-slate-900 dark:text-cyan-400 text-sm">MQTT / MODBUS</div>
+                    </div>
+                </div>
 
                 {{-- CTA Buttons --}}
                 <div class="flex flex-wrap items-center gap-3 pt-2">
