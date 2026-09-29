@@ -5,6 +5,9 @@ export const buildPopup = (station = {}, now = new Date()) => {
     const meta = typeMeta(station.station_type);
     const online = station.device_status === 'online';
     const rows = telemetryRows(station);
+    if (station.cloud_cover !== null && station.cloud_cover !== undefined) {
+        rows.push({ label: 'Tutupan Awan (API)', value: station.cloud_cover + '%' });
+    }
     const organization = station.balai_name
         ? `<p class="station-popup__organization">${escapeHtml(station.balai_name)}</p>`
         : '';
