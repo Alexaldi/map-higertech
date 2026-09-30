@@ -55,6 +55,7 @@ class StationController extends Controller
 
     public function cloudCover(): JsonResponse
     {
+        @set_time_limit(180);
         $lock = null;
 
         try {
@@ -225,6 +226,16 @@ class StationController extends Controller
                 'cooldown_seconds' => $cooldownSeconds,
                 'connection_failure' => $exception instanceof ConnectionException,
             ]);
+
+            // When in local development and hitting external API limits, generate fallback so map is not broken
+            if (app()->environment('local') && $httpStatus === 429 && $stationsCount > 0) {
+                $fallback = [];
+                foreach ($stations as $station) {
+                    $fallback[$station->id] = (($station->id * 23) % 71) + 15;
+                }
+                Cache::put(self::CLOUD_COVER_CACHE_KEY, $fallback, self::CLOUD_COVER_CACHE_TTL);
+                return $fallback;
+            }
 
             return [];
         }
