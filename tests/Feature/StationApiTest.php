@@ -60,6 +60,7 @@ class StationApiTest extends TestCase
             'device_status',
             'reading_at',
             'latest_reading',
+            'cloud_cover',
         ], array_keys($response->json('data.0')));
     }
 

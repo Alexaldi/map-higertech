@@ -51,3 +51,15 @@ test('popup stays useful when telemetry and regional fields are missing', () => 
     assert.match(html, /Belum ada pembaruan/);
     assert.doesNotMatch(html, /null|undefined/);
 });
+
+test('popup displays zero percent cloud cover as a valid value', () => {
+    const html = buildPopup({
+        name: 'Station Clear Sky',
+        station_type: 'AWS',
+        device_status: 'online',
+        cloud_cover: 0,
+    }, now);
+
+    assert.match(html, /Tutupan Awan \(API\)/);
+    assert.match(html, /0%/);
+});
