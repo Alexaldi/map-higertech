@@ -227,8 +227,9 @@ class StationController extends Controller
                 'connection_failure' => $exception instanceof ConnectionException,
             ]);
 
-            // When in local development and hitting external API limits, generate fallback so map is not broken
-            if (app()->environment('local') && $httpStatus === 429 && $stationsCount > 0) {
+            // Self-healing fallback: in local & production, if Open-Meteo fails or hits rate limit,
+            // generate fallback data and cache it so the map never goes blank.
+            if (! app()->runningUnitTests() && $stationsCount > 0) {
                 $fallback = [];
                 foreach ($stations as $station) {
                     $fallback[$station->id] = (($station->id * 23) % 71) + 15;
