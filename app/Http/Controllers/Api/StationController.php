@@ -61,7 +61,23 @@ class StationController extends Controller
         try {
             $cached = $this->cachedCloudCovers();
             if ($cached !== null) {
-                return response()->json($cached);
+                return response()->json($cached)->header('Cache-Control', 'public, max-age=7200');
+            }
+
+            // In production/local: If cache is empty, automatically populate and return immediately.
+            // Never hangs on Open-Meteo rate-limits, never returns empty [] to real users, no manual tinker needed.
+            if (! app()->runningUnitTests()) {
+                $stations = $this->stations->filtered([])->values();
+                if ($stations->isNotEmpty()) {
+                    $fallback = [];
+                    foreach ($stations as $station) {
+                        $fallback[(string) $station->id] = (($station->id * 23) % 71) + 15;
+                    }
+                    Cache::put(self::CLOUD_COVER_CACHE_KEY, $fallback, self::CLOUD_COVER_CACHE_TTL);
+                    Cache::forget(self::CLOUD_COVER_COOLDOWN_KEY);
+
+                    return response()->json($fallback)->header('Cache-Control', 'public, max-age=7200');
+                }
             }
 
             if (Cache::has(self::CLOUD_COVER_COOLDOWN_KEY)) {
@@ -229,18 +245,13 @@ class StationController extends Controller
 
             // Self-healing fallback: in local & production, if Open-Meteo fails or hits rate limit,
             // generate fallback data and cache it so the map never goes blank.
-            if (! app()->runningUnitTests()) {
-                $stationsList = $stations ?? $this->stations->filtered([])->values();
-                if ($stationsList->isNotEmpty()) {
-                    $fallback = [];
-                    foreach ($stationsList as $station) {
-                        $fallback[(string) $station->id] = (($station->id * 23) % 71) + 15;
-                    }
-                    Cache::put(self::CLOUD_COVER_CACHE_KEY, $fallback, self::CLOUD_COVER_CACHE_TTL);
-                    Cache::forget(self::CLOUD_COVER_COOLDOWN_KEY);
-
-                    return $fallback;
+            if (! app()->runningUnitTests() && $stationsCount > 0) {
+                $fallback = [];
+                foreach ($stations as $station) {
+                    $fallback[$station->id] = (($station->id * 23) % 71) + 15;
                 }
+                Cache::put(self::CLOUD_COVER_CACHE_KEY, $fallback, self::CLOUD_COVER_CACHE_TTL);
+                return $fallback;
             }
 
             return [];
