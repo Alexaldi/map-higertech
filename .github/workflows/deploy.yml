@@ -36,4 +36,7 @@ jobs:
             echo "🗄️ Menjalankan migrasi database..."
             docker compose exec -T app php artisan migrate --force
 
+            echo "📦 Build asset frontend..."
+            docker compose exec -T app npm run build
+
             echo "✅ Deploy selesai dengan sukses!"
