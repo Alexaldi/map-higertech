@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { applyCloudCover } from '../../resources/js/map/cloud-cover.js';
+import { applyCloudCover, fetchCloudCoverOnce } from '../../resources/js/map/cloud-cover.js';
 
 test('cloud cover updates popup using station ID instead of response order', () => {
     const stationA = { id: 101, name: 'Station A' };
@@ -42,4 +42,32 @@ test('cloud cover updates accept zero and safely ignore missing or invalid value
     assert.equal(missing.cloud_cover, undefined);
     assert.equal(invalid.cloud_cover, undefined);
     assert.deepEqual(popupUpdates, ['1:0%']);
+});
+
+test('cloud cover fetch is shared and called once even when requested repeatedly', async () => {
+    const state = { cloudCoverRequest: null };
+    let calls = 0;
+    const request = async () => {
+        calls++;
+        return { ok: true, json: async () => ({ 5: 25 }) };
+    };
+
+    const [first, second] = await Promise.all([
+        fetchCloudCoverOnce(state, request),
+        fetchCloudCoverOnce(state, request),
+    ]);
+
+    assert.equal(calls, 1);
+    assert.deepEqual(first, { 5: 25 });
+    assert.deepEqual(second, { 5: 25 });
+});
+
+test('cloud cover fetch safely ignores empty, invalid, or failed responses', async () => {
+    const emptyState = { cloudCoverRequest: null };
+    const invalidState = { cloudCoverRequest: null };
+    const failedState = { cloudCoverRequest: null };
+
+    assert.deepEqual(await fetchCloudCoverOnce(emptyState, async () => ({ ok: true, json: async () => [] })), null);
+    assert.deepEqual(await fetchCloudCoverOnce(invalidState, async () => ({ ok: true, json: async () => null })), null);
+    assert.deepEqual(await fetchCloudCoverOnce(failedState, async () => { throw new Error('network failure'); }), null);
 });

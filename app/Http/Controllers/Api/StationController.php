@@ -7,12 +7,31 @@ use App\Http\Resources\StationResource;
 use App\Services\StationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class StationController extends Controller
 {
+    private const CLOUD_COVER_CACHE_KEY = 'stations_cloud_cover';
+
+    private const CLOUD_COVER_CACHE_TTL = 7200;
+
+    private const CLOUD_COVER_COOLDOWN_KEY = 'stations_cloud_cover_cooldown';
+
+    private const CLOUD_COVER_REFRESH_LOCK_KEY = 'stations_cloud_cover_refresh_lock';
+
+    private const CLOUD_COVER_CHUNK_SIZE = 50;
+
+    private const OPEN_METEO_TIMEOUT_SECONDS = 10;
+
+    private const REFRESH_LOCK_SECONDS = 360;
+
+    private const FALLBACK_COOLDOWN_SECONDS = 300;
+
+    private const MAX_COOLDOWN_SECONDS = 900;
+
     public function __construct(private readonly StationService $stations) {}
 
     public function index(Request $request): JsonResponse
@@ -36,82 +55,196 @@ class StationController extends Controller
 
     public function cloudCover(): JsonResponse
     {
+        $lock = null;
+
         try {
-            $data = Cache::remember('stations_cloud_cover', 7200, function () {
-                $stations = $this->stations->filtered([]);
-                $results = [];
+            $cached = $this->cachedCloudCovers();
+            if ($cached !== null) {
+                return response()->json($cached);
+            }
 
-                // Open-Meteo accepts multiple lat/lon comma separated.
-                // But URL length is limited, so we chunk them.
-                $chunks = $stations->chunk(50);
+            if (Cache::has(self::CLOUD_COVER_COOLDOWN_KEY)) {
+                return response()->json([]);
+            }
 
-                foreach ($chunks as $chunk) {
-                    $latitudes = $chunk->pluck('latitude')->filter()->values();
-                    $longitudes = $chunk->pluck('longitude')->filter()->values();
+            $lock = Cache::lock(self::CLOUD_COVER_REFRESH_LOCK_KEY, self::REFRESH_LOCK_SECONDS);
+            if (! $lock->get()) {
+                return response()->json($this->cachedCloudCovers() ?? []);
+            }
 
-                    if ($latitudes->count() !== $chunk->count() || $longitudes->count() !== $chunk->count()) {
-                        throw new \UnexpectedValueException('Open-Meteo request coordinates were incomplete.');
+            // Recheck after acquiring the lock in case another request just refreshed it.
+            $cached = $this->cachedCloudCovers();
+            if ($cached !== null) {
+                return response()->json($cached);
+            }
+
+            if (Cache::has(self::CLOUD_COVER_COOLDOWN_KEY)) {
+                return response()->json([]);
+            }
+
+            return response()->json($this->refreshCloudCovers());
+        } catch (\Throwable $exception) {
+            Log::error('Cloud cover endpoint failed safely.', [
+                'exception' => $exception::class,
+            ]);
+
+            return response()->json([]);
+        } finally {
+            $lock?->release();
+        }
+    }
+
+    /** @return array<int|string, int|float>|null */
+    private function cachedCloudCovers(): ?array
+    {
+        $cached = Cache::get(self::CLOUD_COVER_CACHE_KEY);
+
+        return is_array($cached) && $cached !== [] ? $cached : null;
+    }
+
+    /** @return array<int|string, int|float> */
+    private function refreshCloudCovers(): array
+    {
+        $stationsCount = 0;
+        $chunkCount = 0;
+        $failedChunk = null;
+        $httpStatus = null;
+        $retryAfter = null;
+
+        try {
+            $stations = $this->stations->filtered([])->values();
+            $stationsCount = $stations->count();
+            if ($stationsCount === 0) {
+                return [];
+            }
+
+            $chunks = $stations->chunk(self::CLOUD_COVER_CHUNK_SIZE)->values();
+            $chunkCount = $chunks->count();
+            $results = [];
+
+            foreach ($chunks as $chunkIndex => $chunk) {
+                // Keep each station's ID and coordinate pair together through request mapping.
+                $locations = [];
+                foreach ($chunk as $station) {
+                    $latitude = $station->latitude;
+                    $longitude = $station->longitude;
+                    if (! is_numeric($latitude) || ! is_numeric($longitude)
+                        || ! is_finite((float) $latitude) || ! is_finite((float) $longitude)
+                        || (float) $latitude < -90 || (float) $latitude > 90
+                        || (float) $longitude < -180 || (float) $longitude > 180) {
+                        throw new \UnexpectedValueException('Station coordinates were invalid.');
                     }
 
-                    $response = Http::timeout(10)->get('https://api.open-meteo.com/v1/forecast', [
-                        'latitude' => $latitudes->implode(','),
-                        'longitude' => $longitudes->implode(','),
+                    $locations[] = [
+                        'station_id' => $station->id,
+                        'latitude' => (string) $latitude,
+                        'longitude' => (string) $longitude,
+                    ];
+                }
+
+                $failedChunk = $chunkIndex + 1;
+                $response = Http::retry(3, 1000, null, false)
+                    ->timeout(self::OPEN_METEO_TIMEOUT_SECONDS)
+                    ->get('https://api.open-meteo.com/v1/forecast', [
+                        'latitude' => implode(',', array_column($locations, 'latitude')),
+                        'longitude' => implode(',', array_column($locations, 'longitude')),
                         'current' => 'cloud_cover',
                         'timezone' => 'auto',
                     ]);
 
-                    if (! $response->successful()) {
-                        throw new \RuntimeException('Open-Meteo returned HTTP '.$response->status());
+                if (! $response->successful()) {
+                    $httpStatus = $response->status();
+                    $retryAfter = $httpStatus === 429 ? $response->header('Retry-After') : null;
+                    throw new \RuntimeException('Open-Meteo returned an unsuccessful response.');
+                }
+
+                $json = $response->json();
+                if (! is_array($json)) {
+                    $failedChunk = $chunkIndex + 1;
+                    throw new \UnexpectedValueException('Open-Meteo returned an invalid response.');
+                }
+
+                if (array_is_list($json)) {
+                    if (count($json) !== count($locations)) {
+                        $failedChunk = $chunkIndex + 1;
+                        throw new \UnexpectedValueException('Open-Meteo returned an incomplete location list.');
                     }
 
-                    $json = $response->json();
-                    if (! is_array($json)) {
-                        throw new \UnexpectedValueException('Open-Meteo returned an invalid response.');
-                    }
-
-                    if (isset($json[0])) {
-                        if (! array_is_list($json) || count($json) !== $chunk->count()) {
-                            throw new \UnexpectedValueException('Open-Meteo returned an incomplete location list.');
-                        }
-
-                        foreach ($chunk->values() as $index => $station) {
-                            $value = $json[$index]['current']['cloud_cover'] ?? null;
-                            if (! is_numeric($value) || (float) $value < 0 || (float) $value > 100) {
-                                throw new \UnexpectedValueException('Open-Meteo returned missing or invalid cloud cover.');
-                            }
-
-                            $results[$station->id] = $value;
-                        }
-                    } else {
-                        if ($chunk->count() !== 1) {
-                            throw new \UnexpectedValueException('Open-Meteo returned an unexpected response structure.');
-                        }
-
-                        $value = $json['current']['cloud_cover'] ?? null;
-                        if (! is_numeric($value) || (float) $value < 0 || (float) $value > 100) {
+                    foreach ($locations as $index => $location) {
+                        $value = $json[$index]['current']['cloud_cover'] ?? null;
+                        if (! is_numeric($value) || ! is_finite((float) $value) || (float) $value < 0 || (float) $value > 100) {
+                            $failedChunk = $chunkIndex + 1;
                             throw new \UnexpectedValueException('Open-Meteo returned missing or invalid cloud cover.');
                         }
 
-                        $station = $chunk->first();
-                        $results[$station->id] = $value;
+                        $results[$location['station_id']] = $value;
                     }
-                }
+                } else {
+                    if (count($locations) !== 1) {
+                        $failedChunk = $chunkIndex + 1;
+                        throw new \UnexpectedValueException('Open-Meteo returned an unexpected response structure.');
+                    }
 
-                if ($stations->isEmpty() || count($results) !== $stations->count()) {
-                    throw new \UnexpectedValueException('Open-Meteo did not return cloud cover for every station.');
-                }
+                    $value = $json['current']['cloud_cover'] ?? null;
+                    if (! is_numeric($value) || ! is_finite((float) $value) || (float) $value < 0 || (float) $value > 100) {
+                        $failedChunk = $chunkIndex + 1;
+                        throw new \UnexpectedValueException('Open-Meteo returned missing or invalid cloud cover.');
+                    }
 
-                return $results;
-            });
+                    $results[$locations[0]['station_id']] = $value;
+                }
+            }
+
+            if (count($results) !== $stationsCount) {
+                throw new \UnexpectedValueException('Open-Meteo did not return cloud cover for every station.');
+            }
+
+            Cache::put(self::CLOUD_COVER_CACHE_KEY, $results, self::CLOUD_COVER_CACHE_TTL);
+
+            return $results;
         } catch (\Throwable $exception) {
-            Log::error('Cloud cover refresh was not cached.', [
+            $cooldownSeconds = $httpStatus === 429
+                ? $this->cooldownFromRetryAfter($retryAfter)
+                : self::FALLBACK_COOLDOWN_SECONDS;
+
+            try {
+                Cache::put(self::CLOUD_COVER_COOLDOWN_KEY, true, $cooldownSeconds);
+            } catch (\Throwable $cacheException) {
+                Log::error('Cloud cover cooldown could not be stored.', [
+                    'exception' => $cacheException::class,
+                    'cooldown_seconds' => $cooldownSeconds,
+                ]);
+            }
+
+            Log::warning('Cloud cover refresh failed; no result was cached.', [
                 'exception' => $exception::class,
-                'message' => $exception->getMessage(),
+                'http_status' => $httpStatus,
+                'stations_count' => $stationsCount,
+                'chunks_count' => $chunkCount,
+                'failed_chunk' => $failedChunk,
+                'cooldown_seconds' => $cooldownSeconds,
+                'connection_failure' => $exception instanceof ConnectionException,
             ]);
 
-            $data = [];
+            return [];
+        }
+    }
+
+    private function cooldownFromRetryAfter(?string $retryAfter): int
+    {
+        if ($retryAfter !== null && trim($retryAfter) !== '') {
+            if (is_numeric($retryAfter)) {
+                $seconds = (int) $retryAfter;
+            } else {
+                $timestamp = strtotime($retryAfter);
+                $seconds = $timestamp === false ? 0 : $timestamp - now()->timestamp;
+            }
+
+            if ($seconds > 0) {
+                return min($seconds, self::MAX_COOLDOWN_SECONDS);
+            }
         }
 
-        return response()->json($data);
+        return self::FALLBACK_COOLDOWN_SECONDS;
     }
 }

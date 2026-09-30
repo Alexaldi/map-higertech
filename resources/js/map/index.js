@@ -7,7 +7,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { addBasemapGallery } from './basemaps.js';
 import { DEFAULT_VIEW, stationIconSvg, stationLegendHtml, stationTypeSummaryHtml, typeMeta } from './constants.js';
 import { bindMapControls } from './controls.js';
-import { applyCloudCover } from './cloud-cover.js';
+import { applyCloudCover, fetchCloudCoverOnce } from './cloud-cover.js';
 import { escapeHtml, formatLocation } from './formatters.js';
 import { buildPopup } from './popup.js';
 import { applyFilterDraft, buildStationCard, buildStationQuery, buildStationSuggestions, focusStationMarker, hasValidCoordinates, setStationPanelOpen } from './state.js';
@@ -159,26 +159,14 @@ function initialize(rootElement) {
     }
 
     function fetchCloudCovers() {
-        if (state.cloudCoverRequest) return state.cloudCoverRequest;
+        return fetchCloudCoverOnce(state, () => fetch(CLOUD_COVER_URL, {
+            headers: { Accept: 'application/json' },
+        })).then((cloudCovers) => {
+            if (!cloudCovers) return;
 
-        state.cloudCoverRequest = (async () => {
-            try {
-                const response = await fetch(CLOUD_COVER_URL, {
-                    headers: { Accept: 'application/json' },
-                });
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-                const cloudCovers = await response.json();
-                if (!cloudCovers || typeof cloudCovers !== 'object' || Array.isArray(cloudCovers)) return;
-
-                state.cloudCovers = cloudCovers;
-                applyCloudCover(state.stations, cloudCovers, state.markers, buildPopup);
-            } catch {
-                // Cloud Cover is optional; station rendering must remain independent.
-            }
-        })();
-
-        return state.cloudCoverRequest;
+            state.cloudCovers = cloudCovers;
+            applyCloudCover(state.stations, cloudCovers, state.markers, buildPopup);
+        });
     }
 }
 

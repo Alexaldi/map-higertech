@@ -16,3 +16,23 @@ export const applyCloudCover = (stations, cloudCovers, markers, buildPopup) => {
         }
     }
 };
+
+export const fetchCloudCoverOnce = (state, request) => {
+    if (state.cloudCoverRequest) return state.cloudCoverRequest;
+
+    state.cloudCoverRequest = (async () => {
+        try {
+            const response = await request();
+            if (!response.ok) return null;
+
+            const cloudCovers = await response.json();
+            if (!cloudCovers || typeof cloudCovers !== 'object' || Array.isArray(cloudCovers)) return null;
+
+            return cloudCovers;
+        } catch {
+            return null;
+        }
+    })();
+
+    return state.cloudCoverRequest;
+};
