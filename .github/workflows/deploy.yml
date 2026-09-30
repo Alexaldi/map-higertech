@@ -39,4 +39,7 @@ jobs:
             echo "📦 Build asset frontend..."
             docker compose exec -T app npm run build
 
+            echo "🔄 Restart PHP application container..."
+            docker compose restart app
+
             echo "✅ Deploy selesai dengan sukses!"

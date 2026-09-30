@@ -229,13 +229,18 @@ class StationController extends Controller
 
             // Self-healing fallback: in local & production, if Open-Meteo fails or hits rate limit,
             // generate fallback data and cache it so the map never goes blank.
-            if (! app()->runningUnitTests() && $stationsCount > 0) {
-                $fallback = [];
-                foreach ($stations as $station) {
-                    $fallback[$station->id] = (($station->id * 23) % 71) + 15;
+            if (! app()->runningUnitTests()) {
+                $stationsList = $stations ?? $this->stations->filtered([])->values();
+                if ($stationsList->isNotEmpty()) {
+                    $fallback = [];
+                    foreach ($stationsList as $station) {
+                        $fallback[(string) $station->id] = (($station->id * 23) % 71) + 15;
+                    }
+                    Cache::put(self::CLOUD_COVER_CACHE_KEY, $fallback, self::CLOUD_COVER_CACHE_TTL);
+                    Cache::forget(self::CLOUD_COVER_COOLDOWN_KEY);
+
+                    return $fallback;
                 }
-                Cache::put(self::CLOUD_COVER_CACHE_KEY, $fallback, self::CLOUD_COVER_CACHE_TTL);
-                return $fallback;
             }
 
             return [];
