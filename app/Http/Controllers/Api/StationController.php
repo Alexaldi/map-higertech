@@ -18,14 +18,7 @@ class StationController extends Controller
     public function index(Request $request): JsonResponse
     {
         $stations = $this->stations->filtered($request->only(['search', 'type', 'status', 'organization']));
-        $cloudCovers = json_decode($this->cloudCover()->getContent(), true);
-
         $data = StationResource::collection($stations)->resolve($request);
-
-        // Inject cloud cover data
-        foreach ($data as &$station) {
-            $station['cloud_cover'] = $cloudCovers[$station['id']] ?? null;
-        }
 
         return response()->json([
             'data' => $data,

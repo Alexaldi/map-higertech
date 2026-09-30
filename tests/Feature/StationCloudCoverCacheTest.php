@@ -14,7 +14,10 @@ class StationCloudCoverCacheTest extends TestCase
 
     public function test_complete_open_meteo_response_is_cached_for_7200_seconds(): void
     {
-        $stations = Station::factory()->count(2)->create();
+        $stations = collect([
+            Station::factory()->create(['name' => 'Station A']),
+            Station::factory()->create(['name' => 'Station B']),
+        ]);
         Http::fake(fn () => Http::response($this->locations([42, 68]), 200));
 
         $response = $this->getJson('/api/stations/cloud-cover')->assertOk();
@@ -35,7 +38,7 @@ class StationCloudCoverCacheTest extends TestCase
         Http::assertSentCount(2);
     }
 
-    public function test_http_failure_returns_empty_cloud_cover_without_caching_and_station_endpoint_stays_available(): void
+    public function test_http_failure_returns_empty_cloud_cover_without_caching_while_station_endpoint_is_independent(): void
     {
         Station::factory()->create(['name' => 'Station One']);
         Http::fake(fn () => Http::response(['error' => true], 503));
@@ -43,7 +46,33 @@ class StationCloudCoverCacheTest extends TestCase
         $this->getJson('/api/stations')
             ->assertOk()
             ->assertJsonPath('data.0.name', 'Station One')
-            ->assertJsonPath('data.0.cloud_cover', null);
+            ->assertJsonMissingPath('data.0.cloud_cover');
+
+        Http::assertNothingSent();
+
+        $this->getJson('/api/stations/cloud-cover')->assertOk()->assertExactJson([]);
+
+        $this->assertFalse(Cache::has('stations_cloud_cover'));
+        Http::assertSentCount(1);
+    }
+
+    public function test_timeout_does_not_create_cache(): void
+    {
+        Station::factory()->create();
+        Http::fake(Http::failedConnection('Open-Meteo timed out'));
+
+        $this->getJson('/api/stations/cloud-cover')->assertOk()->assertExactJson([]);
+
+        $this->assertFalse(Cache::has('stations_cloud_cover'));
+        Http::assertSentCount(1);
+    }
+
+    public function test_rate_limit_response_does_not_create_cache(): void
+    {
+        Station::factory()->create();
+        Http::fake(fn () => Http::response(['error' => true], 429));
+
+        $this->getJson('/api/stations/cloud-cover')->assertOk()->assertExactJson([]);
 
         $this->assertFalse(Cache::has('stations_cloud_cover'));
         Http::assertSentCount(1);
