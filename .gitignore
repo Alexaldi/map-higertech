@@ -26,3 +26,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Reports and Templates
+/docs/laporan/
+/docs/Template laporan/
