@@ -92,20 +92,37 @@
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label for="contact_whatsapp" class="form-label font-weight-semibold">Nomor
-                                                    WhatsApp Layanan</label>
+                                                <label for="contact_whatsapp" class="form-label font-weight-semibold text-primary">
+                                                    <i class="fe fe-message-circle me-1"></i> Nomor WhatsApp Layanan & Konsultasi (Publik)
+                                                </label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text"><i
-                                                            class="fe fe-message-circle"></i></span>
+                                                    <span class="input-group-text"><i class="fe fe-phone"></i></span>
                                                     <input type="text"
                                                         class="form-control @error('contact_whatsapp') is-invalid @enderror"
                                                         id="contact_whatsapp" name="contact_whatsapp"
                                                         value="{{ old('contact_whatsapp', $settings['contact_whatsapp'] ?? '') }}"
                                                         placeholder="contoh: 08112332182">
                                                 </div>
-                                                <small class="text-muted">Nomor kontak langsung via WA untuk konsultasi
-                                                    teknis.</small>
+                                                <small class="text-muted">Nomor WhatsApp resmi yang tampil di header, footer, & tombol konsultasi website agar pengunjung bisa menghubungi perusahaan.</small>
                                                 @error('contact_whatsapp')
+                                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="wa_admin_notification" class="form-label font-weight-semibold text-success">
+                                                    <i class="fe fe-bell me-1"></i> Nomor WhatsApp Notifikasi Admin (Internal)
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-success-transparent text-success"><i class="fe fe-shield"></i></span>
+                                                    <input type="text"
+                                                        class="form-control @error('wa_admin_notification') is-invalid @enderror"
+                                                        id="wa_admin_notification" name="wa_admin_notification"
+                                                        value="{{ old('wa_admin_notification', $settings['wa_admin_notification'] ?? $settings['internship_wa_notification'] ?? config('services.gowa.admin_number')) }}"
+                                                        placeholder="contoh: 087751945841">
+                                                </div>
+                                                <small class="text-muted">Nomor WhatsApp pribadi Admin/PIC yang akan menerima notifikasi otomatis dari bot setiap ada pesan formulir kontak atau berkas magang baru masuk.</small>
+                                                @error('wa_admin_notification')
                                                     <div class="text-danger mt-1 fs-12">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -472,30 +489,7 @@
                                                         @enderror
                                                     </div>
 
-                                                    <div class="col-md-12">
-                                                        <label for="internship_wa_notification"
-                                                            class="form-label fs-12 font-weight-semibold text-dark mb-1">
-                                                            <i class="fe fe-message-circle me-1 text-success"></i> Nomor
-                                                            WhatsApp Notifikasi Admin (Pengajuan Baru):
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-light fs-12"><i
-                                                                    class="fe fe-phone text-success"></i></span>
-                                                            <input type="text"
-                                                                class="form-control fs-12 @error('internship_wa_notification') is-invalid @enderror"
-                                                                id="internship_wa_notification"
-                                                                name="internship_wa_notification"
-                                                                value="{{ old('internship_wa_notification', $settings['internship_wa_notification'] ?? config('services.gowa.admin_number')) }}"
-                                                                placeholder="Contoh: 082112727546 atau 6282112727546">
-                                                        </div>
-                                                        <small class="text-muted d-block mt-1">
-                                                            Nomor tujuan notifikasi otomatis WhatsApp setiap ada berkas
-                                                            lamaran magang baru yang masuk.
-                                                        </small>
-                                                        @error('internship_wa_notification')
-                                                            <div class="text-danger mt-1 fs-12">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

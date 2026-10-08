@@ -25,8 +25,12 @@ class ContactController extends Controller
 
         $contactMessage = ContactMessage::create($validated);
 
-        // Notify Admin
-        $waService->notifyNewContactMessage($contactMessage);
+        // Notify Admin (Fail-safe: jangan gagalkan submit pesan jika notifikasi WA bermasalah)
+        try {
+            $waService->notifyNewContactMessage($contactMessage);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Gagal mengirim notifikasi WhatsApp untuk pesan kontak: ' . $e->getMessage());
+        }
 
         return redirect()->back()->with('success', 'Pesan Anda berhasil dikirim! Tim kami akan segera menghubungi Anda.');
     }

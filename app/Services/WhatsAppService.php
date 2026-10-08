@@ -20,7 +20,10 @@ class WhatsAppService
     {
         $this->baseUrl = rtrim(config('services.gowa.url', 'http://127.0.0.1:3000'), '/');
         $this->deviceId = config('services.gowa.device_id');
-        $this->adminNumber = setting('internship_wa_notification', config('services.gowa.admin_number'));
+        $this->adminNumber = setting('wa_admin_notification')
+            ?: setting('internship_wa_notification')
+            ?: setting('contact_whatsapp')
+            ?: config('services.gowa.admin_number');
         $this->username = config('services.gowa.username');
         $this->password = config('services.gowa.password');
     }

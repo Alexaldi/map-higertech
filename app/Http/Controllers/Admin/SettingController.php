@@ -40,6 +40,7 @@ class SettingController extends Controller
             'social_linkedin' => ['nullable', 'url', 'max:255'],
             'social_youtube' => ['nullable', 'url', 'max:255'],
             'internship_enabled' => ['nullable', 'in:0,1'],
+            'wa_admin_notification' => ['nullable', 'string', 'max:50'],
             'internship_wa_notification' => ['nullable', 'string', 'max:50'],
             'internship_closed_message' => ['nullable', 'string', 'max:1000'],
             'internship_tracks_smk' => ['nullable', 'string', 'max:2000'],
@@ -50,6 +51,10 @@ class SettingController extends Controller
             'contact_phone.required' => 'Nomor telepon wajib diisi.',
             'social_links.*.url.url' => 'Format URL media sosial tidak valid.',
         ]);
+
+        if ($request->has('wa_admin_notification')) {
+            $validated['internship_wa_notification'] = $validated['wa_admin_notification'];
+        }
 
         if ($request->has('internship_enabled')) {
             $validated['internship_enabled'] = $request->input('internship_enabled') === '1' ? '1' : '0';

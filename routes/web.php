@@ -21,7 +21,6 @@ use App\Http\Controllers\Admin\DashboardController;
 Route::view('/', 'landing.index')->name('home');
 Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
-Route::view('/products', 'products.index')->name('products');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
 Route::get('/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari', [ArticleController::class, 'show'])
     ->defaults('slug', 'pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari')
