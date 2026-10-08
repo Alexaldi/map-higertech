@@ -423,63 +423,40 @@
 }
 
 .dark .station-popup {
+    background: #0f172a;
     color: #f1f5f9;
 }
 
 .dark .station-popup__header {
-    background: #131d36;
+    background: #0f172a;
 }
 
-.dark .station-popup__header h3 {
-    color: #f1f5f9;
+.dark .station-popup__eyebrow {
+    color: #38bdf8;
 }
 
-.dark .station-popup__category-icon {
-    background: color-mix(in srgb, var(--station-color) 20%, #131d36);
-    border-color: color-mix(in srgb, var(--station-color) 40%, #131d36);
+.dark .station-popup__title {
+    color: #f8fafc;
 }
 
-.dark .station-popup__context {
-    background: #0c1626;
-    border-color: #1e293b;
+.dark .station-popup__info-row {
+    border-bottom-color: #1e293b;
 }
 
-.dark .station-popup__context p {
-    color: #cbd5e1;
-}
-
-.dark .station-popup__meta {
-    border-color: #1e293b;
-}
-
-.dark .station-popup__meta span {
-    color: #cbd5e1;
-}
-
-.dark .station-popup__meta small {
-    color: #64748b;
-}
-
-.dark .station-popup__telemetry {
-    background: #131d36;
-    border-color: #1e293b;
-}
-
-.dark .station-popup__metric {
-    background: #0c1626;
-    border-color: #1e293b;
-}
-
-.dark .station-popup__metric span {
+.dark .station-popup__info-label {
     color: #94a3b8;
 }
 
-.dark .station-popup__metric strong {
+.dark .station-popup__info-value {
     color: #f1f5f9;
 }
 
-.dark .station-popup__no-data {
-    color: #94a3b8;
+.dark .station-popup__info-value--manager {
+    color: #60a5fa;
+}
+
+.dark .station-popup__info-value--location {
+    color: #cbd5e1;
 }
 
 .dark .map-state {

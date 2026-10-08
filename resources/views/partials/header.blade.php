@@ -233,8 +233,6 @@
                     </div>
                 </div>
 
-                <a href="{{ $isHome ? '#map-section' : 'https://higertech.com/#services' }}"
-                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                 <a href="{{ $isHome ? '#map-section' : route('home') . '#map-section' }}"
                     class="nav-link hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.nav_projects') }}</a>
 

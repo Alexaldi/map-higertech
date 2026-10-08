@@ -11,82 +11,124 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // Pastiin ada kategori bertipe produk. Kalau belum ada, bikin beberapa dulu.
-        $categoryNames = ['test-produk'];
-
-        foreach ($categoryNames as $name) {
-            Category::firstOrCreate(
-                ['name' => $name, 'tipe' => 'produk'],
-                ['sub_nama' => $name, 'description' => "Kategori produk {$name}"]
-            );
-        }
-
-        $categoryIds = Category::produk()->pluck('id')->toArray();
-
-        $products = [
-            [
-                'title' => 'Website Sistem Informasi Hidrologi',
-                'desc' => 'Platform monitoring hidrologi berbasis web yang menampilkan data real-time dari seluruh pos pantau. Dilengkapi dashboard interaktif, grafik debit air, peta distribusi sensor, dan sistem notifikasi otomatis untuk kondisi kritis.',
+        $productsByCategory = [
+            'Curah Hujan Telemetri ( Automatic Rain Recorder / ARR )' => [
+                [
+                    'title' => 'Stasiun Curah Hujan Telemetri Otomatis ARR-HGT01',
+                    'desc' => 'Perangkat pemantau dan pencatat curah hujan otomatis real-time berbasis GSM/GPRS & IoT. Dilengkapi sensor tipping bucket presisi tinggi, solar power system mandiri, dan integrasi cloud.',
+                ],
+                [
+                    'title' => 'Tipping Bucket Rain Gauge Sensor Stainless Steel',
+                    'desc' => 'Sensor penakar curah hujan tipe tipping bucket beresolusi 0.5 mm dengan bodi stainless steel tahan korosi untuk penggunaan jangka panjang di pos telemetri terbuka.',
+                ],
             ],
-            [
-                'title' => 'Pembuatan Web Telemetri Higertech',
-                'desc' => 'Web telemetri terintegrasi untuk akuisisi data lapangan secara otomatis. Menampilkan dashboard utama, kolom profil pos telemetri, nilai sensor real-time, serta informasi aset dan laporan berkala.',
+            'Tinggi Muka Air Telemetri ( Automatic Water Level Recorder / AWLR )' => [
+                [
+                    'title' => 'Perangkat Telemetri AWLR Pressure Sensor (HGT-AWLR01)',
+                    'desc' => 'Sistem telemetri tinggi muka air dengan submersible pressure sensor berakurasi tinggi (TKDN 40%). Cocok untuk pemantauan sungai, waduk, bendungan, dan saluran irigasi.',
+                ],
+                [
+                    'title' => 'Non-Contact Radar Water Level Telemetry Station',
+                    'desc' => 'Stasiun pemantau muka air tanpa kontak menggunakan radar frekuensi tinggi 80GHz. Tahan terhadap gelombang, sampah permukaan air, dan kondisi banjir ekstrem.',
+                ],
+                [
+                    'title' => 'Ultrasonic Water Level Sensor Telemetry Station',
+                    'desc' => 'Sistem telemetri muka air berbasis gelombang ultrasonik untuk pengukuran kontinuitas aliran saluran irigasi dan pintu air bendung.',
+                ],
             ],
-            [
-                'title' => 'Web Telemetry dan Flood Early Warning System (FEWS)',
-                'desc' => 'Pembuatan Web Telemetry dan FEWS dengan dashboard utama, peta sebaran pos telemetri, profil pos detail, nilai sensor real-time, serta peta 2 dimensi banjir spasial dari hasil curah hujan satelit.',
+            'Klimatologi ( Automatic Weather Station / AWS )' => [
+                [
+                    'title' => 'Stasiun Cuaca Otomatis AWS Standar BMKG & WMO',
+                    'desc' => 'Sistem pemantauan cuaca dan iklim terpadu meliputi sensor arah & kecepatan angin, suhu udara, kelembaban, radiasi matahari, tekanan udara, dan curah hujan.',
+                ],
+                [
+                    'title' => 'Compact All-in-One Ultrasonic Weather Sensor',
+                    'desc' => 'Sensor cuaca kompak terintegrasi tanpa bagian bergerak (solid-state) untuk pengamatan meteorologi mikro dan stasiun agroklimatologi.',
+                ],
             ],
-            [
-                'title' => 'Sistem Monitoring Kualitas Air',
-                'desc' => 'Sistem pemantauan kualitas air berbasis IoT yang mengintegrasikan sensor pH, kekeruhan, suhu, dan dissolved oxygen secara real-time. Dashboard terintegrasi dengan alert otomatis dan laporan historis.',
+            'Alarm Peringatan Dini ( Early Warning Sistem / EWS )' => [
+                [
+                    'title' => 'Sistem Sirine Peringatan Dini Banjir & Longsor (EWS)',
+                    'desc' => 'Sistem alarm peringatan dini multi-stage dengan sirine berdaya jangkau hingga 2 km, lampu strobo visual, dan aktivasi otomatis berbasis ambang batas siaga sensor.',
+                ],
+                [
+                    'title' => 'Komunitas Alert Box & GSM Broadcast Early Warning',
+                    'desc' => 'Modul penerima peringatan bencana di posko warga yang terhubung secara nirkabel dengan stasiun telemetri utama.',
+                ],
             ],
-            [
-                'title' => 'Platform Monitoring Cuaca Otomatis',
-                'desc' => 'Platform digital untuk pemantauan kondisi cuaca secara otomatis melalui AWS (Automatic Weather Station). Menampilkan data curah hujan, kecepatan angin, suhu udara, dan kelembaban dalam satu dashboard terpadu.',
+            'Pemantau Visual Camera Capture ( CCTV Capture )' => [
+                [
+                    'title' => 'Solar Powered CCTV Capture Outdoor Telemetry',
+                    'desc' => 'Kamera pengawas lapangan resolusi tinggi dengan transmisi gambar berkala via 4G LTE, dilengkapi panel surya mandiri dan housing IP67 untuk pemantauan fisik stasiun.',
+                ],
+                [
+                    'title' => 'PTZ Pan-Tilt-Zoom Telemetry Surveillance Camera',
+                    'desc' => 'Kamera PTZ berputar 360 derajat dengan optical zoom untuk inspeksi visual detail kondisi bendungan, mercu luapan, dan pintu air secara remote.',
+                ],
             ],
-            [
-                'title' => 'Sistem Informasi Geospasial Bencana',
-                'desc' => 'Sistem informasi berbasis GIS untuk pemetaan potensi bencana alam. Mengintegrasikan data sensor lapangan, citra satelit, dan analitik spasial untuk mendukung pengambilan keputusan mitigasi bencana.',
+            'Vibrating Wire' => [
+                [
+                    'title' => 'Vibrating Wire Piezometer Geotechnical Sensor',
+                    'desc' => 'Sensor pengukur tekanan air pori tanah dan batuan berbasis frekuensi kawat bergetar untuk keamanan struktural bendungan dan lereng tambang.',
+                ],
+                [
+                    'title' => 'Vibrating Wire Crackmeter & Jointmeter',
+                    'desc' => 'Instrumen pemantau pergerakan rekahan dan celah sambungan beton bendungan dengan kestabilan sinyal jangka panjang tanpa terpengaruh hambatan kabel.',
+                ],
             ],
-            [
-                'title' => 'Dashboard Monitoring Debit Sungai',
-                'desc' => 'Sistem pemantauan debit sungai real-time dengan integrasi sensor ultrasonik dan radar level. Menyediakan grafik historis, prediksi banjir sederhana, dan notifikasi ambang batas siaga.',
+            'Alat Ukur' => [
+                [
+                    'title' => 'Peilschaal Alumunium Enamel Skala 1:100',
+                    'desc' => 'Papan duga muka air (peilschaal) bahan aluminium berkualitas dilapisi cat enamel anti gores dan tahan cuaca ekstrem untuk kalibrasi visual lapangan.',
+                ],
+                [
+                    'title' => 'Digital Current Meter Pengukur Debit Aliran Sungai',
+                    'desc' => 'Alat ukur kecepatan aliran air portabel dengan propeler presisi dan display digital untuk survei debit hidrometri berkala.',
+                ],
             ],
-            [
-                'title' => 'Aplikasi Pelaporan Lapangan Petugas',
-                'desc' => 'Aplikasi mobile-friendly untuk petugas lapangan melaporkan kondisi pos pantau secara langsung, lengkap dengan foto, lokasi GPS, dan status kerusakan alat.',
+            'Sparepart' => [
+                [
+                    'title' => 'Data Logger Telemetri Higertech HGT_L01',
+                    'desc' => 'Modul unit logger utama berkinerja tinggi dengan multi-channel analog/digital/RS485, low power consumption, penyimpanan micro-SD, dan modem 4G terintegrasi.',
+                ],
+                [
+                    'title' => 'Modul Solar Charge Controller & Industrial Battery Pack 12V',
+                    'desc' => 'Paket sistem suplai daya tenaga surya industri termasuk solar panel monocrystalline, MPPT controller, dan baterai deep cycle/LiFePO4.',
+                ],
             ],
-            [
-                'title' => 'Sistem Manajemen Aset Telemetri',
-                'desc' => 'Platform pencatatan dan pemeliharaan aset perangkat telemetri, termasuk riwayat kalibrasi, jadwal maintenance, dan status garansi tiap unit sensor.',
-            ],
-            [
-                'title' => 'Dashboard Analitik Curah Hujan Satelit',
-                'desc' => 'Visualisasi data curah hujan berbasis citra satelit dengan resolusi tinggi, dilengkapi perbandingan historis dan ekspor laporan per wilayah.',
-            ],
-            [
-                'title' => 'Sistem Peringatan Dini Longsor',
-                'desc' => 'Sistem monitoring pergerakan tanah menggunakan sensor inklinometer dan curah hujan, dengan notifikasi otomatis ke pihak terkait saat mendeteksi potensi longsor.',
-            ],
-            [
-                'title' => 'Portal Data Terbuka Lingkungan',
-                'desc' => 'Portal publik yang menyajikan data lingkungan (kualitas udara, air, cuaca) secara terbuka untuk masyarakat dan peneliti, dengan fitur unduh dataset dan API publik.',
+            'Jasa' => [
+                [
+                    'title' => 'Jasa Kalibrasi & Sertifikasi Sensor Telemetri',
+                    'desc' => 'Layanan kalibrasi berkala untuk sensor curah hujan, water level, dan cuaca guna menjamin akurasi data sesuai standar operasional BBWS/BWS/BMKG.',
+                ],
+                [
+                    'title' => 'Jasa Instalasi, Commissioning & Maintenance Stasiun Telemetri',
+                    'desc' => 'Pekerjaan sipil tiang menara, penangkal petir, grounding, instalasi instrumen, komisioning sistem komunikasi, serta pemeliharaan preventif.',
+                ],
             ],
         ];
 
-        foreach ($products as $index => $product) {
-            $slug = Str::slug($product['title']);
+        foreach ($productsByCategory as $categoryName => $products) {
+            $category = Category::where('name', $categoryName)->where('tipe', 'produk')->first();
 
-            Product::firstOrCreate(
-                ['slug' => $slug],
-                [
-                    'category_id' => $categoryIds[$index % count($categoryIds)],
-                    'title' => $product['title'],
-                    'desc' => $product['desc'],
-                    'image' => null,
-                    'is_active' => true,
-                ]
-            );
+            if (! $category) {
+                continue;
+            }
+
+            foreach ($products as $product) {
+                $slug = Str::slug($product['title']);
+
+                Product::updateOrCreate(
+                    ['slug' => $slug],
+                    [
+                        'category_id' => $category->id,
+                        'title' => $product['title'],
+                        'desc' => $product['desc'],
+                        'image' => null,
+                        'is_active' => true,
+                    ]
+                );
+            }
         }
     }
 }
