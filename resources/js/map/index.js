@@ -219,11 +219,11 @@ function createMarker(station) {
         title: station.name || 'Station telemetry',
         riseOnHover: true,
     }).bindPopup(buildPopup(station), {
-        autoPanPaddingTopLeft: L.point(20, 160),
-        autoPanPaddingBottomRight: L.point(20, 20),
+        autoPanPaddingTopLeft: L.point(30, 60),
+        autoPanPaddingBottomRight: L.point(30, 30),
         className: 'telemetry-popup',
-        maxWidth: 340,
-        minWidth: 290,
+        maxWidth: 360,
+        minWidth: 320,
     });
 }
 

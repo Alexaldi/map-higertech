@@ -1,5 +1,5 @@
-import { typeMeta } from './constants.js';
-import { escapeHtml, formatLocation } from './formatters.js';
+import { stationIconSvg, typeMeta } from './constants.js';
+import { escapeHtml, formatLocation, relativeTime, telemetryRows } from './formatters.js';
 
 const DUMMY_STATION_PHOTOS = [
     {
@@ -12,7 +12,7 @@ const DUMMY_STATION_PHOTOS = [
     },
 ];
 
-export const buildPopup = (station = {}) => {
+export const buildPopup = (station = {}, now = new Date()) => {
     const meta = typeMeta(station.station_type);
     const photos = (Array.isArray(station.photos) && station.photos.length > 0)
         ? station.photos
@@ -28,17 +28,36 @@ export const buildPopup = (station = {}) => {
         <span class="station-popup__dot ${idx === 0 ? 'is-active' : ''}" data-dot-index="${idx}"></span>
     `).join('');
 
-    const locationText = formatLocation(station).toUpperCase();
-    const typeLabel = (meta.label || station.station_type || 'DUGA AIR').toUpperCase();
-    const managerName = station.balai_name || 'Bendungan Ladongi';
-    const deviceId = station.device_id || `HGT${station.id || '1097'}`;
-    const installDate = station.installation_date || '1 Desember 2025';
+    const rows = telemetryRows(station);
+    if (station.cloud_cover !== null && station.cloud_cover !== undefined) {
+        rows.push({ label: 'Tutupan Awan (API)', value: station.cloud_cover + '%' });
+    }
+
+    const telemetry = rows.length
+        ? rows.map((row) => `
+            <div class="station-popup__metric">
+                <span class="station-popup__metric-label">${escapeHtml(row.label)}</span>
+                <strong class="station-popup__metric-val">${escapeHtml(row.value)}</strong>
+            </div>`).join('')
+        : '<span class="station-popup__no-data">Data realtime belum tersedia</span>';
+
+    const deviceId = station.device_id || `HGT${station.id || '-'}`;
+    const installDate = station.installation_date || '-';
+    const managerName = station.balai_name || '-';
+    const locationText = formatLocation(station);
 
     return `
         <article class="station-popup">
             <header class="station-popup__header">
-                <span class="station-popup__eyebrow">INFORMASI PERANGKAT</span>
-                <h3 class="station-popup__title">${escapeHtml(station.name || 'Pos Monitoring')}</h3>
+                <span class="station-popup__category-icon" style="--station-color:${meta.color}">
+                    ${stationIconSvg(station.station_type, 'station-popup__category-icon-svg')}
+                </span>
+                <div class="station-popup__heading">
+                    <div class="station-popup__title-row">
+                        <span class="station-popup__type" style="--station-color:${meta.color}">${escapeHtml(meta.short)}</span>
+                        <h3 class="station-popup__title" title="${escapeHtml(station.name || 'Pos Monitoring')}">${escapeHtml(station.name || 'Pos Monitoring')}</h3>
+                    </div>
+                </div>
             </header>
 
             <div class="station-popup__carousel">
@@ -59,26 +78,34 @@ export const buildPopup = (station = {}) => {
                 ` : ''}
             </div>
 
-            <div class="station-popup__info-list">
-                <div class="station-popup__info-row">
-                    <span class="station-popup__info-label">Pengelola</span>
-                    <span class="station-popup__info-value station-popup__info-value--manager">${escapeHtml(managerName)}</span>
+            <div class="station-popup__context">
+                <div class="station-popup__manager">
+                    <span class="station-popup__label">PENGELOLA</span>
+                    <strong class="station-popup__manager-val">${escapeHtml(managerName)}</strong>
                 </div>
-                <div class="station-popup__info-row">
-                    <span class="station-popup__info-label">Tipe Perangkat</span>
-                    <span class="station-popup__info-value font-bold">${escapeHtml(typeLabel)}</span>
+                <div class="station-popup__loc">
+                    <span class="station-popup__label">LOKASI</span>
+                    <p class="station-popup__loc-val">${escapeHtml(locationText)}</p>
                 </div>
-                <div class="station-popup__info-row">
-                    <span class="station-popup__info-label">Device ID</span>
-                    <span class="station-popup__info-value font-mono font-bold">${escapeHtml(deviceId)}</span>
+                <div class="station-popup__meta-row">
+                    <div class="station-popup__meta-cell">
+                        <span class="station-popup__label">DEVICE ID</span>
+                        <strong class="station-popup__meta-text">${escapeHtml(deviceId)}</strong>
+                    </div>
+                    <div class="station-popup__meta-cell">
+                        <span class="station-popup__label">UPDATE</span>
+                        <strong class="station-popup__meta-text">${escapeHtml(relativeTime(station.reading_at, now))}</strong>
+                    </div>
+                    <div class="station-popup__meta-cell">
+                        <span class="station-popup__label">INSTALASI</span>
+                        <strong class="station-popup__meta-text">${escapeHtml(installDate)}</strong>
+                    </div>
                 </div>
-                <div class="station-popup__info-row">
-                    <span class="station-popup__info-label">Instalasi</span>
-                    <span class="station-popup__info-value">${escapeHtml(installDate)}</span>
-                </div>
-                <div class="station-popup__info-row station-popup__info-row--location">
-                    <span class="station-popup__info-label">Lokasi</span>
-                    <span class="station-popup__info-value station-popup__info-value--location">${escapeHtml(locationText)}</span>
+            </div>
+
+            <div class="station-popup__telemetry-wrap">
+                <div class="station-popup__metrics">
+                    ${telemetry}
                 </div>
             </div>
 
