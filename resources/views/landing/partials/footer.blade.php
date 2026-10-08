@@ -85,6 +85,9 @@
                     <li><a href="{{ route('articles') }}"
                             class="hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.footer_articles') }}</a>
                     </li>
+                    <li><a href="{{ route('contact') }}"
+                            class="hover:text-blue-600 dark:hover:text-cyan-400 transition">Kontak</a>
+                    </li>
                     <li><a href="https://e-katalog.lkpp.go.id" target="_blank"
                             class="hover:text-blue-600 dark:hover:text-cyan-400 transition">{{ __('landing.footer_ecatalog') }}</a>
                     </li>

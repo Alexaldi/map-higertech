@@ -46,24 +46,16 @@
 
                 {{-- CTA Buttons --}}
                 <div class="flex flex-wrap items-center gap-3 pt-2">
-                    <a href="#workstation"
-                        class="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#16275E] hover:bg-blue-800 text-white font-bold text-sm transition shadow-sm">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path
-                                d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83zM2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />
-                        </svg>
-                        <span>{{ __('landing.hero_cta_workstation') }}</span>
+                    <a href="{{ route('products') }}"
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-slate-200 dark:border-transparent text-slate-900 font-semibold text-sm hover:bg-slate-50 transition shadow-sm">
+                        <span>{{ __('landing.hero_cta_product') }}</span>
                     </a>
-                    <a href="{{ route('internship') }}"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-2xs">
-                        <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor"
-                            stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                            <path
-                                d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
-                            <path d="M22 10v6M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+                    <a href="{{ route('contact') }}"
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-400 hover:bg-cyan-500 text-slate-900 font-semibold text-sm transition shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                         </svg>
-                        <span>{{ __('landing.hero_cta_internship') }}</span>
+                        <span>{{ __('landing.hero_cta_contact') }}</span>
                     </a>
                 </div>
             </div>

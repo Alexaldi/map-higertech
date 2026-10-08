@@ -252,6 +252,28 @@ class WhatsAppService
     }
 
     /**
+     * Kirim notifikasi pesan kontak baru ke Admin
+     */
+    public function notifyNewContactMessage(\App\Models\ContactMessage $contact): bool
+    {
+        if (empty($this->adminNumber)) {
+            return false;
+        }
+
+        $message = "🔔 *PESAN KONTAK BARU*\n\n"
+            . "Telah masuk pesan baru melalui form kontak website:\n\n"
+            . "• *Nama:* {$contact->name}\n"
+            . "• *Perusahaan:* " . ($contact->company ?: '-') . "\n"
+            . "• *Email:* {$contact->email}\n"
+            . "• *Telepon:* " . ($contact->phone ?: '-') . "\n\n"
+            . "📝 *Pesan:*\n"
+            . "_{$contact->message}_\n\n"
+            . "— _Sistem Otomasi Website Higertech_";
+
+        return $this->sendMessage($this->adminNumber, $message);
+    }
+
+    /**
      * Resolve full disk path checking local (private) disk first, then public disk.
      */
     private function resolveDiskPath(?string $path): ?string

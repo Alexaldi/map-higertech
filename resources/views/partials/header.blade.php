@@ -5,6 +5,7 @@
     $isTutorials = request()->routeIs('tutorials') || request()->is('tutorials*');
     $isProducts = request()->routeIs('products*') || request()->is('products*');
     $isInternship = request()->routeIs('internship*') || request()->is('internship*');
+    $isContact = request()->routeIs('contact') || request()->is('contact*');
     $locale = app()->getLocale();
 
     $products = [
@@ -274,6 +275,10 @@
                     class="nav-link {{ $isTutorials ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
                     {!! $isTutorials ? 'aria-current="page" tabindex="-1"' : '' !!}>Tutorials</a>
 
+                <a href="{{ route('contact') }}"
+                    class="nav-link {{ $isContact ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
+                    {!! $isContact ? 'aria-current="page" tabindex="-1"' : '' !!}>Contact</a>
+
                 {{-- Peta link with Active Indicator when on /map --}}
                 <a href="{{ route('map') }}"
                     class="nav-link {{ $isMap ? 'text-blue-600 dark:text-cyan-400 font-bold inline-flex items-center gap-1.5 is-active pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
@@ -481,6 +486,16 @@
                     @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
                     class="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition">
                     <span>{{ __('landing.nav_download') }}</span>
+                </a>
+
+                {{-- Contact --}}
+                <a href="{{ route('contact') }}"
+                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl transition {{ $isContact ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:bg-slate-100 dark:hover:bg-slate-800/60' }}"
+                    {!! $isContact ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                    <span>Contact</span>
+                    @if ($isContact)
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-cyan-400"></span>
+                    @endif
                 </a>
 
                 {{-- Peta --}}
