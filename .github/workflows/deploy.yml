@@ -24,6 +24,7 @@ jobs:
             cd ~/map-higertech
 
             echo "📥 Menarik kode terbaru dari GitHub..."
+            git checkout -- docker/nginx/default.conf 2>/dev/null || true
             git pull origin master
 
             echo "🔄 Refresh autoloading..."
@@ -35,5 +36,12 @@ jobs:
 
             echo "🗄️ Menjalankan migrasi database..."
             docker compose exec -T app php artisan migrate --force
+
+            echo "📦 Build asset frontend..."
+            docker compose exec -T app npm run build
+
+            echo "🔄 Restart PHP application & reload Nginx..."
+            docker compose restart app
+            docker compose exec -T nginx nginx -s reload || docker compose restart nginx
 
             echo "✅ Deploy selesai dengan sukses!"

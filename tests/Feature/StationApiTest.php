@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Station;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class StationApiTest extends TestCase
@@ -61,6 +62,19 @@ class StationApiTest extends TestCase
             'reading_at',
             'latest_reading',
         ], array_keys($response->json('data.0')));
+    }
+
+    public function test_index_does_not_request_open_meteo_and_returns_stations_without_cloud_cover(): void
+    {
+        Station::factory()->create(['name' => 'Station One']);
+        Http::fake();
+
+        $this->getJson('/api/stations')
+            ->assertOk()
+            ->assertJsonPath('data.0.name', 'Station One')
+            ->assertJsonMissingPath('data.0.cloud_cover');
+
+        Http::assertNothingSent();
     }
 
     public function test_search_is_case_insensitive_across_station_context_fields(): void

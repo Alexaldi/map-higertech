@@ -19,8 +19,9 @@ class ProductController extends Controller
             ? Category::produk()->find($categoryId)
             : null;
 
+        $categories = Category::produk()->orderBy('id')->get();
         $products = $this->productService->getActiveProducts($categoryId);
 
-        return view('products.index', compact('products', 'selectedCategory'));
+        return view('products.index', compact('products', 'selectedCategory', 'categories'));
     }
 }

@@ -86,11 +86,17 @@ export const buildStationCard = (station = {}, now = new Date()) => {
 export const focusStationMarker = (map, marker) => {
     const target = marker.getLatLng();
     const targetZoom = Math.max(map.getZoom(), 12);
-    const currentCenter = map.getCenter?.();
 
-    if (currentCenter?.equals?.(target) && map.getZoom() >= targetZoom) {
-        marker.openPopup();
-        return;
+    let flyTarget = target;
+    try {
+        if (typeof map.project === 'function' && typeof map.unproject === 'function') {
+            const point = map.project(target, targetZoom);
+            // Offset vertically by 110px so popup above marker sits centered in viewport
+            const offsetPoint = point.subtract([0, 110]);
+            flyTarget = map.unproject(offsetPoint, targetZoom);
+        }
+    } catch {
+        flyTarget = target;
     }
 
     let opened = false;
@@ -101,7 +107,7 @@ export const focusStationMarker = (map, marker) => {
     };
 
     map.once('moveend zoomend', openPopup);
-    map.flyTo(target, targetZoom, { duration: 0.7 });
+    map.flyTo(flyTarget, targetZoom, { duration: 0.6 });
 };
 
 export const setStationPanelOpen = ({ panel, launchers = [], backdrop }, open) => {

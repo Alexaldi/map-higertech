@@ -9,7 +9,7 @@
         <span><small>{{ __('map.total_pos') }}</small><strong id="summary-total">—</strong></span>
     </div>
 
-    <div class="network-status__metric network-status__metric--online">
+    <div class="network-status__metric network-status__metric--online hidden" aria-hidden="true">
         <i aria-hidden="true"></i>
         <span><small>{{ __('map.online') }}</small><strong id="summary-online">—</strong></span>
     </div>
