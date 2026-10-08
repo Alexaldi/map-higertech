@@ -43,6 +43,72 @@ class WhatsAppService
     }
 
     /**
+     * Dapatkan Device ID secara dinamis dari GOWA jika di .env tidak ditentukan UUID spesifik
+     */
+    public function getActiveDeviceId(): string
+    {
+        // 1. Jika di .env sudah diset UUID spesifik (bukan 'auto' atau 'default')
+        if (! empty($this->deviceId) && ! in_array(strtolower($this->deviceId), ['auto', 'default'])) {
+            return $this->deviceId;
+        }
+
+        // 2. Cek cache (10 menit)
+        $cacheKey = 'gowa_active_device_id';
+        if ($cached = cache()->get($cacheKey)) {
+            return $cached;
+        }
+
+        // 3. Ambil daftar perangkat langsung dari endpoint GOWA GET /devices
+        try {
+            $response = $this->newHttpClient(5)->get("{$this->baseUrl}/devices");
+            if ($response->successful()) {
+                $data = $response->json();
+                $devices = $data['results']['data'] ?? $data['results'] ?? [];
+
+                if (is_array($devices) && ! empty($devices)) {
+                    $chosenId = null;
+
+                    // Prioritaskan device yang sedang berstatus 'Selected' atau 'Logged in' / 'connected'
+                    foreach ($devices as $dev) {
+                        $devId = $dev['device_id'] ?? $dev['id'] ?? null;
+                        if (! $devId) continue;
+
+                        $isSelected = ! empty($dev['is_selected']) || ! empty($dev['selected']);
+                        $isLoggedIn = ! empty($dev['is_logged_in'])
+                            || ! empty($dev['logged_in'])
+                            || in_array(strtolower($dev['status'] ?? $dev['state'] ?? ''), ['connected', 'logged_in', 'logged in']);
+
+                        if ($isSelected) {
+                            $chosenId = $devId;
+                            break;
+                        }
+
+                        if ($isLoggedIn && empty($chosenId)) {
+                            $chosenId = $devId;
+                        }
+                    }
+
+                    // Fallback ke device pertama jika tidak ada flag khusus
+                    if (empty($chosenId)) {
+                        $first = reset($devices);
+                        $chosenId = $first['device_id'] ?? $first['id'] ?? null;
+                    }
+
+                    if (! empty($chosenId)) {
+                        cache()->put($cacheKey, $chosenId, now()->addMinutes(10));
+                        Log::info("GOWA Auto-Resolved Device ID: {$chosenId}");
+                        return $chosenId;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::warning('GOWA Auto-Resolve Device ID Exception: ' . $e->getMessage());
+        }
+
+        return $this->deviceId ?: 'default';
+    }
+
+    /**
      * Kirim pesan teks WA secara umum
      */
     public function sendMessage(string $phone, string $message): bool
@@ -54,7 +120,7 @@ class WhatsAppService
         }
 
         try {
-            $deviceId = ! empty($this->deviceId) ? $this->deviceId : 'default';
+            $deviceId = $this->getActiveDeviceId();
             $headers = [
                 'Content-Type' => 'application/json',
                 'X-Device-Id'  => $deviceId,
@@ -71,6 +137,10 @@ class WhatsAppService
             if ($response->successful()) {
                 $this->recordLog($phone, 'text', $message, null, null, 'success');
                 return true;
+            }
+
+            if ($response->status() === 404) {
+                cache()->forget('gowa_active_device_id');
             }
 
             $this->recordLog($phone, 'text', $message, null, null, 'failed', "Status: {$response->status()} - {$response->body()}");
@@ -106,7 +176,7 @@ class WhatsAppService
         }
 
         try {
-            $deviceId = ! empty($this->deviceId) ? $this->deviceId : 'default';
+            $deviceId = $this->getActiveDeviceId();
             $headers = [
                 'X-Device-Id' => $deviceId,
             ];
@@ -123,6 +193,10 @@ class WhatsAppService
             if ($response->successful()) {
                 $this->recordLog($phone, 'file', $caption, $filename, $absoluteFilePath, 'success');
                 return true;
+            }
+
+            if ($response->status() === 404) {
+                cache()->forget('gowa_active_device_id');
             }
 
             $this->recordLog($phone, 'file', $caption, $filename, $absoluteFilePath, 'failed', "Status: {$response->status()} - {$response->body()}");
