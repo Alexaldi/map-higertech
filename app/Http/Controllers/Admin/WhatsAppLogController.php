@@ -15,7 +15,7 @@ class WhatsAppLogController extends Controller
      */
     public function index(Request $request): View
     {
-        $logs = WhatsAppLog::latest('sent_at')->get();
+        $logs = WhatsAppLog::orderByDesc('sent_at')->orderByDesc('id')->get();
 
         $stats = [
             'total'   => $logs->count(),

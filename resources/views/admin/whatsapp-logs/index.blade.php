@@ -156,7 +156,7 @@
                                             @endif
                                         </td>
 
-                                        <td>
+                                        <td data-order="{{ $log->sent_at ? $log->sent_at->timestamp : 0 }}">
                                             <span class="fs-12 text-dark fw-medium">
                                                 {{ $log->sent_at ? $log->sent_at->timezone('Asia/Jakarta')->translatedFormat('d M Y, H:i') . ' WIB' : '-' }}
                                             </span>
