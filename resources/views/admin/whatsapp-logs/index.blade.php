@@ -150,7 +150,7 @@
                                                 </span>
                                             @else
                                                 <span class="badge bg-danger-transparent text-danger px-2.5 py-1"
-                                                    title="{{ $log->response }}">
+                                                    title="{{ Str::limit($log->response, 100) }}">
                                                     <i class="fe fe-x me-1"></i> Gagal
                                                 </span>
                                             @endif
@@ -163,16 +163,21 @@
                                         </td>
 
                                         <td class="text-center">
+                                            {{-- Payload data disimpan terpisah agar karakter kutip/JSON error pada pesan gagal tidak merusak atribut HTML --}}
+                                            <div class="d-none log-payload"
+                                                data-phone="{{ $log->phone }}"
+                                                data-type="{{ $log->type === 'file' ? 'Berkas File' : 'Pesan Teks' }}"
+                                                data-status="{{ $log->status }}"
+                                                data-attachment="{{ $log->attachment_name ?? '' }}"
+                                                data-time="{{ $log->sent_at ? $log->sent_at->timezone('Asia/Jakarta')->translatedFormat('d F Y, H:i:s') . ' WIB' : '-' }}">
+                                                <div class="raw-message">{{ $log->message }}</div>
+                                                <div class="raw-response">{{ $log->response }}</div>
+                                            </div>
+
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button"
                                                     class="btn btn-outline-primary btn-sm btn-view-detail"
-                                                    data-phone="{{ $log->phone }}"
-                                                    data-type="{{ $log->type === 'file' ? 'Berkas File' : 'Pesan Teks' }}"
-                                                    data-status="{{ $log->status }}"
-                                                    data-attachment="{{ $log->attachment_name ?? '' }}"
-                                                    data-time="{{ $log->sent_at ? $log->sent_at->timezone('Asia/Jakarta')->translatedFormat('d F Y, H:i:s') . ' WIB' : '-' }}"
-                                                    data-message="{{ $log->message }}"
-                                                    data-response="{{ $log->response ?? '' }}" title="Lihat Detail Pesan">
+                                                    title="Lihat Detail Pesan">
                                                     <i class="fe fe-eye"></i>
                                                 </button>
                                                 <form action="{{ route('admin.whatsapp-logs.destroy', $log->id) }}"
@@ -285,15 +290,17 @@
                 });
             }
 
-            // View detail modal handler
-            $('.btn-view-detail').on('click', function() {
-                const phone = $(this).data('phone');
-                const type = $(this).data('type');
-                const status = $(this).data('status');
-                const time = $(this).data('time');
-                const message = $(this).data('message');
-                const attachment = $(this).data('attachment');
-                const response = $(this).data('response');
+            // View detail modal handler (Event delegation via $(document))
+            $(document).on('click', '.btn-view-detail', function() {
+                const $td = $(this).closest('td');
+                const $payload = $td.find('.log-payload');
+                const phone = $payload.attr('data-phone') || '-';
+                const type = $payload.attr('data-type') || 'Pesan Teks';
+                const status = $payload.attr('data-status') || 'success';
+                const time = $payload.attr('data-time') || '-';
+                const attachment = $payload.attr('data-attachment') || '';
+                const message = $payload.find('.raw-message').text().trim();
+                const response = $payload.find('.raw-response').text().trim();
 
                 $('#modal-detail-phone').text(phone);
                 $('#modal-detail-time').text(time);
@@ -316,31 +323,38 @@
 
                 $('#modal-detail-message').text(message || '(Tidak ada pesan teks)');
 
-                if (response && status !== 'success') {
+                if (response) {
                     $('#modal-detail-response').text(response);
                     $('#modal-detail-response-wrapper').show();
                 } else {
                     $('#modal-detail-response-wrapper').hide();
                 }
 
-                const modal = new bootstrap.Modal(document.getElementById('modalDetailLog'));
-                modal.show();
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDetailLog'));
+                    modal.show();
+                } else {
+                    $('#modalDetailLog').modal('show');
+                }
             });
 
-            // Delete single log
-            $('.btn-delete-log').on('click', function(e) {
+            // Delete single log (Event delegation via $(document))
+            $(document).on('click', '.btn-delete-log', function(e) {
                 e.preventDefault();
-                const form = $(this).closest('form');
+                const form = $(this).closest('form')[0];
+                if (!form) return;
+
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
                         title: 'Hapus Log Ini?',
                         text: 'Data riwayat pesan ini akan dihapus permanen.',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#d33',
+                        confirmButtonColor: '#dc3545',
                         cancelButtonColor: '#6c757d',
-                        confirmButtonText: 'Ya, Hapus',
-                        cancelButtonText: 'Batal'
+                        confirmButtonText: '<i class="fe fe-trash-2 me-1"></i> Ya, Hapus',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();
@@ -355,27 +369,31 @@
         });
 
         // Clear all logs
-        function confirmClearLogs() {
+        window.confirmClearLogs = function() {
+            const form = document.getElementById('form-clear-logs');
+            if (!form) return;
+
             if (typeof Swal !== 'undefined') {
                 Swal.fire({
                     title: 'Kosongkan Semua Log WhatsApp?',
                     text: 'Seluruh data riwayat pengiriman pesan akan dibersihkan dan tidak dapat dikembalikan!',
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
+                    confirmButtonColor: '#dc3545',
                     cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, Bersihkan Semua',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: '<i class="fe fe-trash-2 me-1"></i> Ya, Bersihkan Semua',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('form-clear-logs').submit();
+                        form.submit();
                     }
                 });
             } else {
                 if (confirm('Yakin ingin mengosongkan seluruh riwayat log WhatsApp?')) {
-                    document.getElementById('form-clear-logs').submit();
+                    form.submit();
                 }
             }
-        }
+        };
     </script>
 @endpush
