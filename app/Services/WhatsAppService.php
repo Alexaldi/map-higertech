@@ -54,16 +54,18 @@ class WhatsAppService
         }
 
         try {
-            $headers = ['Content-Type' => 'application/json'];
-            if (! empty($this->deviceId) && $this->deviceId !== 'default') {
-                $headers['X-Device-Id'] = $this->deviceId;
-            }
+            $deviceId = ! empty($this->deviceId) ? $this->deviceId : 'default';
+            $headers = [
+                'Content-Type' => 'application/json',
+                'X-Device-Id'  => $deviceId,
+            ];
 
             $response = $this->newHttpClient(10)
                 ->withHeaders($headers)
-                ->post("{$this->baseUrl}/send/message", [
-                    'phone'   => $phone,
-                    'message' => $message,
+                ->post("{$this->baseUrl}/send/message?device_id={$deviceId}", [
+                    'phone'     => $phone,
+                    'message'   => $message,
+                    'device_id' => $deviceId,
                 ]);
 
             if ($response->successful()) {
@@ -104,17 +106,18 @@ class WhatsAppService
         }
 
         try {
-            $headers = [];
-            if (! empty($this->deviceId) && $this->deviceId !== 'default') {
-                $headers['X-Device-Id'] = $this->deviceId;
-            }
+            $deviceId = ! empty($this->deviceId) ? $this->deviceId : 'default';
+            $headers = [
+                'X-Device-Id' => $deviceId,
+            ];
 
             $response = $this->newHttpClient(30)
                 ->withHeaders($headers)
                 ->attach('file', file_get_contents($absoluteFilePath), $filename)
-                ->post("{$this->baseUrl}/send/file", [
-                    'phone'   => $phone,
-                    'caption' => $caption,
+                ->post("{$this->baseUrl}/send/file?device_id={$deviceId}", [
+                    'phone'     => $phone,
+                    'caption'   => $caption,
+                    'device_id' => $deviceId,
                 ]);
 
             if ($response->successful()) {
