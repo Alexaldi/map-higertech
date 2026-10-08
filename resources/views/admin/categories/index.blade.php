@@ -17,7 +17,7 @@
                     <table id="data-table" class="table table-bordered text-nowrap mb-0">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th>Urutan</th>
                                 <th>Tipe Kategori</th>
                                 <th>Nama</th>
                                 <th>Sub Nama</th>
@@ -30,9 +30,13 @@
                         <tbody>
                             @forelse ($categories as $category)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $category->tipe }}</td>
-                                    <td>{{ $category->name }}</td>
+                                    <td>
+                                        <span class="badge bg-primary-subtle text-primary fw-bold fs-12 px-2 py-1">
+                                            #{{ $category->sort_order ?? 0 }}
+                                        </span>
+                                    </td>
+                                    <td><span class="badge {{ $category->tipe === 'produk' ? 'bg-info-subtle text-info' : 'bg-secondary-subtle text-secondary' }}">{{ ucfirst($category->tipe) }}</span></td>
+                                    <td class="fw-semibold">{{ $category->name }}</td>
                                     <td>{{ $category->sub_nama }}</td>
                                     <td>{{ $category->description ?: '-' }}</td>
                                     <td>{{ strtolower($category->created_at->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d M Y H.i')) }}</td>

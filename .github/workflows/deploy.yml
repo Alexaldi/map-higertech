@@ -24,6 +24,7 @@ jobs:
             cd ~/map-higertech
 
             echo "📥 Menarik kode terbaru dari GitHub..."
+            git checkout -- docker/nginx/default.conf 2>/dev/null || true
             git pull origin master
 
             echo "🔄 Refresh autoloading..."

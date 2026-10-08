@@ -47,6 +47,16 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="sort_order" class="form-label">Urutan Tampilan (Sort Order)</label>
+                                <input type="number" class="form-control @error('sort_order') is-invalid @enderror" id="sort_order" name="sort_order" value="{{ old('sort_order', $category->sort_order ?? 0) }}" min="0" placeholder="Contoh: 1, 2, 3...">
+                                <small class="text-muted fs-12">Nomor urutan posisi kategori di menu dropdown & daftar produk (dimulai dari 1).</small>
+                                @error('sort_order')
+                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="description" class="form-label">Deskripsi <span class="text-muted fs-12">(opsional)</span></label>
