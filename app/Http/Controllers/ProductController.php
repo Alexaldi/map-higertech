@@ -19,9 +19,26 @@ class ProductController extends Controller
             ? Category::produk()->find($categoryId)
             : null;
 
-        $categories = Category::produk()->orderBy('id')->get();
-        $products = $this->productService->getActiveProducts($categoryId);
+        $categories = Category::produk()->ordered()->get();
+        $products = $this->productService->getActivePaginated($categoryId, 10)->withQueryString();
 
         return view('products.index', compact('products', 'selectedCategory', 'categories'));
+    }
+
+    public function show(string $slug): View
+    {
+        $product = \App\Models\Product::with('category')
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        $relatedProducts = \App\Models\Product::with('category')
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('is_active', true)
+            ->take(3)
+            ->get();
+
+        return view('products.show', compact('product', 'relatedProducts'));
     }
 }

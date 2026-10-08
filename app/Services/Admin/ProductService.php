@@ -22,6 +22,10 @@ class ProductService
     {
         $data['slug'] = $this->resolveSlug($data['slug'] ?? null, $data['title']);
 
+        if (empty($data['inaproc_link'])) {
+            $data['inaproc_link'] = 'https://katalog.inaproc.id/higertech-karya-sinergi/' . $data['slug'];
+        }
+
         if ($image) {
             $data['image'] = $this->storeImage($image);
         }
@@ -32,6 +36,10 @@ class ProductService
     public function update(Product $product, array $data, ?UploadedFile $image = null): Product
     {
         $data['slug'] = $this->resolveSlug($data['slug'] ?? null, $data['title'], $product->id);
+
+        if (empty($data['inaproc_link'])) {
+            $data['inaproc_link'] = 'https://katalog.inaproc.id/higertech-karya-sinergi/' . $data['slug'];
+        }
 
         if ($image) {
             $this->deleteImage($product);
@@ -80,5 +88,10 @@ class ProductService
     public function getActiveProducts(?int $categoryId = null): Collection
     {
         return $this->productRepository->getActive($categoryId);
+    }
+
+    public function getActivePaginated(?int $categoryId = null, int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $this->productRepository->getActivePaginated($categoryId, $perPage);
     }
 }

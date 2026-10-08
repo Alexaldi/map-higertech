@@ -13,9 +13,19 @@ class Product extends Model
         'title',
         'slug',
         'desc',
+        'inaproc_link',
         'image',
         'is_active',
     ];
+
+    public function getEcatalogUrlAttribute(): string
+    {
+        if (! empty($this->inaproc_link) && $this->inaproc_link !== 'https://katalog.inaproc.id/higertech-karya-sinergi') {
+            return $this->inaproc_link;
+        }
+
+        return 'https://katalog.inaproc.id/higertech-karya-sinergi/' . $this->slug;
+    }
 
     protected function casts(): array
     {
@@ -37,6 +47,10 @@ class Product extends Model
 
         if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
             return $this->image;
+        }
+
+        if (str_starts_with($this->image, 'images/') || str_starts_with($this->image, 'assets/')) {
+            return asset(ltrim($this->image, '/'));
         }
 
         return asset('storage/' . ltrim($this->image, '/'));

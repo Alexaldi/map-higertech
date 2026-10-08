@@ -44,6 +44,7 @@ Route::get('/internship/letter/{code}', [\App\Http\Controllers\InternshipControl
 
 // products
 Route::get('/products', [GuestProductsController::class, 'index'])->name('products');
+Route::get('/products/{slug}', [GuestProductsController::class, 'show'])->name('products.show');
 
 // Map page
 Route::view('/map', 'map.index')->name('map');

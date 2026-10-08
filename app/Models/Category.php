@@ -34,4 +34,15 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function getShortNameAttribute(): string
+    {
+        if (preg_match('/\/\s*([A-Za-z0-9\s]+)\s*\)/', $this->name, $matches)) {
+            return trim($matches[1]);
+        }
+        if (preg_match('/\(\s*([^()]+)\s*\)/', $this->name, $matches)) {
+            return trim($matches[1]);
+        }
+        return $this->name;
+    }
 }

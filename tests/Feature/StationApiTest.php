@@ -57,8 +57,11 @@ class StationApiTest extends TestCase
             'balai_name',
             'province_name',
             'regency_name',
+            'district_name',
+            'village_name',
             'device_id',
             'device_status',
+            'installation_date',
             'reading_at',
             'latest_reading',
         ], array_keys($response->json('data.0')));

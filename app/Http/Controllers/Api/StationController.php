@@ -65,12 +65,12 @@ class StationController extends Controller
             }
 
             if (Cache::has(self::CLOUD_COVER_COOLDOWN_KEY)) {
-                return response()->json($this->generateFallbackCloudCovers());
+                return response()->json([]);
             }
 
             $lock = Cache::lock(self::CLOUD_COVER_REFRESH_LOCK_KEY, self::REFRESH_LOCK_SECONDS);
             if (! $lock->get()) {
-                return response()->json($this->cachedCloudCovers() ?? $this->generateFallbackCloudCovers());
+                return response()->json($this->cachedCloudCovers() ?? []);
             }
 
             // Recheck after acquiring the lock in case another request just refreshed it.
@@ -80,7 +80,7 @@ class StationController extends Controller
             }
 
             if (Cache::has(self::CLOUD_COVER_COOLDOWN_KEY)) {
-                return response()->json($this->generateFallbackCloudCovers());
+                return response()->json([]);
             }
 
             return response()->json($this->refreshCloudCovers());
@@ -89,7 +89,7 @@ class StationController extends Controller
                 'exception' => $exception::class,
             ]);
 
-            return response()->json($this->generateFallbackCloudCovers());
+            return response()->json([]);
         } finally {
             $lock?->release();
         }
