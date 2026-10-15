@@ -205,6 +205,35 @@ if (!function_exists('is_internship_enabled')) {
     }
 }
 
+if (!function_exists('navbar_show')) {
+    /**
+     * Check if a specific navbar menu item is enabled/visible.
+     * Supported keys: 'product', 'project', 'articles', 'download'.
+     */
+    function navbar_show(string $item): bool
+    {
+        $normalized = match (strtolower(trim($item))) {
+            'products' => 'product',
+            'projects' => 'project',
+            'article' => 'articles',
+            'tutorial', 'tutorials' => 'download',
+            default => strtolower(trim($item)),
+        };
+
+        return (string) setting('navbar_show_' . $normalized, '1') === '1';
+    }
+}
+
+if (!function_exists('is_navbar_visible')) {
+    /**
+     * Alias for navbar_show.
+     */
+    function is_navbar_visible(string $item): bool
+    {
+        return navbar_show($item);
+    }
+}
+
 if (!function_exists('whatsapp_url')) {
     /**
      * Get normalized WhatsApp URL from site settings.

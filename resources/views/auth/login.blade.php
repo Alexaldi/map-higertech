@@ -198,7 +198,7 @@
                                     class="w-full h-11 lg:h-12 rounded-xl border border-slate-200 bg-white
                                            pl-10 pr-11 text-sm text-slate-800 placeholder:text-slate-400
                                            outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 shadow-sm">
-                                <button type="submit" id="togglePassword"
+                                <button type="button" id="togglePassword" aria-label="Tampilkan password"
                                     class="absolute inset-y-0 right-0 px-3.5 text-slate-400 hover:text-blue-600 transition">
                                     <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                         <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>

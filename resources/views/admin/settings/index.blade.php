@@ -43,6 +43,12 @@
                                         </li>
                                         <li>
                                             <button class="nav-link btn btn-outline-primary" data-bs-toggle="tab"
+                                                data-bs-target="#tab-navbar" type="button" role="tab">
+                                                <i class="fe fe-menu me-1"></i> Menu Navbar
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="nav-link btn btn-outline-primary" data-bs-toggle="tab"
                                                 data-bs-target="#tab-internship" type="button" role="tab">
                                                 <i class="fe fe-award me-1"></i> Fitur & Peminatan Magang
                                             </button>
@@ -382,7 +388,90 @@
                                         </div>
                                     </div>
 
-                                    {{-- Tab 4: Fitur & Peminatan Magang --}}
+                                    {{-- Tab 4: Menu Navbar --}}
+                                    <div class="tab-pane" id="tab-navbar" role="tabpanel">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h6 class="font-weight-semibold mb-1">Pengaturan Visibilitas Menu Navbar</h6>
+                                                <p class="text-muted fs-12 mb-0">Aktifkan atau nonaktifkan menu navigasi pada header website publik.</p>
+                                            </div>
+                                        </div>
+
+                                        @php
+                                            $showProduct = (string) old('navbar_show_product', $settings['navbar_show_product'] ?? '1') === '1';
+                                            $showProject = (string) old('navbar_show_project', $settings['navbar_show_project'] ?? '1') === '1';
+                                            $showArticles = (string) old('navbar_show_articles', $settings['navbar_show_articles'] ?? '1') === '1';
+                                            $showDownload = (string) old('navbar_show_download', $settings['navbar_show_download'] ?? '1') === '1';
+                                        @endphp
+
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-vcenter mb-0">
+                                                <thead class="bg-light">
+                                                    <tr>
+                                                        <th>Menu</th>
+                                                        <th>Target Halaman</th>
+                                                        <th class="text-center" style="width: 120px;">Tampilkan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Produk (Product)</span>
+                                                            <small class="text-muted d-block fs-11">Dropdown kategori dan katalog produk</small>
+                                                        </td>
+                                                        <td><code>/products</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_product" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_product" id="nav_prod_switch" value="1" {{ $showProduct ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Proyek (Projects)</span>
+                                                            <small class="text-muted d-block fs-11">Tautan menuju peta monitoring di landing page</small>
+                                                        </td>
+                                                        <td><code>#map-section</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_project" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_project" id="nav_proj_switch" value="1" {{ $showProject ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Artikel (Articles)</span>
+                                                            <small class="text-muted d-block fs-11">Dropdown artikel, edukasi, dan berita</small>
+                                                        </td>
+                                                        <td><code>/articles</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_articles" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_articles" id="nav_art_switch" value="1" {{ $showArticles ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Download &amp; Tutorial</span>
+                                                            <small class="text-muted d-block fs-11">Tautan panduan teknis dan unduhan dokumen</small>
+                                                        </td>
+                                                        <td><code>/tutorials</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_download" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_download" id="nav_down_switch" value="1" {{ $showDownload ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    {{-- Tab 5: Fitur & Peminatan Magang --}}
                                     <div class="tab-pane" id="tab-internship" role="tabpanel">
                                         {{-- Pengaturan Status Pendaftaran Magang (Aktif / Nonaktif) --}}
                                         @php

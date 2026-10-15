@@ -45,6 +45,10 @@ class SettingController extends Controller
             'internship_closed_message' => ['nullable', 'string', 'max:1000'],
             'internship_tracks_smk' => ['nullable', 'string', 'max:2000'],
             'internship_tracks_univ' => ['nullable', 'string', 'max:2000'],
+            'navbar_show_product' => ['nullable', 'in:0,1'],
+            'navbar_show_project' => ['nullable', 'in:0,1'],
+            'navbar_show_articles' => ['nullable', 'in:0,1'],
+            'navbar_show_download' => ['nullable', 'in:0,1'],
         ], [
             'contact_email.required' => 'Email kontak wajib diisi.',
             'contact_email.email' => 'Format email kontak tidak valid.',
@@ -58,6 +62,12 @@ class SettingController extends Controller
 
         if ($request->has('internship_enabled')) {
             $validated['internship_enabled'] = $request->input('internship_enabled') === '1' ? '1' : '0';
+        }
+
+        foreach (['navbar_show_product', 'navbar_show_project', 'navbar_show_articles', 'navbar_show_download'] as $navKey) {
+            if ($request->has($navKey)) {
+                $validated[$navKey] = $request->input($navKey) === '1' ? '1' : '0';
+            }
         }
 
         if ($request->has('social_links_present') || $request->has('social_links')) {
