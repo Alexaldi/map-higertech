@@ -34,3 +34,16 @@ Thumbs.db
 /docs/laporan/
 /docs/Template laporan/
 
+# AI, Assistant & LLM Context / Tools
+/.gemini
+/.antigravity
+/.claude
+/.claudecode
+/.roo
+/.continue
+README_NOTEBOOKLM_CONTEXT.md
+*NOTEBOOKLM*
+PROGRESS.md
+*.ai.md
+
+
