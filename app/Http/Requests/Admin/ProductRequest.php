@@ -22,6 +22,7 @@ class ProductRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255'],
             'desc' => ['nullable', 'string'],
+            'inaproc_link' => ['nullable', 'url', 'max:500'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:3072'],
             'is_active' => ['sometimes', 'boolean'],
         ];

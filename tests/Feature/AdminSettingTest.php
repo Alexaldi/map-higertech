@@ -126,4 +126,81 @@ class AdminSettingTest extends TestCase
             ->assertDontSee('https://instagram.com/myhigertech')
             ->assertDontSee('https://linkedin.com');
     }
+
+    public function test_admin_settings_page_displays_navbar_settings_tab(): void
+    {
+        $response = $this->actingAs($this->admin)->get('/admin/settings');
+
+        $response->assertOk()
+            ->assertSee('Menu Navbar')
+            ->assertSee('Pengaturan Visibilitas Menu Navbar')
+            ->assertSee('Menu Produk (Product)')
+            ->assertSee('Menu Proyek (Projects)')
+            ->assertSee('Menu Artikel (Articles)')
+            ->assertSee('Menu Download &amp; Tutorial', false);
+    }
+
+    public function test_admin_can_toggle_navbar_visibility_and_hide_menus(): void
+    {
+        // 1. By default, navbar items are visible
+        $this->assertTrue(navbar_show('product'));
+        $this->assertTrue(navbar_show('project'));
+        $this->assertTrue(navbar_show('articles'));
+        $this->assertTrue(navbar_show('download'));
+
+        $initialLanding = $this->get('/');
+        $initialLanding->assertOk()
+            ->assertSee(__('landing.nav_product'))
+            ->assertSee(__('landing.nav_projects'))
+            ->assertSee(__('landing.nav_articles'))
+            ->assertSee('Tutorials');
+
+        // 2. Admin hides all 4 menus
+        $response = $this->actingAs($this->admin)->put('/admin/settings', [
+            'contact_email' => 'contact@higertech.com',
+            'contact_phone' => '022-2101-0299',
+            'navbar_show_product' => '0',
+            'navbar_show_project' => '0',
+            'navbar_show_articles' => '0',
+            'navbar_show_download' => '0',
+        ]);
+
+        $response->assertRedirect('/admin/settings');
+
+        $this->assertFalse(navbar_show('product'));
+        $this->assertFalse(navbar_show('project'));
+        $this->assertFalse(navbar_show('articles'));
+        $this->assertFalse(navbar_show('download'));
+
+        // 3. Verify public landing page hides all 4 menus in header
+        $hiddenLanding = $this->get('/');
+        $hiddenLanding->assertOk()
+            ->assertDontSee(__('landing.nav_product'))
+            ->assertDontSee(__('landing.nav_projects'))
+            ->assertDontSee(__('landing.nav_articles'))
+            ->assertDontSee('Tutorials')
+            ->assertDontSee(__('landing.nav_download'));
+
+        // 4. Admin re-enables product and project only
+        $this->actingAs($this->admin)->put('/admin/settings', [
+            'contact_email' => 'contact@higertech.com',
+            'contact_phone' => '022-2101-0299',
+            'navbar_show_product' => '1',
+            'navbar_show_project' => '1',
+            'navbar_show_articles' => '0',
+            'navbar_show_download' => '0',
+        ]);
+
+        $this->assertTrue(navbar_show('product'));
+        $this->assertTrue(navbar_show('project'));
+        $this->assertFalse(navbar_show('articles'));
+        $this->assertFalse(navbar_show('download'));
+
+        $partialLanding = $this->get('/');
+        $partialLanding->assertOk()
+            ->assertSee(__('landing.nav_product'))
+            ->assertSee(__('landing.nav_projects'))
+            ->assertDontSee(__('landing.nav_articles'))
+            ->assertDontSee('Tutorials');
+    }
 }

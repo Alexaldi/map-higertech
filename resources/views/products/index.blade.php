@@ -1,159 +1,214 @@
 @extends('layouts.app')
-@section('title', 'Produk | Higertech Karya Sinergi')
+@section('title', ($selectedCategory ? $selectedCategory->name . ' | ' : '') . 'Produk - Higertech Karya Sinergi')
 @section('content')
 
+{{-- HERO SECTION (3 Baris Sesuai Arahan Pak Handy) --}}
 <section id="hero"
-    class="relative pt-10 pb-16 lg:pt-14 lg:pb-24 overflow-hidden bg-gradient-to-b from-[#F0F5FD] via-[#F8FAFC] to-white dark:from-[#080d1a] dark:via-[#0B1120] dark:to-[#0B1120] transition-colors duration-300">
+    class="relative pt-10 pb-14 lg:pt-14 lg:pb-20 overflow-hidden bg-gradient-to-b from-[#F0F5FD] via-[#F8FAFC] to-white dark:from-[#080d1a] dark:via-[#0B1120] dark:to-[#0B1120] transition-colors duration-300 border-b border-slate-200/60 dark:border-slate-800/60">
     <div class="absolute inset-0 map-grid-bg pointer-events-none opacity-80 dark:opacity-35"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
-            {{-- Text Content --}}
-            <div class="space-y-6 scroll-reveal">
+            {{-- 3 Baris Header --}}
+            <div class="space-y-3 scroll-reveal">
+                {{-- Baris 1: Sub judul halaman (font kecil) --}}
+                <p class="text-xs sm:text-sm font-bold uppercase tracking-widest text-blue-600 dark:text-cyan-400">
+                    Produk
+                </p>
+
+                {{-- Baris 2: Judul kategori (font besar warna hitam) --}}
                 <h1
-                    class="text-4xl sm:text-5xl lg:text-[48px] font-extrabold tracking-tight leading-[1.15] text-slate-900 dark:text-white">
-                    Produk & Layanan Teknologi Higertech<br>
+                    class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.18] text-slate-950 dark:text-white">
+                    {{ $selectedCategory ? $selectedCategory->name : 'Semua Produk' }}
                 </h1>
 
-                <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
-                    Beragam solusi digital untuk kebutuhan monitoring, manajemen data, 
-                    dan sistem informasi — dirancang untuk mendukung pengambilan 
-                    keputusan yang lebih cepat dan akurat.
+                {{-- Baris 3: Sub deskripsi (font kecil warna abu-abu) --}}
+                <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed pt-1">
+                    {{ $selectedCategory && $selectedCategory->description
+                        ? $selectedCategory->description
+                        : 'Beragam solusi digital untuk kebutuhan monitoring, manajemen data, dan sistem informasi — dirancang untuk mendukung pengambilan keputusan yang lebih cepat dan akurat.' }}
                 </p>
             </div>
 
-            {{-- Hero Visual Presentation (Clean 3D showcase without card container) --}}
+            {{-- Hero Visual Presentation --}}
             <div class="relative flex flex-col items-center justify-center scroll-reveal scroll-reveal-delay-1">
-                {{-- Ambient Background Glow behind 3D Unit --}}
+                {{-- Glow background --}}
                 <div
-                    class="absolute -top-10 w-72 h-72 sm:w-80 sm:h-80 bg-cyan-500/15 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none">
+                    class="absolute -top-10 w-64 h-64 sm:w-80 sm:h-80 bg-cyan-500/15 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none">
                 </div>
                 <div
-                    class="absolute top-16 w-72 h-72 sm:w-80 sm:h-80 bg-blue-600/15 dark:bg-blue-600/15 rounded-full blur-3xl pointer-events-none">
+                    class="absolute top-16 w-64 h-64 sm:w-80 sm:h-80 bg-blue-600/15 dark:bg-blue-600/15 rounded-full blur-3xl pointer-events-none">
                 </div>
 
-                {{-- Concentric Radar Rings behind the 3D unit --}}
-                <div class="relative flex items-center justify-center w-full max-w-lg py-2 sm:py-4">
-                    <div
-                        class="absolute w-60 h-60 sm:w-72 sm:h-72 rounded-full border border-blue-500/15 dark:border-cyan-400/15 pointer-events-none">
-                    </div>
-                    <div
-                        class="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full border border-blue-500/10 dark:border-cyan-400/10 pointer-events-none">
-                    </div>
-
-                    {{-- Floating 3D Graphic with smooth CSS float animation --}}
+                {{-- Floating Unit Graphic --}}
+                <div class="relative flex items-center justify-center w-full max-w-md py-2">
                     <img src="{{ asset('images/products/hero-unit.png') }}"
-                        alt="Higertech Telemetry Field Monitoring Unit"
-                        class="w-full max-h-72 sm:max-h-84 object-contain relative z-10 animate-float-subtle drop-shadow-2xl transition-transform duration-500 hover:scale-105">
+                        alt="{{ $selectedCategory ? $selectedCategory->name : 'Produk Higertech' }}"
+                        class="w-full max-h-64 sm:max-h-76 object-contain relative z-10 animate-float-subtle drop-shadow-2xl transition-transform duration-500 hover:scale-105"
+                        onerror="this.src='https://placehold.co/400x300/e2e8f0/94a3b8?text=Higertech+Product'">
                 </div>
             </div>
         </div>
+    </div>
 </section>
 
-{{-- PRODUCT LISTING SECTION --}}
-<section class="py-16 lg:py-24 bg-white dark:bg-[#0B1120] transition-colors duration-300">
+{{-- PRODUCT LISTING SECTION WITH TECHNICAL SPECIFICATION CARDS --}}
+<section class="py-12 lg:py-16 bg-slate-50/60 dark:bg-[#0B1120] transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {{-- Section Header --}}
-        <div class="mb-12">
-            <p class="text-blue-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-widest mb-1 flex items-center gap-2">
-                <span class="inline-block w-6 h-0.5 bg-blue-600 dark:bg-cyan-400"></span>
-                {{ $selectedCategory->name ?? 'Software Monitoring' }}
-            </p>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mt-3">
-                @if ($selectedCategory)
-                    {{ $selectedCategory->sub_nama }}
-                @else
-                    Visualize Your Data.<br>
-                    <span class="text-blue-600 dark:text-cyan-400">Manage with Confidence.</span>
-                @endif
-            </h2>
-            @if ($selectedCategory && $selectedCategory->description)
-                <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mt-4">
-                    {{ $selectedCategory->description }}
-                </p>
+        {{-- Section Subheader / Category Status --}}
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-slate-200 dark:border-slate-800 gap-4">
+            <div>
+                <span class="text-xs font-bold font-mono tracking-widest uppercase text-blue-600 dark:text-cyan-400">
+                    KATALOG INSTRUMEN & SENSOR RESMI
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">
+                    {{ $selectedCategory ? $selectedCategory->name : 'Daftar Seluruh Seri Produk' }}
+                </h2>
+            </div>
+
+            @if ($selectedCategory)
+                <a href="{{ route('products') }}"
+                    class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-cyan-400 hover:border-blue-400 dark:hover:border-cyan-500 shadow-xs transition">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span>Lihat Semua Kategori</span>
+                </a>
             @endif
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {{-- Product Grid (Technical Workstation Cards Style ala Gambar 3) --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             @forelse ($products as $product)
-                {{-- Product Card --}}
-                <div
-                    class="group relative rounded-2xl overflow-hidden shadow-md
-                    hover:shadow-xl transition-shadow duration-300
-                    bg-white dark:bg-[#131D36]
-                    border border-slate-200/80 dark:border-slate-700/50
-                    h-full flex flex-col">
+                @php
+                    $catName = $product->category->name ?? 'Instrumen Telemetri';
+                    $subCat = $product->category->sub_nama ?? 'Standar PUPR / BMKG';
 
-                    {{-- Card Image --}}
-                    <div class="relative overflow-hidden aspect-[4/3]">
-                        <img
-                            src="{{ $product->image_url }}"
-                            alt="{{ $product->title }}"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            loading="lazy"
-                            onerror="this.src='https://placehold.co/400x300/e2e8f0/94a3b8?text=Higertech'"
-                        >
-                    </div>
+                    // Smart specs derivation
+                    $isAWLR = str_contains($catName, 'AWLR') || str_contains($product->title, 'AWLR') || str_contains($product->title, 'Level');
+                    $isARR = str_contains($catName, 'ARR') || str_contains($product->title, 'ARR') || str_contains($product->title, 'Rain');
+                    $isAWS = str_contains($catName, 'AWS') || str_contains($product->title, 'AWS') || str_contains($product->title, 'Cuaca');
+                    $isEWS = str_contains($catName, 'EWS') || str_contains($product->title, 'EWS') || str_contains($product->title, 'Sirine');
 
-                    {{-- Card Footer --}}
-                    <div
-                        class="p-4 bg-[#1e3a8a] dark:bg-[#0f2460]
-                        h-[120px] flex flex-col justify-center">
+                    $badgeTop = 'TELEMETRI IOT';
+                    $badgeRange = 'TKDN 40%';
+                    $spec1 = 'Output: RS485 / Modbus';
+                    $spec2 = 'Akurasi: Standar Industri';
 
-                        <span
-                            class="inline-block text-[10px] font-bold uppercase tracking-widest
-                            text-cyan-300 bg-white/10 px-2.5 py-1 rounded-full mb-2 w-fit">
-                            {{ $product->category->name ?? 'Umum' }}
-                        </span>
+                    if ($isAWLR) {
+                        $badgeTop = 'RADAR / PRESSURE';
+                        $badgeRange = '0 - 35m Range';
+                        $spec1 = 'Akurasi: ±2mm';
+                        $spec2 = 'Output: Modbus RTU / SDI-12';
+                    } elseif ($isARR) {
+                        $badgeTop = 'TIPPING BUCKET';
+                        $badgeRange = 'Orifice 200mm';
+                        $spec1 = 'Resolusi: 0.5 mm';
+                        $spec2 = 'Material: SS 304 Anti-Karat';
+                    } elseif ($isAWS) {
+                        $badgeTop = 'ALL-IN-ONE AWS';
+                        $badgeRange = 'Tower 10 Meter';
+                        $spec1 = '7 Parameter Cuaca Terpadu';
+                        $spec2 = 'Ultrasonic Wind 360°';
+                    } elseif ($isEWS) {
+                        $badgeTop = 'PERINGATAN DINI';
+                        $badgeRange = '120dB Siren';
+                        $spec1 = 'Radius Suara: s/d 2.000m';
+                        $spec2 = 'Dual Trigger: Auto / Manual';
+                    }
+                @endphp
 
-                        <h3 class="text-white font-extrabold text-sm leading-snug line-clamp-2">
-                            {{ $product->title }}
+                @php
+                    $targetUrl = route('products.show', $product->slug);
+                @endphp
+
+                <div class="rounded-3xl p-6 sm:p-7 bg-white dark:bg-[#131D36] border border-slate-200/90 dark:border-slate-800 shadow-md hover:shadow-2xl hover:border-cyan-500/80 dark:hover:border-cyan-400 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden cursor-pointer"
+                    onclick="if(!event.target.closest('a')) { window.location.href='{{ $targetUrl }}'; }">
+                    {{-- Top Gradient Stripe --}}
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-600 via-cyan-400 to-indigo-600 opacity-80 group-hover:opacity-100 transition"></div>
+
+                    {{-- Card Header --}}
+                    <div>
+                        <div class="flex items-center justify-between pb-3.5 mb-3.5 border-b border-slate-100 dark:border-slate-800 text-xs font-mono">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-xl bg-blue-500/10 dark:bg-cyan-500/10 text-blue-600 dark:text-cyan-400 flex items-center justify-center border border-blue-500/20 dark:border-cyan-500/20 shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                    </svg>
+                                </span>
+                                <div>
+                                    <span class="font-bold text-slate-800 dark:text-cyan-300 block text-[11px] uppercase tracking-wide">
+                                        {{ $subCat }}
+                                    </span>
+                                    <span class="text-[9px] text-slate-400">Standar PUPR / BMKG / Ditjen SDA</span>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full bg-blue-50 dark:bg-cyan-950/70 text-blue-700 dark:text-cyan-300 text-[10px] font-bold font-mono border border-blue-200 dark:border-cyan-800 shrink-0">
+                                {{ $badgeRange }}
+                            </span>
+                        </div>
+
+                        <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
+                            <a href="{{ route('products.show', $product->slug) }}" class="no-underline hover:no-underline focus:no-underline">
+                                {{ $product->title }}
+                            </a>
                         </h3>
-                    </div>
 
-
-                    {{-- Hover Overlay --}}
-                    <div
-                        class="absolute inset-0 z-20
-                        bg-[#10265a]/89 dark:bg-[#07142f]/95
-                        flex flex-col justify-end
-                        p-5
-                        translate-y-full
-                        group-hover:translate-y-0
-                        transition-transform duration-500 ease-in-out">
-
-                        <span
-                            class="inline-block text-[10px] font-bold uppercase tracking-widest
-                            text-cyan-300 bg-cyan-900/50
-                            px-2.5 py-1 rounded-full w-fit mb-3">
-                            {{ $product->category->name ?? 'Umum' }}
-                        </span>
-
-                        <h3
-                            class="text-white font-extrabold
-                            text-lg sm:text-xl
-                            leading-tight mb-3">
-                            {{ $product->title }}
-                        </h3>
-
-                        <p
-                            class="text-slate-300
-                            text-sm leading-relaxed
-                            line-clamp-7">
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed line-clamp-3">
                             {{ $product->desc }}
                         </p>
+                    </div>
 
+                    {{-- Visual & Specs Row --}}
+                    <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        {{-- Product Stage --}}
+                        <div class="w-full sm:w-36 h-28 bg-gradient-to-b from-slate-50 via-blue-50/30 to-slate-100 dark:from-[#0c1626] dark:via-[#09101d] dark:to-[#080d19] rounded-2xl p-2 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 shrink-0 group-hover:border-cyan-400/50 transition">
+                            <img
+                                src="{{ $product->image_url }}"
+                                alt="{{ $product->title }}"
+                                class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-105 transition duration-300"
+                                loading="lazy"
+                                onerror="this.src='{{ asset('images/products/hero-unit.png') }}'"
+                            >
+                        </div>
+
+                        {{-- Technical Badges & Inaproc --}}
+                        <div class="w-full sm:text-right text-[11px] font-mono space-y-1 flex-1">
+                            <div class="font-bold text-slate-900 dark:text-white">{{ $spec1 }}</div>
+                            <div class="text-slate-500 dark:text-slate-400 text-[10px]">{{ $spec2 }}</div>
+
+                            <div class="pt-2 flex sm:justify-end items-center gap-2 flex-wrap">
+                                <a href="{{ route('products.show', $product->slug) }}"
+                                    class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 group-hover:bg-[#16275E] group-hover:text-white dark:group-hover:bg-cyan-500 dark:group-hover:text-slate-950 text-[11px] font-bold transition shadow-2xs">
+                                    <span>Detail Spesifikasi</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
             @empty
-                <div class="col-span-full text-center text-slate-500 dark:text-slate-400 py-12">
-                    Belum ada produk yang ditampilkan.
+                <div class="col-span-full text-center py-16 bg-white dark:bg-[#131D36] rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 p-8 shadow-xs">
+                    <svg class="size-12 mx-auto text-slate-400 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="m21 21-4.3-4.3M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                    </svg>
+                    <p class="text-slate-800 dark:text-white font-bold text-base">Belum ada produk dalam kategori ini.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Produk sedang dalam proses integrasi data dari e-Katalog Inaproc.</p>
                 </div>
             @endforelse
         </div>
+
+        {{-- Pagination --}}
+        @if ($products->hasPages())
+            <div class="mt-12 flex justify-center">
+                {{ $products->links() }}
+            </div>
+        @endif
 
     </div>
 </section>

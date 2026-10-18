@@ -81,7 +81,7 @@
                         </div>
                     </fieldset>
 
-                    <fieldset>
+                    <fieldset class="hidden" aria-hidden="true">
                         <legend class="mb-2 text-[11px] font-bold text-slate-700 dark:text-slate-300">Status perangkat
                         </legend>
                         <div class="grid grid-cols-3 gap-1.5" data-status-filters>

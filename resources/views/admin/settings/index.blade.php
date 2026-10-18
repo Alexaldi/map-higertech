@@ -43,6 +43,12 @@
                                         </li>
                                         <li>
                                             <button class="nav-link btn btn-outline-primary" data-bs-toggle="tab"
+                                                data-bs-target="#tab-navbar" type="button" role="tab">
+                                                <i class="fe fe-menu me-1"></i> Menu Navbar
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="nav-link btn btn-outline-primary" data-bs-toggle="tab"
                                                 data-bs-target="#tab-internship" type="button" role="tab">
                                                 <i class="fe fe-award me-1"></i> Fitur & Peminatan Magang
                                             </button>
@@ -92,20 +98,37 @@
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label for="contact_whatsapp" class="form-label font-weight-semibold">Nomor
-                                                    WhatsApp Layanan</label>
+                                                <label for="contact_whatsapp" class="form-label font-weight-semibold text-primary">
+                                                    <i class="fe fe-message-circle me-1"></i> Nomor WhatsApp Layanan & Konsultasi (Publik)
+                                                </label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text"><i
-                                                            class="fe fe-message-circle"></i></span>
+                                                    <span class="input-group-text"><i class="fe fe-phone"></i></span>
                                                     <input type="text"
                                                         class="form-control @error('contact_whatsapp') is-invalid @enderror"
                                                         id="contact_whatsapp" name="contact_whatsapp"
                                                         value="{{ old('contact_whatsapp', $settings['contact_whatsapp'] ?? '') }}"
                                                         placeholder="contoh: 08112332182">
                                                 </div>
-                                                <small class="text-muted">Nomor kontak langsung via WA untuk konsultasi
-                                                    teknis.</small>
+                                                <small class="text-muted">Nomor WhatsApp resmi yang tampil di header, footer, & tombol konsultasi website agar pengunjung bisa menghubungi perusahaan.</small>
                                                 @error('contact_whatsapp')
+                                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="wa_admin_notification" class="form-label font-weight-semibold text-success">
+                                                    <i class="fe fe-bell me-1"></i> Nomor WhatsApp Notifikasi Admin (Internal)
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-success-transparent text-success"><i class="fe fe-shield"></i></span>
+                                                    <input type="text"
+                                                        class="form-control @error('wa_admin_notification') is-invalid @enderror"
+                                                        id="wa_admin_notification" name="wa_admin_notification"
+                                                        value="{{ old('wa_admin_notification', $settings['wa_admin_notification'] ?? $settings['internship_wa_notification'] ?? config('services.gowa.admin_number')) }}"
+                                                        placeholder="contoh: 087751945841">
+                                                </div>
+                                                <small class="text-muted">Nomor WhatsApp pribadi Admin/PIC yang akan menerima notifikasi otomatis dari bot setiap ada pesan formulir kontak atau berkas magang baru masuk.</small>
+                                                @error('wa_admin_notification')
                                                     <div class="text-danger mt-1 fs-12">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -365,7 +388,90 @@
                                         </div>
                                     </div>
 
-                                    {{-- Tab 4: Fitur & Peminatan Magang --}}
+                                    {{-- Tab 4: Menu Navbar --}}
+                                    <div class="tab-pane" id="tab-navbar" role="tabpanel">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h6 class="font-weight-semibold mb-1">Pengaturan Visibilitas Menu Navbar</h6>
+                                                <p class="text-muted fs-12 mb-0">Aktifkan atau nonaktifkan menu navigasi pada header website publik.</p>
+                                            </div>
+                                        </div>
+
+                                        @php
+                                            $showProduct = (string) old('navbar_show_product', $settings['navbar_show_product'] ?? '1') === '1';
+                                            $showProject = (string) old('navbar_show_project', $settings['navbar_show_project'] ?? '1') === '1';
+                                            $showArticles = (string) old('navbar_show_articles', $settings['navbar_show_articles'] ?? '1') === '1';
+                                            $showDownload = (string) old('navbar_show_download', $settings['navbar_show_download'] ?? '1') === '1';
+                                        @endphp
+
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-vcenter mb-0">
+                                                <thead class="bg-light">
+                                                    <tr>
+                                                        <th>Menu</th>
+                                                        <th>Target Halaman</th>
+                                                        <th class="text-center" style="width: 120px;">Tampilkan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Produk (Product)</span>
+                                                            <small class="text-muted d-block fs-11">Dropdown kategori dan katalog produk</small>
+                                                        </td>
+                                                        <td><code>/products</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_product" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_product" id="nav_prod_switch" value="1" {{ $showProduct ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Proyek (Projects)</span>
+                                                            <small class="text-muted d-block fs-11">Tautan menuju peta monitoring di landing page</small>
+                                                        </td>
+                                                        <td><code>#map-section</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_project" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_project" id="nav_proj_switch" value="1" {{ $showProject ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Artikel (Articles)</span>
+                                                            <small class="text-muted d-block fs-11">Dropdown artikel, edukasi, dan berita</small>
+                                                        </td>
+                                                        <td><code>/articles</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_articles" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_articles" id="nav_art_switch" value="1" {{ $showArticles ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="font-weight-semibold">Menu Download &amp; Tutorial</span>
+                                                            <small class="text-muted d-block fs-11">Tautan panduan teknis dan unduhan dokumen</small>
+                                                        </td>
+                                                        <td><code>/tutorials</code></td>
+                                                        <td class="text-center">
+                                                            <input type="hidden" name="navbar_show_download" value="0">
+                                                            <div class="form-check form-switch d-inline-block m-0">
+                                                                <input class="form-check-input" type="checkbox" role="switch" name="navbar_show_download" id="nav_down_switch" value="1" {{ $showDownload ? 'checked' : '' }}>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    {{-- Tab 5: Fitur & Peminatan Magang --}}
                                     <div class="tab-pane" id="tab-internship" role="tabpanel">
                                         {{-- Pengaturan Status Pendaftaran Magang (Aktif / Nonaktif) --}}
                                         @php
@@ -472,30 +578,7 @@
                                                         @enderror
                                                     </div>
 
-                                                    <div class="col-md-12">
-                                                        <label for="internship_wa_notification"
-                                                            class="form-label fs-12 font-weight-semibold text-dark mb-1">
-                                                            <i class="fe fe-message-circle me-1 text-success"></i> Nomor
-                                                            WhatsApp Notifikasi Admin (Pengajuan Baru):
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-light fs-12"><i
-                                                                    class="fe fe-phone text-success"></i></span>
-                                                            <input type="text"
-                                                                class="form-control fs-12 @error('internship_wa_notification') is-invalid @enderror"
-                                                                id="internship_wa_notification"
-                                                                name="internship_wa_notification"
-                                                                value="{{ old('internship_wa_notification', $settings['internship_wa_notification'] ?? config('services.gowa.admin_number')) }}"
-                                                                placeholder="Contoh: 082112727546 atau 6282112727546">
-                                                        </div>
-                                                        <small class="text-muted d-block mt-1">
-                                                            Nomor tujuan notifikasi otomatis WhatsApp setiap ada berkas
-                                                            lamaran magang baru yang masuk.
-                                                        </small>
-                                                        @error('internship_wa_notification')
-                                                            <div class="text-danger mt-1 fs-12">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

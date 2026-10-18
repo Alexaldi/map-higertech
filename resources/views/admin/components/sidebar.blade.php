@@ -37,6 +37,16 @@
                 href="{{ route('admin.settings.index') }}" {!! request()->routeIs('admin.settings.*') ? 'aria-current="page" tabindex="-1"' : '' !!}><i
                     class="side-menu__icon fe fe-settings"></i><span class="side-menu__label">Pengaturan
                     Website</span></a>
+            <a class="side-menu__item {{ request()->routeIs('admin.contacts.*') ? 'active pointer-events-none cursor-default select-none' : '' }}"
+                href="{{ route('admin.contacts.index') }}" {!! request()->routeIs('admin.contacts.*') ? 'aria-current="page" tabindex="-1"' : '' !!}><i
+                    class="side-menu__icon fe fe-mail"></i><span class="side-menu__label">Pesan Kontak</span>
+                @php
+                    $unreadCount = \App\Models\ContactMessage::where('is_read', false)->count();
+                @endphp
+                @if ($unreadCount > 0)
+                    <span class="badge bg-danger rounded-pill ms-auto">{{ $unreadCount }}</span>
+                @endif
+            </a>
         </li>
         <li>
             <h3>DATA MASTER</h3>

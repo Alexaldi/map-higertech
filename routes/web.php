@@ -19,7 +19,8 @@ use App\Http\Controllers\Admin\DashboardController;
 
 // Landing page
 Route::view('/', 'landing.index')->name('home');
-Route::view('/products', 'products.index')->name('products');
+Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles');
 Route::get('/articles/pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari', [ArticleController::class, 'show'])
     ->defaults('slug', 'pemasangan-pos-curah-hujan-pch-bendungkaret-tawangsari')
@@ -42,6 +43,7 @@ Route::get('/internship/letter/{code}', [\App\Http\Controllers\InternshipControl
 
 // products
 Route::get('/products', [GuestProductsController::class, 'index'])->name('products');
+Route::get('/products/{slug}', [GuestProductsController::class, 'show'])->name('products.show');
 
 // Map page
 Route::view('/map', 'map.index')->name('map');
@@ -91,4 +93,5 @@ Route::middleware(['auth', 'prevent-back'])
     Route::post('/logout', [LoginController::class, 'logout'])
         ->name('logout');
     Route::resource('products', ProductController::class);
+    Route::resource('contacts', \App\Http\Controllers\Admin\ContactMessageController::class)->only(['index', 'show', 'destroy']);
 });

@@ -4,6 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Models\Product;
 use App\Repositories\Admin\Contracts\ProductRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class ProductRepository implements ProductRepositoryInterface
@@ -42,5 +43,14 @@ class ProductRepository implements ProductRepositoryInterface
             ->when($categoryId, fn ($q) => $q->where('category_id', $categoryId))
             ->latest()
             ->get();
+    }
+
+    public function getActivePaginated(?int $categoryId = null, int $perPage = 10): LengthAwarePaginator
+    {
+        return Product::with('category')
+            ->active()
+            ->when($categoryId, fn ($q) => $q->where('category_id', $categoryId))
+            ->latest()
+            ->paginate($perPage);
     }
 }

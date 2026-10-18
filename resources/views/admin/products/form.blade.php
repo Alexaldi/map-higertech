@@ -119,22 +119,33 @@
                             </div>
                         </div>
 
-                        {{-- Status Aktif --}}
-                        <div class="col-md-6 d-flex align-items-center">
-                            <div class="form-check form-switch mt-4">
+                        {{-- Link E-Katalog INAPROC --}}
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap gap-2">
+                                    <label for="inaproc_link" class="form-label mb-0">
+                                        Link Detail Produk di E-Katalog INAPROC LKPP
+                                    </label>
+                                    @if(isset($product) && $product->inaproc_link)
+                                        <a href="{{ $product->inaproc_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-danger py-1 px-2.5 fs-12">
+                                            <i class="fe fe-external-link me-1"></i> Buka Halaman Produk di INAPROC Asli
+                                        </a>
+                                    @endif
+                                </div>
                                 <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="is_active"
-                                    name="is_active"
-                                    value="1"
-                                    {{ old('is_active', $product->is_active ?? true) ? 'checked' : '' }}
+                                    type="url"
+                                    class="form-control @error('inaproc_link') is-invalid @enderror"
+                                    id="inaproc_link"
+                                    name="inaproc_link"
+                                    value="{{ old('inaproc_link', $product->inaproc_link ?? '') }}"
+                                    placeholder="Contoh: https://katalog.inaproc.id/higertech-karya-sinergi/perangkat-telemetri-cctv-capture-x"
                                 >
-                                <label class="form-check-label ms-2" for="is_active">
-                                    Aktifkan Produk
-                                </label>
-                                <small class="text-muted d-block ms-2">Produk nonaktif tidak akan tampil di halaman publik.</small>
+                                <small class="text-muted fs-12">Format URL ke halaman detail spesifik di Inaproc: <code>https://katalog.inaproc.id/higertech-karya-sinergi/{slug-produk}</code>. Klik tombol di atas untuk melihat foto & spesifikasi aslinya di Inaproc.</small>
+                                @error('inaproc_link')
+                                    <div class="text-danger mt-1 fs-12">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
 
@@ -262,7 +273,9 @@
 @push('scripts')
 <script>
     let slugEditedManually = {{ isset($product) ? 'true' : 'false' }};
+    let inaprocEditedManually = {{ isset($product) && !empty($product->inaproc_link) ? 'true' : 'false' }};
     const slugInput = document.getElementById('slug');
+    const inaprocInput = document.getElementById('inaproc_link');
 
     if (slugInput) {
         slugInput.addEventListener('input', function() {
@@ -270,15 +283,26 @@
         });
     }
 
+    if (inaprocInput) {
+        inaprocInput.addEventListener('input', function() {
+            inaprocEditedManually = true;
+        });
+    }
+
     function generateSlug(text) {
-        if (!slugEditedManually) {
-            const slug = text.toString().toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w\-]+/g, '')
-                .replace(/\-\-+/g, '-')
-                .replace(/^-+/, '')
-                .replace(/-+$/, '');
-            document.getElementById('slug').value = slug;
+        const slug = text.toString().toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+/, '')
+            .replace(/-+$/, '');
+
+        if (!slugEditedManually && slugInput) {
+            slugInput.value = slug;
+        }
+
+        if (!inaprocEditedManually && inaprocInput) {
+            inaprocInput.value = slug ? ('https://katalog.inaproc.id/higertech-karya-sinergi/' + slug) : '';
         }
     }
 

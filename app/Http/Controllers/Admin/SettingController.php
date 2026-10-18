@@ -40,10 +40,15 @@ class SettingController extends Controller
             'social_linkedin' => ['nullable', 'url', 'max:255'],
             'social_youtube' => ['nullable', 'url', 'max:255'],
             'internship_enabled' => ['nullable', 'in:0,1'],
+            'wa_admin_notification' => ['nullable', 'string', 'max:50'],
             'internship_wa_notification' => ['nullable', 'string', 'max:50'],
             'internship_closed_message' => ['nullable', 'string', 'max:1000'],
             'internship_tracks_smk' => ['nullable', 'string', 'max:2000'],
             'internship_tracks_univ' => ['nullable', 'string', 'max:2000'],
+            'navbar_show_product' => ['nullable', 'in:0,1'],
+            'navbar_show_project' => ['nullable', 'in:0,1'],
+            'navbar_show_articles' => ['nullable', 'in:0,1'],
+            'navbar_show_download' => ['nullable', 'in:0,1'],
         ], [
             'contact_email.required' => 'Email kontak wajib diisi.',
             'contact_email.email' => 'Format email kontak tidak valid.',
@@ -51,8 +56,18 @@ class SettingController extends Controller
             'social_links.*.url.url' => 'Format URL media sosial tidak valid.',
         ]);
 
+        if ($request->has('wa_admin_notification')) {
+            $validated['internship_wa_notification'] = $validated['wa_admin_notification'];
+        }
+
         if ($request->has('internship_enabled')) {
             $validated['internship_enabled'] = $request->input('internship_enabled') === '1' ? '1' : '0';
+        }
+
+        foreach (['navbar_show_product', 'navbar_show_project', 'navbar_show_articles', 'navbar_show_download'] as $navKey) {
+            if ($request->has($navKey)) {
+                $validated[$navKey] = $request->input($navKey) === '1' ? '1' : '0';
+            }
         }
 
         if ($request->has('social_links_present') || $request->has('social_links')) {

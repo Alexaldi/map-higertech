@@ -20,7 +20,10 @@ class WhatsAppService
     {
         $this->baseUrl = rtrim(config('services.gowa.url', 'http://127.0.0.1:3000'), '/');
         $this->deviceId = config('services.gowa.device_id');
-        $this->adminNumber = setting('internship_wa_notification', config('services.gowa.admin_number'));
+        $this->adminNumber = setting('wa_admin_notification')
+            ?: setting('internship_wa_notification')
+            ?: setting('contact_whatsapp')
+            ?: config('services.gowa.admin_number');
         $this->username = config('services.gowa.username');
         $this->password = config('services.gowa.password');
     }
@@ -40,6 +43,72 @@ class WhatsAppService
     }
 
     /**
+     * Dapatkan Device ID secara dinamis dari GOWA jika di .env tidak ditentukan UUID spesifik
+     */
+    public function getActiveDeviceId(): string
+    {
+        // 1. Jika di .env sudah diset UUID spesifik (bukan 'auto' atau 'default')
+        if (! empty($this->deviceId) && ! in_array(strtolower($this->deviceId), ['auto', 'default'])) {
+            return $this->deviceId;
+        }
+
+        // 2. Cek cache (10 menit)
+        $cacheKey = 'gowa_active_device_id';
+        if ($cached = cache()->get($cacheKey)) {
+            return $cached;
+        }
+
+        // 3. Ambil daftar perangkat langsung dari endpoint GOWA GET /devices
+        try {
+            $response = $this->newHttpClient(5)->get("{$this->baseUrl}/devices");
+            if ($response->successful()) {
+                $data = $response->json();
+                $devices = $data['results']['data'] ?? $data['results'] ?? [];
+
+                if (is_array($devices) && ! empty($devices)) {
+                    $chosenId = null;
+
+                    // Prioritaskan device yang sedang berstatus 'Selected' atau 'Logged in' / 'connected'
+                    foreach ($devices as $dev) {
+                        $devId = $dev['device_id'] ?? $dev['id'] ?? null;
+                        if (! $devId) continue;
+
+                        $isSelected = ! empty($dev['is_selected']) || ! empty($dev['selected']);
+                        $isLoggedIn = ! empty($dev['is_logged_in'])
+                            || ! empty($dev['logged_in'])
+                            || in_array(strtolower($dev['status'] ?? $dev['state'] ?? ''), ['connected', 'logged_in', 'logged in']);
+
+                        if ($isSelected) {
+                            $chosenId = $devId;
+                            break;
+                        }
+
+                        if ($isLoggedIn && empty($chosenId)) {
+                            $chosenId = $devId;
+                        }
+                    }
+
+                    // Fallback ke device pertama jika tidak ada flag khusus
+                    if (empty($chosenId)) {
+                        $first = reset($devices);
+                        $chosenId = $first['device_id'] ?? $first['id'] ?? null;
+                    }
+
+                    if (! empty($chosenId)) {
+                        cache()->put($cacheKey, $chosenId, now()->addMinutes(10));
+                        Log::info("GOWA Auto-Resolved Device ID: {$chosenId}");
+                        return $chosenId;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::warning('GOWA Auto-Resolve Device ID Exception: ' . $e->getMessage());
+        }
+
+        return $this->deviceId ?: 'default';
+    }
+
+    /**
      * Kirim pesan teks WA secara umum
      */
     public function sendMessage(string $phone, string $message): bool
@@ -51,21 +120,27 @@ class WhatsAppService
         }
 
         try {
-            $headers = ['Content-Type' => 'application/json'];
-            if (! empty($this->deviceId) && $this->deviceId !== 'default') {
-                $headers['X-Device-Id'] = $this->deviceId;
-            }
+            $deviceId = $this->getActiveDeviceId();
+            $headers = [
+                'Content-Type' => 'application/json',
+                'X-Device-Id'  => $deviceId,
+            ];
 
             $response = $this->newHttpClient(10)
                 ->withHeaders($headers)
-                ->post("{$this->baseUrl}/send/message", [
-                    'phone'   => $phone,
-                    'message' => $message,
+                ->post("{$this->baseUrl}/send/message?device_id={$deviceId}", [
+                    'phone'     => $phone,
+                    'message'   => $message,
+                    'device_id' => $deviceId,
                 ]);
 
             if ($response->successful()) {
                 $this->recordLog($phone, 'text', $message, null, null, 'success');
                 return true;
+            }
+
+            if ($response->status() === 404) {
+                cache()->forget('gowa_active_device_id');
             }
 
             $this->recordLog($phone, 'text', $message, null, null, 'failed', "Status: {$response->status()} - {$response->body()}");
@@ -101,22 +176,27 @@ class WhatsAppService
         }
 
         try {
-            $headers = [];
-            if (! empty($this->deviceId) && $this->deviceId !== 'default') {
-                $headers['X-Device-Id'] = $this->deviceId;
-            }
+            $deviceId = $this->getActiveDeviceId();
+            $headers = [
+                'X-Device-Id' => $deviceId,
+            ];
 
             $response = $this->newHttpClient(30)
                 ->withHeaders($headers)
                 ->attach('file', file_get_contents($absoluteFilePath), $filename)
-                ->post("{$this->baseUrl}/send/file", [
-                    'phone'   => $phone,
-                    'caption' => $caption,
+                ->post("{$this->baseUrl}/send/file?device_id={$deviceId}", [
+                    'phone'     => $phone,
+                    'caption'   => $caption,
+                    'device_id' => $deviceId,
                 ]);
 
             if ($response->successful()) {
                 $this->recordLog($phone, 'file', $caption, $filename, $absoluteFilePath, 'success');
                 return true;
+            }
+
+            if ($response->status() === 404) {
+                cache()->forget('gowa_active_device_id');
             }
 
             $this->recordLog($phone, 'file', $caption, $filename, $absoluteFilePath, 'failed', "Status: {$response->status()} - {$response->body()}");
@@ -249,6 +329,28 @@ class WhatsAppService
         }
 
         return $sent;
+    }
+
+    /**
+     * Kirim notifikasi pesan kontak baru ke Admin
+     */
+    public function notifyNewContactMessage(\App\Models\ContactMessage $contact): bool
+    {
+        if (empty($this->adminNumber)) {
+            return false;
+        }
+
+        $message = "🔔 *PESAN KONTAK BARU*\n\n"
+            . "Telah masuk pesan baru melalui form kontak website:\n\n"
+            . "• *Nama:* {$contact->name}\n"
+            . "• *Perusahaan:* " . ($contact->company ?: '-') . "\n"
+            . "• *Email:* {$contact->email}\n"
+            . "• *Telepon:* " . ($contact->phone ?: '-') . "\n\n"
+            . "📝 *Pesan:*\n"
+            . "_{$contact->message}_\n\n"
+            . "— _Sistem Otomasi Website Higertech_";
+
+        return $this->sendMessage($this->adminNumber, $message);
     }
 
     /**

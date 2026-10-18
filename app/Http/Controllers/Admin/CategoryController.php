@@ -60,11 +60,13 @@ class CategoryController extends Controller
         return $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'sub_nama' => ['required', 'string', 'max:255'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
             'description' => ['nullable', 'string'],
             'tipe' => ['required', 'in:produk,artikel'],
         ], [
             'name.required' => 'Nama kategori wajib diisi.',
             'sub_nama.required' => 'Sub nama kategori wajib diisi.',
+            'sort_order.integer' => 'Nomor urutan harus berupa angka.',
             'tipe.required' => 'Tipe kategori wajib dipilih.',
             'tipe.in' => 'Tipe kategori tidak valid.',
         ]);

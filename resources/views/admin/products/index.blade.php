@@ -44,9 +44,14 @@
                                         <h6 class="mb-0 fs-14 fw-semibold">
                                             {{ $product->title }}
                                         </h6>
-                                        <span class="fs-12 text-muted">
+                                        <span class="fs-12 text-muted d-block">
                                             {{ $product->slug }}
                                         </span>
+                                        @if ($product->inaproc_link)
+                                            <a href="{{ $product->inaproc_link }}" target="_blank" class="badge bg-danger-transparent text-danger fs-11 mt-1 d-inline-flex align-items-center gap-1" title="{{ $product->inaproc_link }}">
+                                                <i class="fe fe-external-link"></i> Inaproc Detail
+                                            </a>
+                                        @endif
                                     </td>
 
                                     <td>

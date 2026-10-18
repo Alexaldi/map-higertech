@@ -423,63 +423,68 @@
 }
 
 .dark .station-popup {
+    background: #0f172a;
     color: #f1f5f9;
 }
 
 .dark .station-popup__header {
-    background: #131d36;
+    background: #0f172a;
 }
 
-.dark .station-popup__header h3 {
-    color: #f1f5f9;
-}
-
-.dark .station-popup__category-icon {
-    background: color-mix(in srgb, var(--station-color) 20%, #131d36);
-    border-color: color-mix(in srgb, var(--station-color) 40%, #131d36);
+.dark .station-popup__title {
+    color: #f8fafc;
 }
 
 .dark .station-popup__context {
-    background: #0c1626;
+    background: #0b1329;
     border-color: #1e293b;
 }
 
-.dark .station-popup__context p {
-    color: #cbd5e1;
-}
-
-.dark .station-popup__meta {
-    border-color: #1e293b;
-}
-
-.dark .station-popup__meta span {
-    color: #cbd5e1;
-}
-
-.dark .station-popup__meta small {
+.dark .station-popup__label {
     color: #64748b;
 }
 
-.dark .station-popup__telemetry {
+.dark .station-popup__manager-val {
+    color: #60a5fa;
+}
+
+.dark .station-popup__loc-val {
+    color: #94a3b8;
+}
+
+.dark .station-popup__meta-row {
+    border-top-color: #1e293b;
+}
+
+.dark .station-popup__meta-text {
+    color: #f1f5f9;
+}
+
+.dark .station-popup__metric {
     background: #131d36;
     border-color: #1e293b;
 }
 
-.dark .station-popup__metric {
-    background: #0c1626;
-    border-color: #1e293b;
-}
-
-.dark .station-popup__metric span {
+.dark .station-popup__metric-label {
     color: #94a3b8;
 }
 
-.dark .station-popup__metric strong {
-    color: #f1f5f9;
+.dark .station-popup__metric-val {
+    color: #38bdf8;
 }
 
 .dark .station-popup__no-data {
-    color: #94a3b8;
+    color: #64748b;
+}
+
+.dark .station-popup__category-icon {
+    border-color: color-mix(in srgb, var(--station-color) 40%, #0f172a);
+    background: color-mix(in srgb, var(--station-color) 18%, #0f172a);
+}
+
+.dark .station-popup__type {
+    border-color: color-mix(in srgb, var(--station-color) 40%, #0f172a);
+    background: color-mix(in srgb, var(--station-color) 18%, #0f172a);
 }
 
 .dark .map-state {

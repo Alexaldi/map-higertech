@@ -9,7 +9,7 @@ class CategoryRepository
 {
     public function getAll(): Collection
     {
-        return Category::latest()->get();
+        return Category::ordered()->get();
     }
 
     public function create(array $data): Category

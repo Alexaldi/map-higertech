@@ -7,12 +7,14 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { addBasemapGallery } from './basemaps.js';
 import { DEFAULT_VIEW, stationIconSvg, stationLegendHtml, stationTypeSummaryHtml, typeMeta } from './constants.js';
 import { bindMapControls } from './controls.js';
+import { applyCloudCover, fetchCloudCoverOnce } from './cloud-cover.js';
 import { escapeHtml, formatLocation } from './formatters.js';
 import { buildPopup } from './popup.js';
 import { applyFilterDraft, buildStationCard, buildStationQuery, buildStationSuggestions, focusStationMarker, hasValidCoordinates, setStationPanelOpen } from './state.js';
 
 const STATIONS_URL = '/api/stations';
 const SUMMARY_URL = '/api/stations/summary';
+const CLOUD_COVER_URL = '/api/stations/cloud-cover';
 const root = document.querySelector('[data-live-map]');
 
 if (root) {
@@ -71,6 +73,8 @@ function initialize(rootElement) {
         request: null,
         searchTimer: null,
         organizationsLoaded: false,
+        cloudCovers: null,
+        cloudCoverRequest: null,
     };
 
     bindFilters(elements, state, fetchStations);
@@ -118,7 +122,9 @@ function initialize(rootElement) {
             if (!Array.isArray(payload?.data)) throw new Error('Invalid station payload');
 
             populateOrganizations(elements.organization, payload.meta?.organizations, state);
+            applyCloudCover(payload.data, state.cloudCovers);
             renderStations(payload.data, elements, state, map, clusters);
+            void fetchCloudCovers();
         } catch (error) {
             if (error.name === 'AbortError') return;
 
@@ -150,6 +156,17 @@ function initialize(rootElement) {
         } catch {
             elements.summaryRetry.classList.remove('hidden');
         }
+    }
+
+    function fetchCloudCovers() {
+        return fetchCloudCoverOnce(state, () => fetch(CLOUD_COVER_URL, {
+            headers: { Accept: 'application/json' },
+        })).then((cloudCovers) => {
+            if (!cloudCovers) return;
+
+            state.cloudCovers = cloudCovers;
+            applyCloudCover(state.stations, cloudCovers, state.markers, buildPopup);
+        });
     }
 }
 
@@ -202,11 +219,11 @@ function createMarker(station) {
         title: station.name || 'Station telemetry',
         riseOnHover: true,
     }).bindPopup(buildPopup(station), {
-        autoPanPaddingTopLeft: L.point(20, 160),
-        autoPanPaddingBottomRight: L.point(20, 20),
+        autoPanPaddingTopLeft: L.point(30, 60),
+        autoPanPaddingBottomRight: L.point(30, 30),
         className: 'telemetry-popup',
-        maxWidth: 340,
-        minWidth: 290,
+        maxWidth: 360,
+        minWidth: 320,
     });
 }
 

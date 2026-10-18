@@ -17,10 +17,13 @@ class StationService
         'balai_name',
         'province_name',
         'regency_name',
+        'district_name',
+        'village_name',
         'device_id',
         'device_status',
         'reading_at',
         'latest_reading',
+        'created_at',
     ];
 
     public function __construct(private readonly StationRepository $stationRepository) {}
