@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Services\Admin\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -27,18 +28,20 @@ class ProductController extends Controller
 
     public function show(string $slug): View
     {
-        $product = \App\Models\Product::with('category')
+        $product = Product::with('category')
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
-        $relatedProducts = \App\Models\Product::with('category')
+        $relatedProducts = Product::with('category')
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
-            ->take(3)
+            ->take(4)
             ->get();
 
-        return view('products.show', compact('product', 'relatedProducts'));
+        $galleryImages = $product->gallery_urls;
+
+        return view('products.show', compact('product', 'relatedProducts', 'galleryImages'));
     }
 }

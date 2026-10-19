@@ -24,6 +24,7 @@
                 >
 
                     @csrf
+                    <input type="hidden" name="is_active" value="{{ old('is_active', $product->is_active ?? true) ? '1' : '0' }}">
 
                     @if(isset($product))
                         @method('PUT')
@@ -180,7 +181,7 @@
                             <div class="form-group">
 
                                 <label for="image" class="form-label">
-                                    Gambar Produk
+                                    Gambar Utama Produk
                                 </label>
 
                                 <input
@@ -193,7 +194,7 @@
                                 >
 
                                 <small class="text-muted d-block mt-1">
-                                    Format PNG, JPG, atau WEBP, maks 3MB.
+                                    Format PNG, JPG, atau WEBP, maksimal 2 MB dan 6000 × 6000 piksel.
                                 </small>
 
                                 @error('image')
@@ -201,6 +202,13 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
+
+                                @if (isset($product) && $product->image)
+                                    <label class="d-block mt-2">
+                                        <input type="checkbox" name="remove_image" id="remove-image" value="1" {{ old('remove_image') ? 'checked' : '' }}>
+                                        Hapus gambar utama (foto galeri pertama akan menjadi gambar utama).
+                                    </label>
+                                @endif
 
                                 {{-- Preview Box --}}
                                 <div id="image-empty-notice" class="text-muted fs-12 mt-2" style="{{ isset($product) && $product->image ? 'display:none;' : '' }}">
@@ -227,6 +235,43 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="gallery-images" class="form-label">Foto Galeri Tambahan</label>
+                                <input type="file" name="gallery_images[]" id="gallery-images" class="form-control" accept="image/png,image/jpeg,image/webp" multiple aria-describedby="gallery-help">
+                                <small id="gallery-help" class="text-muted d-block mt-1">Maksimal 5 foto total termasuk gambar utama, 2 MB per foto, dimensi maksimal 6000 × 6000 piksel. Upload kosong mempertahankan foto lama.</small>
+                                @error('gallery_images')<div class="text-danger mt-1">{{ $message }}</div>@enderror
+                                @foreach ($errors->get('gallery_images.*') as $messages)
+                                    @foreach ($messages as $message)<div class="text-danger mt-1">{{ $message }}</div>@endforeach
+                                @endforeach
+                                @error('remove_gallery_images.*')<div class="text-danger mt-1">{{ $message }}</div>@enderror
+                                <div class="d-flex flex-wrap gap-3 mt-3">
+                                    @foreach ($product->gallery_images ?? [] as $path)
+                                        <div data-existing-gallery class="border rounded p-2" style="width: 140px;">
+                                            <img src="{{ asset('storage/'.$path) }}" alt="Foto galeri {{ $loop->iteration }}" loading="lazy" class="w-100" style="height: 100px; object-fit: contain;">
+                                            <label class="d-block mt-2 mb-0 fs-12">
+                                                <input type="checkbox" name="remove_gallery_images[]" value="{{ $path }}" {{ in_array($path, old('remove_gallery_images', []), true) ? 'checked' : '' }}> Hapus foto ini
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div id="gallery-preview" class="d-flex flex-wrap gap-2 mt-3" aria-live="polite"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="brochure" class="form-label">Brosur Produk (PDF)</label>
+                                <input type="file" name="brochure" id="brochure" class="form-control @error('brochure') is-invalid @enderror" accept="application/pdf,.pdf" aria-describedby="brochure-help">
+                                <small id="brochure-help" class="text-muted d-block mt-1">Opsional, maksimal 5 MB. Pilih PDF baru untuk mengganti brosur; biarkan kosong untuk mempertahankannya.</small>
+                                @error('brochure')<div class="text-danger mt-1">{{ $message }}</div>@enderror
+                                @if (isset($product) && $product->brochure_url)
+                                    <a href="{{ $product->brochure_url }}" download="{{ $product->slug }}-brosur.pdf" class="d-inline-block mt-2">Unduh brosur saat ini</a>
+                                    <label class="d-block mt-2">
+                                        <input type="checkbox" name="remove_brochure" value="1" {{ old('remove_brochure') ? 'checked' : '' }}> Hapus brosur saat ini
+                                    </label>
+                                @endif
+                            </div>
+                        </div>
                     </div>
 
                     <button
@@ -306,38 +351,57 @@
         }
     }
 
-    // simpan preview ke sessionStorage tiap kali pilih gambar
+    let mainPreviewUrl;
     function previewProductImage(input) {
         const container = document.getElementById('image-preview-container');
         const preview = document.getElementById('image-preview-img');
         const modalPreview = document.getElementById('modal-preview-img');
         const emptyNotice = document.getElementById('image-empty-notice');
         if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                modalPreview.src = e.target.result;
-                container.style.display = '';
-                if (emptyNotice) emptyNotice.style.display = 'none';
-                sessionStorage.setItem('product_image_preview', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
+            if (mainPreviewUrl) URL.revokeObjectURL(mainPreviewUrl);
+            mainPreviewUrl = URL.createObjectURL(input.files[0]);
+            preview.src = modalPreview.src = mainPreviewUrl;
+            container.style.display = '';
+            if (emptyNotice) emptyNotice.style.display = 'none';
         }
     }
 
-    // pas halaman dimuat ulang (setelah gagal validasi), tampilkan lagi preview dari sessionStorage
-    document.addEventListener('DOMContentLoaded', function() {
-        const saved = sessionStorage.getItem('product_image_preview');
-        const hasValidationError = {{ $errors->any() ? 'true' : 'false' }};
+    const galleryInput = document.getElementById('gallery-images');
+    const imageInput = document.getElementById('image');
+    const brochureInput = document.getElementById('brochure');
+    let galleryPreviewUrls = [];
 
-        if (saved && hasValidationError) {
-            document.getElementById('image-preview-img').src = saved;
-            document.getElementById('modal-preview-img').src = saved;
-            document.getElementById('image-preview-container').style.display = '';
-            document.getElementById('image-empty-notice').style.display = 'none';
-        } else if (!hasValidationError) {
-            sessionStorage.removeItem('product_image_preview');
+    function validateMedia() {
+        const retainedGallery = [...document.querySelectorAll('[data-existing-gallery] input')].filter(input => !input.checked).length;
+        const hasPrimary = imageInput.files.length > 0 || ({{ isset($product) && $product->image ? 'true' : 'false' }} && !document.getElementById('remove-image')?.checked);
+        const count = Number(hasPrimary) + retainedGallery + galleryInput.files.length;
+        galleryInput.setCustomValidity(count > 5 ? 'Maksimal 5 foto total. Hapus foto lama sebelum menambah foto baru.' : '');
+        if ([...galleryInput.files].some(file => file.size > 2 * 1024 * 1024)) {
+            galleryInput.setCustomValidity('Ukuran setiap foto maksimal 2 MB.');
         }
+        imageInput.setCustomValidity(imageInput.files[0]?.size > 2 * 1024 * 1024 ? 'Ukuran gambar utama maksimal 2 MB.' : '');
+        brochureInput.setCustomValidity(brochureInput.files[0]?.size > 5 * 1024 * 1024 ? 'Ukuran PDF maksimal 5 MB.' : '');
+    }
+
+    galleryInput.addEventListener('change', () => {
+        galleryPreviewUrls.forEach(url => URL.revokeObjectURL(url));
+        galleryPreviewUrls = [];
+        const container = document.getElementById('gallery-preview');
+        container.replaceChildren();
+        // Preview only the accepted-size files, with no base64 copies in browser storage.
+        [...galleryInput.files].slice(0, 5).filter(file => file.size <= 2 * 1024 * 1024).forEach(file => {
+            const image = document.createElement('img');
+            image.src = URL.createObjectURL(file);
+            galleryPreviewUrls.push(image.src);
+            image.alt = file.name;
+            image.style.cssText = 'width:100px;height:100px;object-fit:contain;border:1px solid #ddd;border-radius:6px';
+            container.append(image);
+        });
+    });
+    [galleryInput, imageInput, brochureInput, ...document.querySelectorAll('[name="remove_gallery_images[]"], #remove-image')].forEach(input => input.addEventListener('change', validateMedia));
+    validateMedia();
+    document.getElementById('image-preview-img').addEventListener('click', function () {
+        document.getElementById('modal-preview-img').src = this.src;
     });
 </script>
 @endpush

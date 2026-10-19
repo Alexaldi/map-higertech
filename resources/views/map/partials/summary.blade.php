@@ -9,9 +9,13 @@
         <span><small>{{ __('map.total_pos') }}</small><strong id="summary-total">—</strong></span>
     </div>
 
-    <div class="network-status__metric network-status__metric--online hidden" aria-hidden="true">
-        <i aria-hidden="true"></i>
-        <span><small>{{ __('map.online') }}</small><strong id="summary-online">—</strong></span>
+    <div class="network-status__metric network-status__metric--agency">
+        <span class="network-status__icon network-status__icon--agency" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18ZM6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4" />
+            </svg>
+        </span>
+        <span><small>{{ __('map.agencies') }}</small><strong id="summary-organizations-pill">—</strong></span>
     </div>
 
     <details id="network-details" class="network-details">

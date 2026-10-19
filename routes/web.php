@@ -95,3 +95,9 @@ Route::middleware(['auth', 'prevent-back'])
     Route::resource('products', ProductController::class);
     Route::resource('contacts', \App\Http\Controllers\Admin\ContactMessageController::class)->only(['index', 'show', 'destroy']);
 });
+
+// Telemetry Device Data Forwarder (IoT Reverse Proxy untuk alat lapangan)
+Route::get('{sub_domain}/api/device/store', [\App\Http\Controllers\ApiController::class, 'storeReading'])
+    ->where('sub_domain', '[a-zA-Z0-9\-_]+')
+    ->name('api.device.store');
+

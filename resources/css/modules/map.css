@@ -525,6 +525,11 @@
     flex: none;
 }
 
+.network-status__icon--agency {
+    background: #ecfdf5;
+    color: #059669;
+}
+
 .network-details {
     position: static;
     border-left: 1px solid #e2e8f0;

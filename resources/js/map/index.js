@@ -148,6 +148,7 @@ function initialize(rootElement) {
             const summary = await response.json();
             setText('#summary-total', summary.total);
             setText('#summary-organizations', summary.organizations);
+            setText('#summary-organizations-pill', summary.organizations);
             setText('#summary-online', summary.online);
             setText('#summary-offline', summary.offline);
             if (elements.typeSummaryItems) {
@@ -481,6 +482,8 @@ function bindStationPanel(elements) {
 }
 
 function setText(selector, value) {
-    const element = document.querySelector(selector);
-    if (element) element.textContent = Number.isFinite(Number(value)) ? String(value) : '—';
+    const elements = document.querySelectorAll(selector);
+    elements.forEach((element) => {
+        element.textContent = Number.isFinite(Number(value)) ? String(value) : '—';
+    });
 }

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
@@ -15,6 +15,8 @@ class Product extends Model
         'desc',
         'inaproc_link',
         'image',
+        'gallery_images',
+        'brochure',
         'is_active',
     ];
 
@@ -24,13 +26,14 @@ class Product extends Model
             return $this->inaproc_link;
         }
 
-        return 'https://katalog.inaproc.id/higertech-karya-sinergi/' . $this->slug;
+        return 'https://katalog.inaproc.id/higertech-karya-sinergi/'.$this->slug;
     }
 
     protected function casts(): array
     {
         return [
             'is_active' => 'boolean',
+            'gallery_images' => 'array',
         ];
     }
 
@@ -41,19 +44,38 @@ class Product extends Model
 
     public function getImageUrlAttribute(): string
     {
-        if (! $this->image) {
+        return $this->resolveImageUrl($this->image);
+    }
+
+    public function getGalleryUrlsAttribute(): array
+    {
+        $paths = array_values(array_unique(array_filter([$this->image, ...($this->gallery_images ?? [])])));
+
+        return $paths === []
+            ? [$this->image_url]
+            : array_map(fn (string $path): string => $this->resolveImageUrl($path), $paths);
+    }
+
+    public function getBrochureUrlAttribute(): ?string
+    {
+        return $this->brochure ? asset('storage/'.$this->brochure) : null;
+    }
+
+    private function resolveImageUrl(?string $path): string
+    {
+        if (! $path) {
             return asset('assets/images/products.png');
         }
 
-        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
-            return $this->image;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
         }
 
-        if (str_starts_with($this->image, 'images/') || str_starts_with($this->image, 'assets/')) {
-            return asset(ltrim($this->image, '/'));
+        if (str_starts_with($path, 'images/') || str_starts_with($path, 'assets/')) {
+            return asset(ltrim($path, '/'));
         }
 
-        return asset('storage/' . ltrim($this->image, '/'));
+        return asset('storage/'.ltrim($path, '/'));
     }
 
     public function scopeActive(Builder $query): Builder
