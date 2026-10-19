@@ -55,7 +55,15 @@ class ProductService
                 $before = [$product?->image, ...($product?->gallery_images ?? []), $product?->brochure];
                 $uploads = $data['gallery_images'] ?? [];
                 $brochure = $data['brochure'] ?? null;
-                $gallery = array_values(array_diff($product?->gallery_images ?? [], $data['remove_gallery_images'] ?? []));
+                $replacements = $data['replace_gallery_images'] ?? [];
+                $removedGallery = $data['remove_gallery_images'] ?? [];
+                // Keep each photo's position; a replaced slot is filled after the limit check.
+                $gallery = [];
+                foreach ($product?->gallery_images ?? [] as $index => $path) {
+                    if (! in_array($path, $removedGallery, true)) {
+                        $gallery[] = isset($replacements[$index]) ? $replacements[$index] : $path;
+                    }
+                }
                 $primary = ! empty($data['remove_image']) ? null : ($product?->image ?: null);
                 $brochurePath = ! empty($data['remove_brochure']) ? null : $product?->brochure;
 
@@ -63,7 +71,7 @@ class ProductService
                     throw ValidationException::withMessages(['gallery_images' => 'Maksimal 5 gambar per produk, termasuk gambar utama. Hapus foto lama sebelum menambah foto baru.']);
                 }
 
-                unset($data['image'], $data['gallery_images'], $data['brochure'], $data['remove_image'], $data['remove_gallery_images'], $data['remove_brochure']);
+                unset($data['image'], $data['gallery_images'], $data['brochure'], $data['remove_image'], $data['remove_gallery_images'], $data['replace_gallery_images'], $data['remove_brochure']);
                 $data['slug'] = $this->resolveSlug($data['slug'] ?? null, $data['title'], $product?->id);
                 if (empty($data['inaproc_link'])) {
                     $data['inaproc_link'] = 'https://katalog.inaproc.id/higertech-karya-sinergi/'.$data['slug'];
@@ -71,6 +79,11 @@ class ProductService
 
                 if ($image) {
                     $primary = $this->storeFile($image, 'products', $newFiles);
+                }
+                foreach ($gallery as $position => $item) {
+                    if ($item instanceof UploadedFile) {
+                        $gallery[$position] = $this->storeFile($item, 'products', $newFiles);
+                    }
                 }
                 foreach ($uploads as $upload) {
                     $gallery[] = $this->storeFile($upload, 'products', $newFiles);

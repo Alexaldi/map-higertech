@@ -43,7 +43,7 @@
                     @endif
                     <div class="mt-8 space-y-2.5">
                         @if ($product->brochure_url)
-                        <a href="{{ $product->brochure_url }}" download="{{ $product->slug }}-brosur.pdf" class="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#2f39a3] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#3f4fc4]">
+                        <a href="{{ $product->brochure_url }}" download="{{ $product->brochure_download_name }}" class="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#2f39a3] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#3f4fc4]">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></svg>
                             Unduh Brosur
                         </a>

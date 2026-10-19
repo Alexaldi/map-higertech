@@ -157,6 +157,52 @@ class AdminProductMediaTest extends TestCase
         $this->assertSame([], Storage::disk('public')->allFiles());
     }
 
+    public function test_replacing_specific_gallery_photo_keeps_its_position(): void
+    {
+        $product = $this->product(['image' => 'products/main.jpg', 'gallery_images' => ['products/1.jpg', 'products/2.jpg', 'products/3.jpg', 'products/4.jpg']]);
+        foreach ([$product->image, ...$product->gallery_images] as $path) {
+            Storage::disk('public')->put($path, 'old file');
+        }
+
+        $this->put(route('admin.products.update', $product), $this->payload([
+            'replace_gallery_images' => [2 => UploadedFile::fake()->image('new-third.jpg')],
+            'remove_gallery_images' => ['products/4.jpg'],
+            'gallery_images' => [UploadedFile::fake()->image('extra.jpg')],
+        ]))->assertSessionHasNoErrors();
+
+        $gallery = $product->fresh()->gallery_images;
+        $this->assertCount(4, $gallery);
+        $this->assertSame(['products/1.jpg', 'products/2.jpg'], array_slice($gallery, 0, 2));
+        $this->assertNotSame('products/3.jpg', $gallery[2]);
+        Storage::disk('public')->assertExists($gallery);
+        Storage::disk('public')->assertMissing(['products/3.jpg', 'products/4.jpg']);
+    }
+
+    public function test_cannot_replace_gallery_photo_outside_current_gallery(): void
+    {
+        $product = $this->product(['gallery_images' => ['products/own.jpg']]);
+        $this->put(route('admin.products.update', $product), $this->payload([
+            'replace_gallery_images' => [5 => UploadedFile::fake()->image('ghost.jpg')],
+        ]))->assertSessionHasErrors('replace_gallery_images');
+        $this->assertSame(['products/own.jpg'], $product->fresh()->gallery_images);
+        $this->assertSame([], Storage::disk('public')->allFiles());
+    }
+
+    public function test_brochure_downloads_named_after_product_title(): void
+    {
+        $this->post(route('admin.products.store'), $this->payload([
+            'title' => 'Sensor AWLR 2026',
+            'brochure' => UploadedFile::fake()->create('random-upload.pdf', 100, 'application/pdf'),
+        ]))->assertSessionHasNoErrors();
+
+        $product = Product::firstOrFail();
+        $this->get(route('products.show', $product->slug))->assertOk()
+            ->assertSee('download="Brosur Sensor AWLR 2026.pdf"', false);
+
+        $product->update(['title' => 'Sensor: AWLR/Pro']);
+        $this->assertSame('Brosur Sensor AWLR Pro.pdf', $product->brochure_download_name);
+    }
+
     public function test_cannot_remove_another_products_media(): void
     {
         $product = $this->product(['gallery_images' => ['products/own.jpg']]);

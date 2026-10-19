@@ -61,6 +61,14 @@ class Product extends Model
         return $this->brochure ? asset('storage/'.$this->brochure) : null;
     }
 
+    public function getBrochureDownloadNameAttribute(): string
+    {
+        // Strip characters that are invalid in file names on common operating systems.
+        $title = trim(preg_replace('/\s+/u', ' ', preg_replace('/[\\\\\/:*?"<>|\x00-\x1F]+/u', ' ', (string) $this->title)));
+
+        return trim('Brosur '.$title).'.pdf';
+    }
+
     private function resolveImageUrl(?string $path): string
     {
         if (! $path) {
