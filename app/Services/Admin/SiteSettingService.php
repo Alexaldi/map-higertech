@@ -23,13 +23,18 @@ class SiteSettingService
             return $this->memorySettings;
         }
 
-        return $this->memorySettings = Cache::rememberForever(self::CACHE_KEY, function (): array {
-            try {
-                return $this->repository->getAllKeyValue();
-            } catch (\Throwable) {
-                return [];
-            }
-        });
+        try {
+            return $this->memorySettings = Cache::rememberForever(
+                self::CACHE_KEY,
+                fn (): array => $this->repository->getAllKeyValue()
+            );
+        } catch (\Throwable $exception) {
+            // Fall back to defaults for this request only; caching the failure would
+            // hide every saved setting (and blank the admin form) until the cache is cleared.
+            report($exception);
+
+            return $this->memorySettings = [];
+        }
     }
 
     public function get(string $key, mixed $default = null): mixed
@@ -40,7 +45,7 @@ class SiteSettingService
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function updateSettings(array $data): void
     {

@@ -85,7 +85,7 @@ class MapPageTest extends TestCase
             ->assertSee('alt="INAPROC Katalog Elektronik"', false)
             ->assertSee('https://higertech.com/Product/Hidrologi', false)
             ->assertSee('https://higertech.com/Article', false)
-            ->assertSee('https://higertech.com/Tutorial', false)
+            ->assertSee('href="'.route('tutorials').'"', false)
             ->assertSee('aria-current="page"', false)
             ->assertSee('id="map-legend"', false)
             ->assertSee('Keterangan Marker');

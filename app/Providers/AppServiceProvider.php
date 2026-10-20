@@ -26,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
             require_once app_path('Helpers/setting.php');
         }
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        // One instance per request so setting() reads the cache once, not on every call.
+        $this->app->scoped(SiteSettingService::class);
     }
 
     /**

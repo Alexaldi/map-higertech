@@ -2,8 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\SiteSetting;
 use App\Models\User;
+use App\Repositories\Admin\SiteSettingRepository;
+use App\Services\Admin\SiteSettingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class AdminSettingTest extends TestCase
@@ -202,5 +206,39 @@ class AdminSettingTest extends TestCase
             ->assertSee(__('landing.nav_projects'))
             ->assertDontSee(__('landing.nav_articles'))
             ->assertDontSee('Tutorials');
+    }
+
+    public function test_failed_settings_read_is_not_cached(): void
+    {
+        SiteSetting::create(['key' => 'contact_email', 'value' => 'saved@higertech.com']);
+        $repository = \Mockery::mock(SiteSettingRepository::class);
+        $repository->shouldReceive('getAllKeyValue')->once()->andThrow(new \RuntimeException('Database down'));
+        $repository->shouldReceive('getAllKeyValue')->andReturn(['contact_email' => 'saved@higertech.com']);
+        $this->withoutExceptionHandling();
+
+        $this->assertSame([], (new SiteSettingService($repository))->all());
+        $this->assertFalse(Cache::has(SiteSettingService::CACHE_KEY));
+        $this->assertSame('saved@higertech.com', (new SiteSettingService($repository))->get('contact_email'));
+    }
+
+    public function test_settings_page_shows_validation_errors_summary(): void
+    {
+        $this->actingAs($this->admin)
+            ->from('/admin/settings')
+            ->followingRedirects()
+            ->put('/admin/settings', ['contact_email' => '', 'contact_phone' => '', 'navbar_show_product' => '0'])
+            ->assertSee('Pengaturan belum tersimpan')
+            ->assertSee('Email kontak wajib diisi.');
+    }
+
+    public function test_mobile_navbar_shows_same_tutorials_menu_as_desktop(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+        $start = strpos($html, '<header');
+        $header = preg_replace('/\s+/', '', substr($html, $start, strpos($html, '</header>') - $start));
+
+        // Desktop and mobile menus both link to the tutorials page; the legacy Download item is gone.
+        $this->assertSame(2, substr_count($header, 'href="'.route('tutorials').'"'));
+        $this->assertStringNotContainsString('<span>'.__('landing.nav_download').'</span>', $header);
     }
 }

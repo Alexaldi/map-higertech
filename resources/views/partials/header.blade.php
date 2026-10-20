@@ -276,7 +276,7 @@
                 @endif
 
                 @if (navbar_show('download'))
-                <a href="{{ route('tutorials') }}" data-nav-target="contact"
+                <a href="{{ route('tutorials') }}"
                     class="nav-link {{ $isTutorials ? 'is-active text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:text-blue-600 dark:hover:text-cyan-400 transition' }}"
                     {!! $isTutorials ? 'aria-current="page" tabindex="-1"' : '' !!}>Tutorials</a>
                 @endif
@@ -491,12 +491,15 @@
                 </details>
                 @endif
 
-                {{-- Download --}}
+                {{-- Tutorials (same menu as desktop) --}}
                 @if (navbar_show('download'))
-                <a href="{{ $isHome ? '#contact' : 'https://higertech.com/Tutorial' }}"
-                    @if (!$isHome) target="_blank" rel="noopener noreferrer" @endif
-                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition">
-                    <span>{{ __('landing.nav_download') }}</span>
+                <a href="{{ route('tutorials') }}"
+                    class="flex items-center justify-between px-3.5 py-2.5 rounded-xl transition {{ $isTutorials ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-cyan-400 font-bold pointer-events-none cursor-default select-none' : 'hover:bg-slate-100 dark:hover:bg-slate-800/60' }}"
+                    {!! $isTutorials ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                    <span>Tutorials</span>
+                    @if ($isTutorials)
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-cyan-400"></span>
+                    @endif
                 </a>
                 @endif
 

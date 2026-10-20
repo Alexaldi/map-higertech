@@ -50,7 +50,7 @@ class WhatsAppLogTest extends TestCase
     public function test_whatsapp_service_automatically_creates_log_on_send_message(): void
     {
         Http::fake([
-            '*/send/message' => Http::response(['success' => true], 200),
+            '*/send/message*' => Http::response(['success' => true], 200),
         ]);
 
         $service = app(WhatsAppService::class);

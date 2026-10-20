@@ -10,12 +10,23 @@
                 </div>
             @endif
 
+            @if ($errors->any())
+                <div class="alert alert-danger" role="alert" id="settings-error-summary">
+                    <i class="fe fe-alert-triangle me-1"></i> Pengaturan belum tersimpan. Perbaiki isian berikut:
+                    <ul class="mb-0 mt-1">
+                        @foreach ($errors->all() as $message)
+                            <li>{{ $message }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="card">
                 <div class="card-header border-bottom">
                     <h3 class="card-title mb-0">Pengaturan Website & Identitas</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.settings.update') }}" method="POST">
+                    <form action="{{ route('admin.settings.update') }}" method="POST" id="settings-form">
                         @csrf
                         @method('PUT')
 
@@ -832,6 +843,35 @@
             window.removeSocialRow = removeSocialRow;
             window.selectPlatform = selectPlatform;
             window.updateEmptyState = updateEmptyState;
+
+            // A field can only be fixed when its tab is visible, so jump to the tab that holds it.
+            function showSettingsTabFor(field) {
+                const pane = field.closest('.tab-pane');
+                const trigger = pane && document.querySelector(`[data-bs-target="#${pane.id}"]`);
+                if (!trigger || pane.classList.contains('active')) return;
+                if (window.bootstrap?.Tab) {
+                    bootstrap.Tab.getOrCreateInstance(trigger).show();
+                } else {
+                    trigger.click();
+                }
+            }
+
+            const settingsForm = document.getElementById('settings-form');
+            let invalidFieldShown = false;
+            settingsForm.addEventListener('invalid', event => {
+                // Browser validation fires once per invalid field; open the first one only.
+                if (invalidFieldShown) return;
+                invalidFieldShown = true;
+                showSettingsTabFor(event.target);
+                setTimeout(() => {
+                    event.target.focus();
+                    event.target.reportValidity();
+                    invalidFieldShown = false;
+                }, 150);
+            }, true);
+
+            const firstServerError = settingsForm.querySelector('.is-invalid');
+            if (firstServerError) showSettingsTabFor(firstServerError);
         </script>
     @endpush
 @endsection
