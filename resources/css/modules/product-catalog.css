@@ -1,0 +1,22 @@
+[data-product-catalog] [hidden] {
+    display: none !important;
+}
+
+[data-product-catalog] :focus-visible {
+    outline: 3px solid #06a8d4;
+    outline-offset: 3px;
+}
+
+[data-product-filters] summary::-webkit-details-marker {
+    display: none;
+}
+
+[data-product-filters][open] summary svg {
+    transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-product-catalog] * {
+        transition: none !important;
+    }
+}

@@ -45,12 +45,16 @@ class ProductRepository implements ProductRepositoryInterface
             ->get();
     }
 
-    public function getActivePaginated(?int $categoryId = null, int $perPage = 10): LengthAwarePaginator
+    public function getActivePaginated(?int $categoryId = null, int $perPage = 10, string $search = ''): LengthAwarePaginator
     {
         return Product::with('category')
             ->active()
             ->when($categoryId, fn ($q) => $q->where('category_id', $categoryId))
+            ->when($search !== '', fn ($q) => $q->where(fn ($query) => $query
+                ->whereLike('title', '%'.$search.'%')
+                ->orWhereLike('desc', '%'.$search.'%')))
             ->latest()
+            ->orderByDesc('id')
             ->paginate($perPage);
     }
 }

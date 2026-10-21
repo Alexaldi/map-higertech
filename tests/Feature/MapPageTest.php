@@ -8,6 +8,7 @@ use Tests\TestCase;
 class MapPageTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_map_page_renders_the_public_monitoring_shell(): void
     {
         $this->get('/map')
@@ -83,7 +84,7 @@ class MapPageTest extends TestCase
             ->assertSee('/images/brand/inaproc-logo.png', false)
             ->assertSee('alt="Higertech Karya Sinergi"', false)
             ->assertSee('alt="INAPROC Katalog Elektronik"', false)
-            ->assertSee('https://higertech.com/Product/Hidrologi', false)
+            ->assertSee('href="'.route('products').'"', false)
             ->assertSee('https://higertech.com/Article', false)
             ->assertSee('https://higertech.com/Tutorial', false)
             ->assertSee('aria-current="page"', false)

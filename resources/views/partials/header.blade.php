@@ -8,32 +8,6 @@
     $isContact = request()->routeIs('contact') || request()->is('contact*');
     $locale = app()->getLocale();
 
-    $products = [
-        [
-            'label' => __('landing.nav_product_hidrologi'),
-            'url' => 'https://higertech.com/Product/Hidrologi',
-            'sub' => 'Sensors',
-        ],
-        [
-            'label' => __('landing.nav_product_hidrogeologi'),
-            'url' => 'https://higertech.com/Product/Hidrogeologi',
-            'sub' => 'Deep Water',
-        ],
-        [
-            'label' => __('landing.nav_product_hidrometeorologi'),
-            'url' => 'https://higertech.com/Product/Hidrometeorologi',
-            'sub' => 'BMKG Spec',
-        ],
-        ['label' => __('landing.nav_product_logger'), 'url' => 'https://higertech.com/Product/Logger', 'sub' => ''],
-        ['label' => __('landing.nav_product_software'), 'url' => 'https://higertech.com/Product/Software', 'sub' => ''],
-        [
-            'label' => __('landing.nav_product_pendukung'),
-            'url' => 'https://higertech.com/Product/Pendukung',
-            'sub' => '',
-        ],
-        ['label' => __('landing.nav_product_cctv'), 'url' => 'https://higertech.com/Product/Cctv', 'sub' => ''],
-        ['label' => 'Tutorial & Download', 'url' => 'https://higertech.com/Tutorial', 'sub' => 'Docs'],
-    ];
 @endphp
 
 <header
@@ -202,38 +176,11 @@
                     {{ __('landing.nav_home') }}
                 </a>
 
-                {{-- Product Dropdown --}}
+                {{-- Product catalog --}}
                 @if (navbar_show('product'))
-                <div class="nav-dropdown relative group {{ $isProducts ? 'is-active' : '' }}">
-                    <button type="button"
-                        class="nav-dropdown-btn flex items-center gap-1 py-2 transition
-                        {{ $isProducts
-                            ? 'is-active text-blue-600 dark:text-cyan-400 font-bold'
-                            : 'hover:text-blue-600 dark:hover:text-cyan-400' }}">
-                        <span>{{ __('landing.nav_product') }}</span>
-                        <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
-                    </button>
-                    <div
-                        class="absolute left-0 top-full mt-1 w-60 rounded-2xl bg-white dark:bg-[#131D36] shadow-2xl border border-slate-200/80 dark:border-slate-700 py-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        <div class="py-1">
-                            @forelse ($productCategories as $cat)
-                                <a href="{{ route('products', ['category' => $cat->id]) }}"
-                                    class="flex items-center justify-between px-4 py-2 text-xs font-semibold
-                                    {{ request('category') == $cat->id ? 'text-blue-600 dark:text-cyan-400 bg-blue-50/60 dark:bg-blue-900/30 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-cyan-400' }} transition"
-                                    {!! request('category') == $cat->id ? 'aria-current="page" tabindex="-1"' : '' !!}>
-                                    <span>{{ $cat->name }}</span>
-                                </a>
-                            @empty
-                                <span class="block px-4 py-2 text-xs text-slate-400">Belum ada kategori</span>
-                            @endforelse
-                            <a href="https://higertech.com/Product/Hidrologi" class="hidden" aria-hidden="true"></a>
-                        </div>
-                    </div>
-                </div>
+                <a href="{{ route('products') }}" data-product-nav
+                    class="nav-link transition {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 font-bold' : 'hover:text-blue-600 dark:hover:text-cyan-400' }}"
+                    @if ($isProducts) aria-current="true" @endif>{{ __('landing.nav_product') }}</a>
                 @endif
 
                 @if (navbar_show('project'))
@@ -418,36 +365,11 @@
                     @endif
                 </a>
 
-                {{-- Product Accordion with Dropdown --}}
+                {{-- Product catalog --}}
                 @if (navbar_show('product'))
-                <details
-                    class="group rounded-xl transition {{ $isProducts ? 'bg-blue-50/40 dark:bg-blue-950/20' : '' }}"
-                    {{ $isProducts ? 'open' : '' }}>
-                    <summary
-                        class="flex items-center justify-between px-3.5 py-2.5 rounded-xl cursor-pointer list-none hover:bg-slate-100 dark:hover:bg-slate-800/60 transition {{ $isProducts ? 'text-blue-600 dark:text-cyan-400 font-bold' : '' }}">
-                        <span>{{ __('landing.nav_product') }}</span>
-                        <div
-                            class="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition">
-                            <svg class="w-3.5 h-3.5 transition-transform duration-200 group-open:rotate-180"
-                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                                aria-hidden="true">
-                                <path d="m6 9 6 6 6-6" />
-                            </svg>
-                        </div>
-                    </summary>
-                    <div
-                        class="pl-3 pr-1 py-1.5 space-y-1 text-xs border-l-2 border-blue-500/30 dark:border-cyan-500/30 ml-4 my-1">
-                        @forelse ($productCategories as $cat)
-                            <a href="{{ route('products', ['category' => $cat->id]) }}"
-                                class="flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition {{ request('category') == $cat->id ? 'text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-900/40 pointer-events-none cursor-default select-none' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800' }}"
-                                {!! request('category') == $cat->id ? 'aria-current="page" tabindex="-1"' : '' !!}>
-                                <span>{{ $cat->name }}</span>
-                            </a>
-                        @empty
-                            <span class="block px-3 py-2 text-slate-400">Belum ada kategori</span>
-                        @endforelse
-                    </div>
-                </details>
+                <a href="{{ route('products') }}" data-product-nav
+                    class="flex items-center justify-between rounded-xl px-3.5 py-2.5 transition {{ $isProducts ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-cyan-400 font-bold' : 'hover:bg-slate-100 dark:hover:bg-slate-800/60' }}"
+                    @if ($isProducts) aria-current="true" @endif>{{ __('landing.nav_product') }}</a>
                 @endif
 
                 {{-- Projects --}}

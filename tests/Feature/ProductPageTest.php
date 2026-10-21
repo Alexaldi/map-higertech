@@ -184,4 +184,90 @@ class ProductPageTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function test_catalog_search_matches_title_or_description_within_active_category(): void
+    {
+        $category = Category::create(['name' => 'ARR', 'tipe' => 'produk']);
+        $other = Category::create(['name' => 'AWS', 'tipe' => 'produk']);
+        foreach ([
+            ['title' => 'Sensor Radar Pilihan', 'category_id' => $category->id, 'desc' => 'Teknologi pressure presisi', 'is_active' => true],
+            ['title' => 'Radar Kategori Lain', 'category_id' => $other->id, 'desc' => 'Radar', 'is_active' => true],
+            ['title' => 'Radar Nonaktif', 'category_id' => $category->id, 'desc' => 'Radar pressure', 'is_active' => false],
+        ] as $index => $data) {
+            Product::create([...$data, 'slug' => 'search-product-'.$index]);
+        }
+
+        foreach (['RADAR', 'pressure'] as $search) {
+            $this->get(route('products', ['category' => $category->id, 'q' => $search]))->assertOk()
+                ->assertSee('Sensor Radar Pilihan')
+                ->assertDontSee('Radar Kategori Lain')
+                ->assertDontSee('Radar Nonaktif')
+                ->assertViewHas('products', fn ($products) => $products->total() === 1);
+        }
+    }
+
+    public function test_catalog_preserves_search_and_category_across_pagination_and_links(): void
+    {
+        $category = Category::create(['name' => 'ARR', 'tipe' => 'produk']);
+        $other = Category::create(['name' => 'AWS', 'tipe' => 'produk']);
+        for ($index = 1; $index <= 12; $index++) {
+            Product::create(['category_id' => $category->id, 'title' => 'Radar '.$index, 'slug' => 'radar-'.$index, 'is_active' => true]);
+        }
+
+        $response = $this->get(route('products', ['category' => $category->id, 'q' => 'Radar']));
+        $response->assertOk()->assertViewHas('products', fn ($products) => $products->count() === 10 && $products->total() === 12)
+            ->assertSee(route('products', ['category' => $other->id, 'q' => 'Radar']))
+            ->assertSee(route('products', ['q' => 'Radar']));
+        parse_str(parse_url($response->viewData('products')->url(2), PHP_URL_QUERY), $query);
+        $this->assertSame('Radar', $query['q']);
+        $this->assertSame((string) $category->id, $query['category']);
+        $this->get(route('products', [...$query]))->assertOk()
+            ->assertViewHas('products', fn ($products) => $products->count() === 2);
+    }
+
+    public function test_catalog_empty_search_and_invalid_inputs_are_handled_safely(): void
+    {
+        $category = Category::create(['name' => 'ARR', 'tipe' => 'produk']);
+        Product::create(['category_id' => $category->id, 'title' => 'Produk Tersimpan', 'slug' => 'produk-tersimpan', 'is_active' => true]);
+        $this->get(route('products', ['q' => "%' OR 1=1 --"]))->assertOk()
+            ->assertSee('Produk tidak ditemukan')->assertDontSee('Produk Tersimpan');
+        $this->get(route('products', ['q' => '<script>alert(1)</script>']))->assertOk()
+            ->assertDontSee('<script>alert(1)</script>', false);
+        $this->getJson(route('products', ['q' => ['invalid']]))->assertUnprocessable()->assertJsonValidationErrors('q');
+        $this->getJson(route('products', ['q' => str_repeat('a', 101)]))->assertUnprocessable()->assertJsonValidationErrors('q');
+        $this->get(route('products', ['category' => 999999]))->assertNotFound();
+    }
+
+    public function test_catalog_cards_use_database_gallery_and_single_photo_has_no_slideshow(): void
+    {
+        $category = Category::create(['name' => 'ARR', 'tipe' => 'produk']);
+        $product = Product::create([
+            'category_id' => $category->id, 'title' => 'Multi Foto', 'slug' => 'multi-foto', 'image' => 'products/main.jpg',
+            'gallery_images' => ['products/second.jpg'], 'is_active' => true,
+        ]);
+        $response = $this->get(route('products'))->assertOk()
+            ->assertSee('data-card-next', false)
+            ->assertSee('products/main.jpg')
+            ->assertSee('aspect-[4/3]', false);
+        $document = new \DOMDocument;
+        @$document->loadHTML($response->getContent());
+        $card = (new \DOMXPath($document))->query('//*[@data-product-card]')->item(0);
+        $this->assertSame($product->gallery_urls, json_decode($card->getAttribute('data-images'), true));
+        $product->update(['gallery_images' => []]);
+        $this->get(route('products'))->assertOk()->assertDontSee('data-card-next', false)->assertDontSee('data-card-pause', false);
+    }
+
+    public function test_product_navigation_opens_catalog_directly_on_desktop_and_mobile(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+        $document = new \DOMDocument;
+        @$document->loadHTML($html);
+        $xpath = new \DOMXPath($document);
+        $links = $xpath->query('//a[@data-product-nav]');
+        $this->assertCount(2, $links);
+        foreach ($links as $link) {
+            $this->assertSame(route('products'), $link->getAttribute('href'));
+            $this->assertSame(0, $xpath->query('ancestor::details', $link)->length);
+        }
+    }
 }

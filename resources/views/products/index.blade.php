@@ -1,219 +1,107 @@
 @extends('layouts.app')
-@section('title', ($selectedCategory ? $selectedCategory->name . ' | ' : '') . 'Produk - Higertech Karya Sinergi')
+@section('title', ($selectedCategory ? $selectedCategory->short_name . ' | ' : '') . 'Katalog Produk - Higertech')
 @section('content')
 
-{{-- HERO SECTION (3 Baris Sesuai Arahan Pak Handy) --}}
-<section id="hero"
-    class="relative pt-10 pb-14 lg:pt-14 lg:pb-20 overflow-hidden bg-gradient-to-b from-[#F0F5FD] via-[#F8FAFC] to-white dark:from-[#080d1a] dark:via-[#0B1120] dark:to-[#0B1120] transition-colors duration-300 border-b border-slate-200/60 dark:border-slate-800/60">
-    <div class="absolute inset-0 map-grid-bg pointer-events-none opacity-80 dark:opacity-35"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-
-            {{-- 3 Baris Header --}}
-            <div class="space-y-3 scroll-reveal">
-                {{-- Baris 1: Sub judul halaman (font kecil) --}}
-                <p class="text-xs sm:text-sm font-bold uppercase tracking-widest text-blue-600 dark:text-cyan-400">
-                    Produk
-                </p>
-
-                {{-- Baris 2: Judul kategori (font besar warna hitam) --}}
-                <h1
-                    class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.18] text-slate-950 dark:text-white">
-                    {{ $selectedCategory ? $selectedCategory->name : 'Semua Produk' }}
-                </h1>
-
-                {{-- Baris 3: Sub deskripsi (font kecil warna abu-abu) --}}
-                <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed pt-1">
-                    {{ $selectedCategory && $selectedCategory->description
-                        ? $selectedCategory->description
-                        : 'Beragam solusi digital untuk kebutuhan monitoring, manajemen data, dan sistem informasi — dirancang untuk mendukung pengambilan keputusan yang lebih cepat dan akurat.' }}
-                </p>
-            </div>
-
-            {{-- Hero Visual Presentation --}}
-            <div class="relative flex flex-col items-center justify-center scroll-reveal scroll-reveal-delay-1">
-                {{-- Glow background --}}
-                <div
-                    class="absolute -top-10 w-64 h-64 sm:w-80 sm:h-80 bg-cyan-500/15 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none">
-                </div>
-                <div
-                    class="absolute top-16 w-64 h-64 sm:w-80 sm:h-80 bg-blue-600/15 dark:bg-blue-600/15 rounded-full blur-3xl pointer-events-none">
-                </div>
-
-                {{-- Floating Unit Graphic --}}
-                <div class="relative flex items-center justify-center w-full max-w-md py-2">
-                    <img src="{{ asset('images/products/hero-unit.png') }}"
-                        alt="{{ $selectedCategory ? $selectedCategory->name : 'Produk Higertech' }}"
-                        class="w-full max-h-64 sm:max-h-76 object-contain relative z-10 animate-float-subtle drop-shadow-2xl transition-transform duration-500 hover:scale-105"
-                        onerror="this.src='https://placehold.co/400x300/e2e8f0/94a3b8?text=Higertech+Product'">
-                </div>
-            </div>
+<main data-product-catalog>
+    <section class="border-b border-slate-200 bg-white py-10 dark:border-slate-800 dark:bg-brand-surface-dark sm:py-12">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-cyan-400">Katalog Produk</p>
+            <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">Perangkat untuk setiap kebutuhan.</h1>
+            <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-base">Jelajahi seluruh produk Higertech, cari perangkat yang Anda butuhkan, dan temukan solusi sesuai kategori.</p>
         </div>
-    </div>
-</section>
+    </section>
 
-{{-- PRODUCT LISTING SECTION WITH TECHNICAL SPECIFICATION CARDS --}}
-<section class="py-12 lg:py-16 bg-slate-50/60 dark:bg-[#0B1120] transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {{-- Section Subheader / Category Status --}}
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-slate-200 dark:border-slate-800 gap-4">
-            <div>
-                <span class="text-xs font-bold font-mono tracking-widest uppercase text-blue-600 dark:text-cyan-400">
-                    KATALOG INSTRUMEN & SENSOR RESMI
-                </span>
-                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">
-                    {{ $selectedCategory ? $selectedCategory->name : 'Daftar Seluruh Seri Produk' }}
-                </h2>
-            </div>
-
-            @if ($selectedCategory)
-                <a href="{{ route('products') }}"
-                    class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white dark:bg-[#131D36] border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-cyan-400 hover:border-blue-400 dark:hover:border-cyan-500 shadow-xs transition">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M15 19l-7-7 7-7"/>
-                    </svg>
-                    <span>Lihat Semua Kategori</span>
-                </a>
-            @endif
-        </div>
-
-        {{-- Product Grid (Technical Workstation Cards Style ala Gambar 3) --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            @forelse ($products as $product)
-                @php
-                    $catName = $product->category->name ?? 'Instrumen Telemetri';
-                    $subCat = $product->category->sub_nama ?? 'Standar PUPR / BMKG';
-
-                    // Smart specs derivation
-                    $isAWLR = str_contains($catName, 'AWLR') || str_contains($product->title, 'AWLR') || str_contains($product->title, 'Level');
-                    $isARR = str_contains($catName, 'ARR') || str_contains($product->title, 'ARR') || str_contains($product->title, 'Rain');
-                    $isAWS = str_contains($catName, 'AWS') || str_contains($product->title, 'AWS') || str_contains($product->title, 'Cuaca');
-                    $isEWS = str_contains($catName, 'EWS') || str_contains($product->title, 'EWS') || str_contains($product->title, 'Sirine');
-
-                    $badgeTop = 'TELEMETRI IOT';
-                    $badgeRange = 'TKDN 40%';
-                    $spec1 = 'Output: RS485 / Modbus';
-                    $spec2 = 'Akurasi: Standar Industri';
-
-                    if ($isAWLR) {
-                        $badgeTop = 'RADAR / PRESSURE';
-                        $badgeRange = '0 - 35m Range';
-                        $spec1 = 'Akurasi: ±2mm';
-                        $spec2 = 'Output: Modbus RTU / SDI-12';
-                    } elseif ($isARR) {
-                        $badgeTop = 'TIPPING BUCKET';
-                        $badgeRange = 'Orifice 200mm';
-                        $spec1 = 'Resolusi: 0.5 mm';
-                        $spec2 = 'Material: SS 304 Anti-Karat';
-                    } elseif ($isAWS) {
-                        $badgeTop = 'ALL-IN-ONE AWS';
-                        $badgeRange = 'Tower 10 Meter';
-                        $spec1 = '7 Parameter Cuaca Terpadu';
-                        $spec2 = 'Ultrasonic Wind 360°';
-                    } elseif ($isEWS) {
-                        $badgeTop = 'PERINGATAN DINI';
-                        $badgeRange = '120dB Siren';
-                        $spec1 = 'Radius Suara: s/d 2.000m';
-                        $spec2 = 'Dual Trigger: Auto / Manual';
-                    }
-                @endphp
-
-                @php
-                    $targetUrl = route('products.show', $product->slug);
-                @endphp
-
-                <div class="rounded-3xl p-6 sm:p-7 bg-white dark:bg-[#131D36] border border-slate-200/90 dark:border-slate-800 shadow-md hover:shadow-2xl hover:border-cyan-500/80 dark:hover:border-cyan-400 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden cursor-pointer"
-                    onclick="if(!event.target.closest('a')) { window.location.href='{{ $targetUrl }}'; }">
-                    {{-- Top Gradient Stripe --}}
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-600 via-cyan-400 to-indigo-600 opacity-80 group-hover:opacity-100 transition"></div>
-
-                    {{-- Card Header --}}
-                    <div>
-                        <div class="flex items-center justify-between pb-3.5 mb-3.5 border-b border-slate-100 dark:border-slate-800 text-xs font-mono">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-8 h-8 rounded-xl bg-blue-500/10 dark:bg-cyan-500/10 text-blue-600 dark:text-cyan-400 flex items-center justify-center border border-blue-500/20 dark:border-cyan-500/20 shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                                    </svg>
-                                </span>
-                                <div>
-                                    <span class="font-bold text-slate-800 dark:text-cyan-300 block text-[11px] uppercase tracking-wide">
-                                        {{ $subCat }}
-                                    </span>
-                                    <span class="text-[9px] text-slate-400">Standar PUPR / BMKG / Ditjen SDA</span>
-                                </div>
-                            </div>
-                            <span class="px-2.5 py-1 rounded-full bg-blue-50 dark:bg-cyan-950/70 text-blue-700 dark:text-cyan-300 text-[10px] font-bold font-mono border border-blue-200 dark:border-cyan-800 shrink-0">
-                                {{ $badgeRange }}
-                            </span>
-                        </div>
-
-                        <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition leading-snug">
-                            <a href="{{ route('products.show', $product->slug) }}" class="no-underline hover:no-underline focus:no-underline">
-                                {{ $product->title }}
+    <section id="catalog" class="bg-slate-50 py-8 dark:bg-brand-surface-dark sm:py-10">
+        <div class="mx-auto grid max-w-7xl items-start gap-6 px-4 sm:px-6 lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-8 lg:px-8">
+            <aside class="min-w-0 lg:sticky lg:top-28" aria-label="Filter kategori produk">
+                <details data-product-filters open class="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-brand-card-dark">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-5 text-sm font-bold text-slate-900 dark:text-white">
+                        <span>Filter Kategori</span>
+                        <svg class="h-4 w-4 shrink-0 lg:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </summary>
+                    <nav class="space-y-1 border-t border-slate-100 p-3 dark:border-slate-800" aria-label="Kategori produk">
+                        <a href="{{ route('products', ['q' => $search ?: null]) }}" data-category-all
+                            @if (! $selectedCategory) aria-current="true" @endif
+                            class="flex items-center justify-between gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition-colors {{ ! $selectedCategory ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-cyan-300' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+                            <span>Semua Produk</span><span class="text-xs tabular-nums">{{ $categories->sum('products_count') }}</span>
+                        </a>
+                        @foreach ($categories as $category)
+                            <a href="{{ route('products', ['category' => $category->id, 'q' => $search ?: null]) }}" data-category-id="{{ $category->id }}"
+                                @if ($selectedCategory?->id === $category->id) aria-current="true" @endif
+                                class="flex items-start justify-between gap-3 rounded-xl px-3 py-3 text-xs font-medium leading-5 transition-colors {{ $selectedCategory?->id === $category->id ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-cyan-300' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+                                <span>{{ $category->name }}</span><span class="shrink-0 text-xs tabular-nums">{{ $category->products_count }}</span>
                             </a>
-                        </h3>
+                        @endforeach
+                    </nav>
+                </details>
+            </aside>
 
-                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed line-clamp-3">
-                            {{ $product->desc }}
-                        </p>
-                    </div>
-
-                    {{-- Visual & Specs Row --}}
-                    <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        {{-- Product Stage --}}
-                        <div class="w-full sm:w-36 h-28 bg-gradient-to-b from-slate-50 via-blue-50/30 to-slate-100 dark:from-[#0c1626] dark:via-[#09101d] dark:to-[#080d19] rounded-2xl p-2 flex items-center justify-center border border-slate-200/80 dark:border-slate-800 shrink-0 group-hover:border-cyan-400/50 transition">
-                            <img
-                                src="{{ $product->image_url }}"
-                                alt="{{ $product->title }}"
-                                class="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-105 transition duration-300"
-                                loading="lazy"
-                                onerror="this.src='{{ asset('images/products/hero-unit.png') }}'"
-                            >
+            <div class="min-w-0">
+                <form action="{{ route('products') }}" method="GET" role="search" class="mb-6">
+                    <label for="product-search" class="mb-2 block text-sm font-semibold text-slate-800 dark:text-slate-200">Cari produk</label>
+                    @if ($selectedCategory)
+                        <input type="hidden" name="category" value="{{ $selectedCategory->id }}">
+                    @endif
+                    <div class="flex gap-2">
+                        <div class="relative min-w-0 flex-1">
+                            <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                            <input id="product-search" name="q" type="search" maxlength="100" value="{{ $search }}" placeholder="Nama atau deskripsi produk..." class="h-12 w-full rounded-xl border border-slate-200 bg-white pl-12 pr-4 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-brand-card-dark dark:text-white">
                         </div>
+                        <button type="submit" class="h-12 rounded-xl bg-brand-900 px-5 text-sm font-bold text-white transition-colors hover:bg-blue-800 dark:bg-cyan-500 dark:text-slate-950 dark:hover:bg-cyan-400">Cari</button>
+                    </div>
+                    @error('q')<p class="mt-2 text-sm text-red-600">{{ $message }}</p>@enderror
+                </form>
 
-                        {{-- Technical Badges & Inaproc --}}
-                        <div class="w-full sm:text-right text-[11px] font-mono space-y-1 flex-1">
-                            <div class="font-bold text-slate-900 dark:text-white">{{ $spec1 }}</div>
-                            <div class="text-slate-500 dark:text-slate-400 text-[10px]">{{ $spec2 }}</div>
+                <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+                    <h2 class="text-sm text-slate-600 dark:text-slate-400"><strong class="font-bold text-slate-950 dark:text-white">{{ $products->total() }} produk</strong>{{ $search !== '' ? ' untuk “'.$search.'”' : ' tersedia' }}</h2>
+                    @if ($search !== '' || $selectedCategory)
+                        <a href="{{ route('products') }}" class="text-xs font-semibold text-blue-700 hover:underline dark:text-cyan-300">Reset pencarian &amp; filter</a>
+                    @endif
+                </div>
+                @if ($selectedCategory)
+                    <p class="mb-5 inline-flex rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 dark:bg-blue-950/70 dark:text-cyan-300">{{ $selectedCategory->name }}</p>
+                @endif
 
-                            <div class="pt-2 flex sm:justify-end items-center gap-2 flex-wrap">
-                                <a href="{{ route('products.show', $product->slug) }}"
-                                    class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 group-hover:bg-[#16275E] group-hover:text-white dark:group-hover:bg-cyan-500 dark:group-hover:text-slate-950 text-[11px] font-bold transition shadow-2xs">
-                                    <span>Detail Spesifikasi</span>
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path d="M9 5l7 7-7 7"/>
-                                    </svg>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    @forelse ($products as $product)
+                        @php($photos = $product->gallery_urls)
+                        <article data-product-card data-images="{{ json_encode($photos) }}" class="product-catalog-card group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-lg dark:border-slate-800 dark:bg-brand-card-dark">
+                            <div class="relative overflow-hidden border-b border-slate-100 bg-white dark:border-slate-800">
+                                <a href="{{ route('products.show', $product->slug) }}" class="block aspect-[4/3]" aria-label="Lihat detail {{ $product->title }}">
+                                    <img data-card-image src="{{ $photos[0] }}" alt="{{ $product->title }}" width="700" height="525" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" class="h-full w-full object-contain p-3 sm:p-4" data-image-fallback="{{ asset('assets/images/products.png') }}">
                                 </a>
+                                @if (count($photos) > 1)
+                                    <button data-card-pause type="button" aria-label="Jeda slideshow {{ $product->title }}" aria-pressed="false" class="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-brand-900 shadow-sm">
+                                        <svg data-pause-icon class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
+                                        <svg data-play-icon hidden class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 4 12 8-12 8z"/></svg>
+                                    </button>
+                                    <button data-card-prev type="button" aria-label="Foto sebelumnya: {{ $product->title }}" class="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-lg text-brand-900 shadow-sm">&larr;</button>
+                                    <button data-card-next type="button" aria-label="Foto berikutnya: {{ $product->title }}" class="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-lg text-brand-900 shadow-sm">&rarr;</button>
+                                    <span data-card-counter aria-hidden="true" class="absolute bottom-3 right-3 rounded-full bg-slate-950/75 px-3 py-1 text-[11px] font-semibold tabular-nums text-white">1 / {{ count($photos) }}</span>
+                                @endif
                             </div>
+                            <div class="flex flex-1 flex-col p-5 sm:p-6">
+                                <span class="w-fit rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-bold text-blue-700 dark:bg-blue-950/70 dark:text-cyan-300">{{ $product->category->short_name ?? 'Produk' }}</span>
+                                <h3 class="mt-3 text-lg font-bold leading-snug text-slate-950 dark:text-white"><a href="{{ route('products.show', $product->slug) }}" class="hover:text-blue-700 dark:hover:text-cyan-300">{{ $product->title }}</a></h3>
+                                <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{{ $product->desc }}</p>
+                                <a href="{{ route('products.show', $product->slug) }}" class="mt-auto flex items-center justify-between gap-3 pt-5 text-sm font-bold text-blue-700 dark:text-cyan-300"><span>Lihat Detail</span><span aria-hidden="true">&rarr;</span></a>
+                            </div>
+                        </article>
+                    @empty
+                        <div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center dark:border-slate-700 dark:bg-brand-card-dark">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Produk tidak ditemukan</h3>
+                            <p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Coba kata kunci lain atau pilih kategori berbeda.</p>
+                            <a href="{{ route('products') }}" class="mt-5 inline-flex rounded-xl bg-brand-900 px-5 py-3 text-sm font-semibold text-white dark:bg-cyan-500 dark:text-slate-950">Lihat semua produk</a>
                         </div>
-                    </div>
-
+                    @endforelse
                 </div>
-            @empty
-                <div class="col-span-full text-center py-16 bg-white dark:bg-[#131D36] rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 p-8 shadow-xs">
-                    <svg class="size-12 mx-auto text-slate-400 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="m21 21-4.3-4.3M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-                    </svg>
-                    <p class="text-slate-800 dark:text-white font-bold text-base">Belum ada produk dalam kategori ini.</p>
-                    <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Produk sedang dalam proses integrasi data dari e-Katalog Inaproc.</p>
-                </div>
-            @endforelse
-        </div>
 
-        {{-- Pagination --}}
-        @if ($products->hasPages())
-            <div class="mt-12 flex justify-center">
-                {{ $products->links() }}
+                @if ($products->hasPages())
+                    <div class="mt-10">{{ $products->links() }}</div>
+                @endif
             </div>
-        @endif
-
-    </div>
-</section>
-
-@include('landing.partials.cta')
+        </div>
+    </section>
+</main>
 @include('landing.partials.footer')
-
 @endsection

@@ -17,8 +17,8 @@ interface ProductRepositoryInterface
     public function update(Product $product, array $data): Product;
 
     public function delete(Product $product): void;
-    
+
     public function getActive(?int $categoryId = null): Collection;
 
-    public function getActivePaginated(?int $categoryId = null, int $perPage = 10): LengthAwarePaginator;
+    public function getActivePaginated(?int $categoryId = null, int $perPage = 10, string $search = ''): LengthAwarePaginator;
 }
