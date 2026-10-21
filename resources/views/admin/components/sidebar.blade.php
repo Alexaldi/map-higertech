@@ -83,6 +83,11 @@
                 <i class="side-menu__icon fe fe-message-circle"></i>
                 <span class="side-menu__label">Log WhatsApp</span>
             </a>
+            <a class="side-menu__item {{ request()->routeIs('admin.device-logs.*') ? 'active pointer-events-none cursor-default select-none' : '' }}"
+                href="{{ route('admin.device-logs.index') }}" {!! request()->routeIs('admin.device-logs.*') ? 'aria-current="page" tabindex="-1"' : '' !!}>
+                <i class="side-menu__icon fe fe-cpu"></i>
+                <span class="side-menu__label">Log API Device</span>
+            </a>
         </li>
     </ul>
 </aside>

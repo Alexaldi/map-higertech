@@ -151,6 +151,7 @@ body:has([data-live-map]) #app {
 
 /* Subtle accent underline indicator for active text links (not norak) */
 .site-nav .nav-link:not(.nav-pill).is-active::after,
+.site-nav [data-product-nav][aria-current]::after,
 .site-nav .nav-dropdown.is-active .nav-dropdown-btn::after {
     content: "";
     position: absolute;

@@ -14,16 +14,23 @@ class ProductController extends Controller
 
     public function index(Request $request): View
     {
-        $categoryId = $request->integer('category') ?: null;
+        $validated = $request->validate([
+            'category' => ['nullable', 'integer', 'min:1'],
+            'q' => ['nullable', 'string', 'max:100'],
+        ]);
+        $categoryId = $validated['category'] ?? null;
+        $search = trim($validated['q'] ?? '');
 
         $selectedCategory = $categoryId
-            ? Category::produk()->find($categoryId)
+            ? Category::produk()->findOrFail($categoryId)
             : null;
 
-        $categories = Category::produk()->ordered()->get();
-        $products = $this->productService->getActivePaginated($categoryId, 10)->withQueryString();
+        $categories = Category::produk()->ordered()->withCount([
+            'products' => fn ($query) => $query->where('is_active', true),
+        ])->get();
+        $products = $this->productService->getActivePaginated($categoryId, 10, $search)->withQueryString();
 
-        return view('products.index', compact('products', 'selectedCategory', 'categories'));
+        return view('products.index', compact('products', 'selectedCategory', 'categories', 'search'));
     }
 
     public function show(string $slug): View

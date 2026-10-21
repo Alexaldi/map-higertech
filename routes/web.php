@@ -79,6 +79,9 @@ Route::middleware(['auth', 'prevent-back'])
     Route::get('/whatsapp-logs', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'index'])->name('whatsapp-logs.index');
     Route::delete('/whatsapp-logs/{whatsappLog}', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'destroy'])->name('whatsapp-logs.destroy');
     Route::delete('/whatsapp-logs-clear', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'clear'])->name('whatsapp-logs.clear');
+    Route::get('/device-logs', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'index'])->name('device-logs.index');
+    Route::delete('/device-logs/{deviceLog}', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'destroy'])->name('device-logs.destroy');
+    Route::delete('/device-logs-clear', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'clear'])->name('device-logs.clear');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('categories', CategoryController::class)->except('show');

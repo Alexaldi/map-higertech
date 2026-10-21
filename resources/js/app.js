@@ -121,6 +121,9 @@ function initScrollReveal() {
 }
 
 function initPageBehaviors() {
+    if (document.querySelector('[data-product-catalog]')) {
+        import('./product-catalog.js');
+    }
     if (document.querySelector('[data-product-detail]')) {
         import('./product-detail.js');
     }

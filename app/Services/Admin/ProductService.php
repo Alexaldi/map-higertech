@@ -164,8 +164,8 @@ class ProductService
         return $this->productRepository->getActive($categoryId);
     }
 
-    public function getActivePaginated(?int $categoryId = null, int $perPage = 10): LengthAwarePaginator
+    public function getActivePaginated(?int $categoryId = null, int $perPage = 10, string $search = ''): LengthAwarePaginator
     {
-        return $this->productRepository->getActivePaginated($categoryId, $perPage);
+        return $this->productRepository->getActivePaginated($categoryId, $perPage, $search);
     }
 }
