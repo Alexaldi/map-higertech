@@ -44,6 +44,6 @@ jobs:
             echo "📦 Build asset frontend..."
             docker compose exec -T app npm run build
 
-            echo "🔄 Restart PHP application & reload Nginx..."
+            echo "🔄 Restart PHP application & restart Nginx..."
             docker compose restart app
-            docker compose exec -T nginx nginx -s reload || docker compose restart nginx
+            docker compose restart nginx
