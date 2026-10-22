@@ -44,12 +44,13 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# PHP config for production-like performance
+# PHP config for production-like performance & security hardening
 RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
     && echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache.ini \
     && echo "opcache.validate_timestamps=1" >> /usr/local/etc/php/conf.d/opcache.ini \
     && echo "upload_max_filesize=20M" >> /usr/local/etc/php/conf.d/uploads.ini \
-    && echo "post_max_size=20M" >> /usr/local/etc/php/conf.d/uploads.ini
+    && echo "post_max_size=20M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "expose_php = Off" >> /usr/local/etc/php/conf.d/security.ini
 
 WORKDIR /var/www/html
 
