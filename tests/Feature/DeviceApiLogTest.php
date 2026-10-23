@@ -92,6 +92,141 @@ class DeviceApiLogTest extends TestCase
         $response->assertSee('200 OK');
     }
 
+    public function test_admin_can_export_filtered_logs_to_csv(): void
+    {
+        $admin = User::create([
+            'name'     => 'Super Admin',
+            'email'    => 'admin@higertech.test',
+            'password' => bcrypt('password'),
+        ]);
+
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabbwscitarum',
+            'payload'     => ['id' => 'HGT144', 'rain' => '0.00'],
+            'ip_address'  => '114.122.102.65',
+            'status_code' => 200,
+            'status'      => 'success',
+            'duration_ms' => 49,
+        ]);
+
+        DeviceApiLog::create([
+            'sub_domain'    => 'bwssumatera4',
+            'payload'       => ['id' => 'HGT32'],
+            'status_code'   => 500,
+            'status'        => 'failed',
+            'response_body' => '=HYPERLINK("http://evil.test")',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.device-logs.export.csv', ['status' => 'success']));
+
+        $response->assertOk();
+        $this->assertStringContainsString('text/csv', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('attachment; filename=log-api-telemetri_', $response->headers->get('Content-Disposition'));
+
+        $csv = $response->streamedContent();
+        $this->assertStringStartsWith("\xEF\xBB\xBF", $csv);
+        $this->assertStringContainsString('hkabbwscitarum', $csv);
+        $this->assertStringContainsString('HGT144', $csv);
+        $this->assertStringNotContainsString('bwssumatera4', $csv);
+
+        // Respon berbahaya tidak boleh dieksekusi sebagai formula di Excel
+        $allCsv = $this->actingAs($admin)->get(route('admin.device-logs.export.csv'))->streamedContent();
+        $this->assertStringContainsString("'=HYPERLINK", $allCsv);
+    }
+
+    public function test_csv_export_is_a_snapshot_without_duplicates(): void
+    {
+        $admin = User::create([
+            'name'     => 'Super Admin',
+            'email'    => 'admin@higertech.test',
+            'password' => bcrypt('password'),
+        ]);
+
+        foreach (range(1, 1205) as $i) {
+            DeviceApiLog::create([
+                'sub_domain'  => 'hkabbwscitarum',
+                'payload'     => ['id' => 'HGT' . $i],
+                'status_code' => 200,
+                'status'      => 'success',
+            ]);
+        }
+
+        $response = $this->actingAs($admin)->get(route('admin.device-logs.export.csv'));
+
+        // Log baru yang masuk setelah ekspor dimulai tidak boleh ikut / menggeser hasil
+        DeviceApiLog::create([
+            'sub_domain'  => 'masuk-saat-ekspor',
+            'payload'     => ['id' => 'HGT9999'],
+            'status_code' => 200,
+            'status'      => 'success',
+        ]);
+
+        $lines = array_values(array_filter(explode("\n", trim($response->streamedContent()))));
+        $dataLines = array_slice($lines, 1);
+
+        $this->assertCount(1205, $dataLines);
+        $this->assertCount(1205, array_unique(array_map(fn ($line) => explode(',', $line)[4], $dataLines)));
+        $this->assertStringNotContainsString('masuk-saat-ekspor', implode("\n", $lines));
+        $this->assertSame('HGT1205', explode(',', $dataLines[0])[4]);
+    }
+
+    public function test_export_is_rate_limited_per_admin(): void
+    {
+        $admin = User::create([
+            'name'     => 'Super Admin',
+            'email'    => 'admin@higertech.test',
+            'password' => bcrypt('password'),
+        ]);
+
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabbwscitarum',
+            'status_code' => 200,
+            'status'      => 'success',
+        ]);
+
+        foreach (range(1, 5) as $i) {
+            $this->actingAs($admin)->get(route('admin.device-logs.export.csv'))->assertOk();
+        }
+
+        $this->actingAs($admin)
+            ->from(route('admin.device-logs.index'))
+            ->get(route('admin.device-logs.recap.export.csv'))
+            ->assertRedirect(route('admin.device-logs.index'))
+            ->assertSessionHas('error', fn ($message) => str_contains($message, 'Terlalu banyak permintaan ekspor'));
+    }
+
+    public function test_admin_can_export_logs_to_pdf(): void
+    {
+        $admin = User::create([
+            'name'     => 'Super Admin',
+            'email'    => 'admin@higertech.test',
+            'password' => bcrypt('password'),
+        ]);
+
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabbwscitarum',
+            'payload'     => ['id' => 'HGT144', 'rain' => '0.00'],
+            'status_code' => 200,
+            'status'      => 'success',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.device-logs.export.pdf', [
+            'from' => '2026-01-01',
+            'to'   => '2026-12-31',
+        ]));
+
+        $response->assertOk();
+        $this->assertSame('application/pdf', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('log-api-telemetri_2026-01-01_sd_2026-12-31.pdf', $response->headers->get('Content-Disposition'));
+        $this->assertStringStartsWith('%PDF', $response->getContent());
+    }
+
+    public function test_export_requires_authentication(): void
+    {
+        $this->get(route('admin.device-logs.export.csv'))->assertRedirect();
+        $this->get(route('admin.device-logs.export.pdf'))->assertRedirect();
+    }
+
     public function test_admin_can_delete_single_log_and_clear_all_logs(): void
     {
         $admin = User::create([

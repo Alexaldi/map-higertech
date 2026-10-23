@@ -61,8 +61,27 @@
                 </svg>
             </div>
 
-            {{-- Right: Theme Toggle (Single Icon Matahari / Bulan) + Language Switcher --}}
+            {{-- Right: Admin Shortcut + Theme Toggle (Single Icon Matahari / Bulan) + Language Switcher --}}
             <div class="site-contact flex items-center gap-1 sm:gap-2 shrink-0">
+                {{-- Akses cepat dashboard untuk admin yang login. Ditaruh di topbar (bukan navbar utama)
+                     karena navbar tengah diposisikan absolute dan akan tertimpa tombol tambahan di kanan.
+                     Di bawah sm, tombol ada di mobile drawer. --}}
+                @auth
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="hidden sm:inline-flex items-center justify-center gap-1.5 min-h-[34px] sm:min-h-[36px] px-2.5 rounded-lg border border-blue-500/40 dark:border-cyan-500/40 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-cyan-300 hover:bg-blue-100 dark:hover:bg-blue-900/60 transition text-xs font-bold"
+                        title="Dashboard Admin" aria-label="Panel Dashboard Admin">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 dark:text-cyan-400" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                        </svg>
+                        <span class="hidden md:inline">Dashboard Admin</span>
+                    </a>
+                @endauth
+
                 {{-- Single Icon Dark / Light Mode Toggle Button --}}
                 <button id="theme-toggle" onclick="toggleTheme()" type="button"
                     class="active:scale-90 flex items-center justify-center min-w-[34px] min-h-[34px] sm:min-w-[36px] sm:min-h-[36px] rounded-lg bg-slate-200/80 dark:bg-slate-900/60 border border-slate-300/80 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-slate-300/60 dark:hover:bg-slate-800 transition"
@@ -274,22 +293,6 @@
 
             {{-- Right: INAPROC Badge (Desktop) + Mobile Menu Button --}}
             <div class="flex items-center gap-3">
-                @auth
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-blue-500/40 bg-blue-50/80 dark:bg-blue-950/60 dark:border-cyan-500/40 text-blue-700 dark:text-cyan-300 hover:bg-blue-100 dark:hover:bg-blue-900/60 transition shadow-sm text-xs font-bold"
-                        aria-label="Panel Dashboard Admin">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <svg class="w-4 h-4 text-blue-600 dark:text-cyan-400" fill="none" stroke="currentColor"
-                            stroke-width="2" viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-                        </svg>
-                        <span>Dashboard Admin</span>
-                    </a>
-                @endauth
-
                 <a href="https://katalog.inaproc.id/higertech-karya-sinergi" target="_blank"
                     rel="noopener noreferrer"
                     class="inaproc-link hidden xl:inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-red-200 dark:border-red-900/50 bg-gradient-to-r from-red-50 to-amber-50/50 dark:from-red-950/40 dark:to-[#1a1215] text-slate-800 dark:text-slate-100 hover:border-red-400 transition shadow-sm"

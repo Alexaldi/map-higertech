@@ -80,6 +80,13 @@ Route::middleware(['auth', 'prevent-back'])
     Route::delete('/whatsapp-logs/{whatsappLog}', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'destroy'])->name('whatsapp-logs.destroy');
     Route::delete('/whatsapp-logs-clear', [\App\Http\Controllers\Admin\WhatsAppLogController::class, 'clear'])->name('whatsapp-logs.clear');
     Route::get('/device-logs', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'index'])->name('device-logs.index');
+    Route::get('/device-logs/recap', [\App\Http\Controllers\Admin\DeviceApiLogRecapController::class, 'index'])->name('device-logs.recap');
+    Route::middleware('throttle:admin-export')->group(function () {
+        Route::get('/device-logs/export/csv', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'exportCsv'])->name('device-logs.export.csv');
+        Route::get('/device-logs/export/pdf', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'exportPdf'])->name('device-logs.export.pdf');
+        Route::get('/device-logs/recap/export/csv', [\App\Http\Controllers\Admin\DeviceApiLogRecapController::class, 'exportCsv'])->name('device-logs.recap.export.csv');
+        Route::get('/device-logs/recap/export/pdf', [\App\Http\Controllers\Admin\DeviceApiLogRecapController::class, 'exportPdf'])->name('device-logs.recap.export.pdf');
+    });
     Route::delete('/device-logs/{deviceLog}', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'destroy'])->name('device-logs.destroy');
     Route::delete('/device-logs-clear', [\App\Http\Controllers\Admin\DeviceApiLogController::class, 'clear'])->name('device-logs.clear');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

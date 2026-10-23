@@ -3,7 +3,9 @@
 @section('title', 'Log API Device Telemetri | Higertech Karya Sinergi')
 
 @section('content')
-    <div class="row mt-5">
+    @include('admin.device-logs.partials.tabs')
+
+    <div class="row">
         <!-- Stat Cards -->
         <div class="col-sm-6 col-md-6 col-lg-3">
             <div class="card bg-primary-gradient text-white">
@@ -82,8 +84,26 @@
                         <h3 class="card-title mb-0">Riwayat Penangkapan API Telemetri Perangkat</h3>
                         <p class="fs-12 text-muted mb-0 mt-1">Daftar rekaman request GET sensor alat IoT yang ditangkap dan diteruskan ke subdomain instansi/balai</p>
                     </div>
-                    @if ($logs->count() > 0)
-                        <div>
+                    @if ($stats['total'] > 0)
+                        @php
+                            $exportParams = array_filter([
+                                'q' => $filters['q'],
+                                'status' => $filters['status'],
+                                'from' => $filters['from'],
+                                'to' => $filters['to'],
+                            ]);
+                        @endphp
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <a href="{{ route('admin.device-logs.export.csv', $exportParams) }}"
+                                class="btn btn-outline-success btn-sm btn-export {{ $logs->total() === 0 ? 'disabled' : '' }}"
+                                title="Unduh semua data sesuai filter dalam format CSV">
+                                <i class="fe fe-file-text me-1"></i> Ekspor CSV
+                            </a>
+                            <a href="{{ route('admin.device-logs.export.pdf', $exportParams) }}"
+                                class="btn btn-outline-primary btn-sm btn-export {{ $logs->total() === 0 ? 'disabled' : '' }}"
+                                title="Unduh data sesuai filter dalam format PDF (maks. {{ number_format($pdfMaxRows) }} baris terbaru)">
+                                <i class="fe fe-download me-1"></i> Ekspor PDF
+                            </a>
                             <form action="{{ route('admin.device-logs.clear') }}" method="POST" id="form-clear-logs" class="d-inline">
                                 @csrf
                                 @method('DELETE')
@@ -96,8 +116,50 @@
                 </div>
 
                 <div class="card-body">
+                    <form action="{{ route('admin.device-logs.index') }}" method="GET"
+                        class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <label class="d-flex align-items-center gap-2 mb-0">
+                            Tampilkan
+                            <select name="per_page" class="form-select form-select-sm" style="width: 80px;"
+                                onchange="this.form.submit()">
+                                @foreach ($perPageOptions as $option)
+                                    <option value="{{ $option }}" {{ $perPage === $option ? 'selected' : '' }}>{{ $option }}</option>
+                                @endforeach
+                            </select>
+                            baris
+                        </label>
+
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <select name="status" class="form-select form-select-sm" style="width: 140px;"
+                                onchange="this.form.submit()" aria-label="Filter status">
+                                <option value="">Semua Status</option>
+                                <option value="success" {{ $filters['status'] === 'success' ? 'selected' : '' }}>Berhasil</option>
+                                <option value="failed" {{ $filters['status'] === 'failed' ? 'selected' : '' }}>Gagal / Error</option>
+                            </select>
+
+                            <div class="input-group input-group-sm" style="width: 300px;">
+                                <input type="date" name="from" class="form-control" value="{{ $filters['from'] }}"
+                                    max="{{ $filters['to'] }}" title="Dari tanggal (WIB)" aria-label="Dari tanggal">
+                                <span class="input-group-text">s/d</span>
+                                <input type="date" name="to" class="form-control" value="{{ $filters['to'] }}"
+                                    min="{{ $filters['from'] }}" title="Sampai tanggal (WIB)" aria-label="Sampai tanggal">
+                            </div>
+
+                            <label for="log-search" class="mb-0">Cari:</label>
+                            <div class="input-group input-group-sm" style="width: 260px;">
+                                <input type="text" name="q" id="log-search" class="form-control"
+                                    placeholder="Subdomain / IP / ID alat..." value="{{ $search }}">
+                                <button type="submit" class="btn btn-primary"><i class="fe fe-search"></i></button>
+                                @if ($hasFilters)
+                                    <a href="{{ route('admin.device-logs.index', ['per_page' => $perPage]) }}" class="btn btn-light"
+                                        title="Reset filter"><i class="fe fe-x"></i></a>
+                                @endif
+                            </div>
+                        </div>
+                    </form>
+
                     <div class="table-responsive">
-                        <table id="data-table" class="table table-bordered text-nowrap mb-0 align-middle">
+                        <table id="device-log-table" class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead>
                                 <tr>
                                     <th style="width: 50px;">No</th>
@@ -114,7 +176,7 @@
                             <tbody>
                                 @forelse ($logs as $log)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $logs->firstItem() + $loop->index }}</td>
 
                                         <td>
                                             <div class="d-flex align-items-center">
@@ -212,13 +274,29 @@
                                     <tr>
                                         <td colspan="8" class="text-center py-4 text-muted">
                                             <i class="fe fe-inbox fs-30 d-block mb-2 text-muted opacity-50"></i>
-                                            Belum ada riwayat penangkapan data sensor telemetri.
+                                            @if ($hasFilters)
+                                                Tidak ada data yang sesuai dengan filter.
+                                            @else
+                                                Belum ada riwayat penangkapan data sensor telemetri.
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
+
+                    @if ($logs->total() > 0)
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+                            <div class="small text-muted">
+                                Menampilkan {{ $logs->firstItem() }} sampai {{ $logs->lastItem() }} dari
+                                {{ number_format($logs->total()) }} data
+                            </div>
+                            <div>
+                                {{ $logs->links('pagination::bootstrap-5') }}
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -274,32 +352,14 @@
             </div>
         </div>
     </div>
+
+    @include('admin.device-logs.partials.export-lock-script')
 @endsection
 
 @push('scripts')
     <script>
         $(document).ready(function() {
-            if ($('#data-table').length) {
-                $('#data-table').DataTable({
-                    order: [
-                        [6, 'desc']
-                    ], // Sort by created_at column desc
-                    language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ baris",
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                        infoFiltered: "(disaring dari _MAX_ total data)",
-                        zeroRecords: "Tidak ada data yang sesuai",
-                        paginate: {
-                            first: "Pertama",
-                            last: "Terakhir",
-                            next: "&rarr;",
-                            previous: "&larr;"
-                        }
-                    }
-                });
-            }
+            // Paginasi & pencarian ditangani server (lihat DeviceApiLogController@index)
 
             // View detail modal handler
             $(document).on('click', '.btn-view-detail', function() {

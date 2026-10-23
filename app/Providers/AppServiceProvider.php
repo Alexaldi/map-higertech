@@ -49,6 +49,14 @@ class AppServiceProvider extends ServiceProvider
             ], 429);
         }));
         RateLimiter::for('internship-track', fn (Request $request): Limit => Limit::perMinute(30)->by($request->ip()));
+        // Ekspor CSV/PDF berat untuk server; cegah klik berulang membuat banyak file sekaligus
+        RateLimiter::for('admin-export', fn (Request $request): Limit => Limit::perMinute(5)->by('admin-export|' . ($request->user()?->getAuthIdentifier() ?? $request->ip()))->response(function (Request $request, array $headers) {
+            $seconds = (int) ($headers['Retry-After'] ?? 60);
+
+            return redirect()
+                ->back(302, [], route('admin.device-logs.index'))
+                ->with('error', "Terlalu banyak permintaan ekspor. Silakan tunggu {$seconds} detik lalu coba lagi.");
+        }));
 
         // Provide active client partners to clients section
         View::composer('landing.partials.clients', function ($view): void {
