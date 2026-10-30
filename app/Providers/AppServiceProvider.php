@@ -49,6 +49,13 @@ class AppServiceProvider extends ServiceProvider
             ], 429);
         }));
         RateLimiter::for('internship-track', fn (Request $request): Limit => Limit::perMinute(30)->by($request->ip()));
+
+        // Rate limiting untuk form kontak publik (mencegah spam)
+        RateLimiter::for('contact-submit', fn (Request $request): Limit => Limit::perMinute(5)->by($request->ip())->response(function () {
+            return back()
+                ->withInput()
+                ->withErrors(['captcha' => 'Terlalu banyak percobaan pengiriman pesan. Silakan tunggu beberapa saat dan coba lagi.']);
+        }));
         // Ekspor CSV/PDF berat untuk server; cegah klik berulang membuat banyak file sekaligus
         RateLimiter::for('admin-export', fn (Request $request): Limit => Limit::perMinute(5)->by('admin-export|' . ($request->user()?->getAuthIdentifier() ?? $request->ip()))->response(function (Request $request, array $headers) {
             $seconds = (int) ($headers['Retry-After'] ?? 60);

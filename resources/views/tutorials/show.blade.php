@@ -94,11 +94,63 @@
                         </div>
 
                         {!! $tutorial->content !!}
+
+                        @if ($tutorial->document_url)
+                            <div class="not-prose mt-10 rounded-2xl border border-red-200/80 bg-red-50/60 p-6 dark:border-red-900/40 dark:bg-[#151928]">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-500/20 dark:text-red-400">
+                                            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-bold text-slate-900 dark:text-white">Dokumen / Manual Instalasi</h4>
+                                            <p class="mt-1 text-xs text-slate-600 dark:text-slate-300">
+                                                Tersedia dokumen panduan resmi dalam format PDF untuk referensi teknis Anda di lapangan.
+                                                @if($tutorial->document_size_formatted)
+                                                    <span class="font-mono text-slate-400">({{ $tutorial->document_size_formatted }})</span>
+                                                @endif
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <a href="{{ $tutorial->document_url }}" download="{{ $tutorial->document_download_name }}" target="_blank"
+                                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-xs font-bold text-white shadow-md shadow-red-600/20 transition hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 shrink-0">
+                                        <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                        </svg>
+                                        Unduh Manual (PDF)
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     </article>
 
                     {{-- Sidebar with recent tutorials --}}
                     <aside class="lg:pt-3">
                         <div class="sticky top-28 space-y-6">
+                            @if ($tutorial->document_url)
+                                <div class="rounded-2xl border border-red-200/80 bg-red-50/70 p-5 dark:border-red-900/40 dark:bg-[#131D36]">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-600 dark:bg-red-500/20 dark:text-red-400">
+                                            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Manual Instalasi</h4>
+                                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Dokumen PDF Resmi</p>
+                                        </div>
+                                    </div>
+                                    <a href="{{ $tutorial->document_url }}" download="{{ $tutorial->document_download_name }}" target="_blank"
+                                        class="mt-4 flex items-center justify-center gap-2 w-full rounded-xl bg-red-600 py-2.5 px-3 text-center text-xs font-bold text-white shadow-sm hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500 transition">
+                                        <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                        </svg>
+                                        Unduh Manual (PDF)
+                                    </a>
+                                </div>
+                            @endif
                             @if (isset($recentTutorials) && $recentTutorials->isNotEmpty())
                                 <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-[#131D36]">
                                     <p class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-blue-600 dark:text-cyan-400">

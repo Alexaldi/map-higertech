@@ -212,6 +212,53 @@
                                 </div>
                             </div>
 
+                            {{-- Upload Dokumen atau Manual Instalasi (PDF) --}}
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label for="document" class="form-label font-weight-semibold">
+                                        Dokumen / Manual Instalasi (PDF) <span class="text-muted fs-12">(opsional)</span>
+                                    </label>
+                                    <input type="file" class="form-control @error('document') is-invalid @enderror"
+                                        id="document" name="document" accept="application/pdf,.pdf">
+                                    <small class="text-muted d-block mt-1">
+                                        Format file harus PDF, maksimal 10MB. Digunakan untuk lembar manual instalasi, spesifikasi, atau dokumen panduan teknis.
+                                    </small>
+                                    @error('document')
+                                        <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                    @enderror
+
+                                    @if (isset($tutorial) && $tutorial->document)
+                                        <div class="mt-2 p-3 bg-light rounded border d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fe fe-file-text text-danger fs-26 me-2"></i>
+                                                <div>
+                                                    <a href="{{ $tutorial->document_url }}" target="_blank" class="font-weight-semibold text-primary d-block">
+                                                        {{ $tutorial->document_download_name }}
+                                                    </a>
+                                                    <small class="text-muted">
+                                                        {{ basename($tutorial->document) }}
+                                                        @if($tutorial->document_size_formatted)
+                                                            &bull; {{ $tutorial->document_size_formatted }}
+                                                        @endif
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-3">
+                                                <a href="{{ $tutorial->document_url }}" download="{{ $tutorial->document_download_name }}" class="btn btn-outline-primary btn-sm">
+                                                    <i class="fe fe-download me-1"></i> Unduh File
+                                                </a>
+                                                <div class="form-check mb-0">
+                                                    <input class="form-check-input" type="checkbox" name="remove_document" id="remove_document" value="1" {{ old('remove_document') ? 'checked' : '' }}>
+                                                    <label class="form-check-label text-danger fs-12 font-weight-semibold" for="remove_document">
+                                                        Hapus dokumen saat ini
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
                             {{-- Konten Tutorial (Summernote) --}}
                             <div class="col-md-12">
                                 <div class="form-group mb-3">

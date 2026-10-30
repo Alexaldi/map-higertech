@@ -54,7 +54,15 @@
                                 <span class="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-transform duration-300 group-hover:scale-110 dark:bg-cyan-400 dark:text-slate-950"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg></span>
                             </div>
                             <div class="flex flex-1 flex-col p-6">
-                                <p class="text-xs font-mono text-slate-400">{{ $tutorial->duration_text }} pembelajaran</p>
+                                <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+                                    <span>{{ $tutorial->duration_text }} pembelajaran</span>
+                                    @if($tutorial->document)
+                                        <span class="inline-flex items-center gap-1 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 px-2 py-0.5 text-[10px] font-bold font-sans">
+                                            <svg class="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                                            PDF Manual
+                                        </span>
+                                    @endif
+                                </div>
                                 <h3 class="mt-3 text-xl font-bold leading-snug text-slate-900 transition group-hover:text-blue-600 dark:text-white dark:group-hover:text-cyan-300">{{ $tutorial->title }}</h3>
                                 <p class="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400 line-clamp-2">{{ $tutorial->excerpt ?? strip_tags(Str::limit($tutorial->content, 120)) }}</p>
                                 <div class="mt-auto border-t border-slate-100 pt-5 mt-6 text-xs font-bold text-blue-600 dark:border-slate-800 dark:text-cyan-400">Mulai belajar <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-1 inline-block">→</span></div>
