@@ -29,7 +29,7 @@ class TutorialController extends Controller
     {
         $validated = $this->validatedData($request);
 
-        $this->tutorialService->create($validated, $request->file('image'));
+        $this->tutorialService->create($validated, $request->file('image'), $request->file('document'));
 
         return redirect()
             ->route('admin.tutorials.index')
@@ -45,7 +45,7 @@ class TutorialController extends Controller
     {
         $validated = $this->validatedData($request, $tutorial->id);
 
-        $this->tutorialService->update($tutorial, $validated, $request->file('image'));
+        $this->tutorialService->update($tutorial, $validated, $request->file('image'), $request->file('document'));
 
         return redirect()
             ->route('admin.tutorials.index')
@@ -73,6 +73,8 @@ class TutorialController extends Controller
             'excerpt' => ['nullable', 'string'],
             'content' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,svg', 'max:3072'],
+            'document' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+            'remove_document' => ['sometimes', 'boolean'],
             'video_url' => ['nullable', 'url', 'max:255'],
             'duration' => ['nullable', 'integer', 'min:1'],
             'status' => ['required', 'in:draft,published'],
@@ -83,11 +85,15 @@ class TutorialController extends Controller
             'image.image' => 'File harus berupa gambar valid.',
             'image.mimes' => 'Format gambar yang diizinkan: JPG, JPEG, PNG, WEBP, SVG.',
             'image.max' => 'Ukuran gambar maksimal 3MB.',
+            'document.file' => 'Dokumen harus berupa file valid.',
+            'document.mimes' => 'Dokumen / manual instalasi harus berformat PDF.',
+            'document.max' => 'Ukuran file dokumen / manual instalasi maksimal 10MB.',
             'video_url.url' => 'URL video harus berupa alamat URL yang valid.',
             'status.in' => 'Status harus bernilai draf atau publik.',
         ]);
 
         $validated['is_featured'] = $request->boolean('is_featured');
+        $validated['remove_document'] = $request->boolean('remove_document');
 
         return $validated;
     }

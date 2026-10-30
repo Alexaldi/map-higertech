@@ -41,12 +41,16 @@ class TutorialService
     /**
      * @param array<string, mixed> $data
      */
-    public function create(array $data, ?UploadedFile $imageFile = null): Tutorial
+    public function create(array $data, ?UploadedFile $imageFile = null, ?UploadedFile $documentFile = null): Tutorial
     {
         $data['slug'] = $this->generateUniqueSlug($data['slug'] ?? $data['title']);
 
         if ($imageFile) {
             $data['image'] = $this->uploadImage($imageFile);
+        }
+
+        if ($documentFile) {
+            $data['document'] = $this->uploadDocument($documentFile);
         }
 
         if (($data['status'] ?? 'published') === 'published' && empty($data['published_at'])) {
@@ -59,7 +63,7 @@ class TutorialService
     /**
      * @param array<string, mixed> $data
      */
-    public function update(Tutorial $tutorial, array $data, ?UploadedFile $imageFile = null): bool
+    public function update(Tutorial $tutorial, array $data, ?UploadedFile $imageFile = null, ?UploadedFile $documentFile = null): bool
     {
         $data['slug'] = $this->generateUniqueSlug(
             ! empty($data['slug']) ? $data['slug'] : $data['title'],
@@ -71,6 +75,16 @@ class TutorialService
             $data['image'] = $this->uploadImage($imageFile);
         }
 
+        if ($documentFile) {
+            $this->deleteDocumentFile($tutorial->document);
+            $data['document'] = $this->uploadDocument($documentFile);
+        } elseif (! empty($data['remove_document'])) {
+            $this->deleteDocumentFile($tutorial->document);
+            $data['document'] = null;
+        }
+
+        unset($data['remove_document']);
+
         if (($data['status'] ?? 'published') === 'published' && empty($tutorial->published_at) && empty($data['published_at'])) {
             $data['published_at'] = now();
         }
@@ -81,6 +95,7 @@ class TutorialService
     public function delete(Tutorial $tutorial): bool
     {
         $this->deleteImageFile($tutorial->image);
+        $this->deleteDocumentFile($tutorial->document);
 
         return $this->repository->delete($tutorial);
     }
@@ -90,9 +105,21 @@ class TutorialService
         return $file->store('tutorials', 'public');
     }
 
+    public function uploadDocument(UploadedFile $file): string
+    {
+        return $file->store('tutorials/documents', 'public');
+    }
+
     public function deleteImageFile(?string $path): void
     {
         if ($path && ! str_starts_with($path, 'images/') && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+    }
+
+    public function deleteDocumentFile(?string $path): void
+    {
+        if ($path && Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
     }

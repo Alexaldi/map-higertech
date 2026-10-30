@@ -3,6 +3,13 @@
 @section('title', 'Kontak | Higertech Karya Sinergi')
 @section('description', 'Hubungi tim Higertech untuk solusi telemetry terbaik. Email, telepon, WhatsApp, dan kunjungi kantor kami di Bandung.')
 
+@push('head')
+    {{-- Cloudflare Turnstile SDK (explicit render mode) --}}
+    @if(config('services.turnstile.site_key'))
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback&render=explicit" async defer></script>
+    @endif
+@endpush
+
 @section('content')
 <main>
 
@@ -152,17 +159,29 @@
                         </div>
                     @endif
 
+                    {{-- Error CAPTCHA atau Rate Limit --}}
+                    @if ($errors->has('captcha'))
+                        <div class="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30">
+                            <p class="text-sm text-red-600 dark:text-red-400 font-semibold flex items-center gap-2">
+                                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                {{ $errors->first('captcha') }}
+                            </p>
+                        </div>
+                    @endif
+
                     <form action="{{ route('contact.store') }}" method="POST" class="space-y-5" id="contact-form">
                         @csrf
+
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('contact.form_name') }} <span class="text-red-500 dark:text-red-400">*</span></label>
-                                <input type="text" name="name" required placeholder="{{ __('contact.form_name_placeholder') }}"
-                                    class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border border-slate-200 dark:border-slate-600/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition">
+                                <input type="text" name="name" value="{{ old('name') }}" required placeholder="{{ __('contact.form_name_placeholder') }}"
+                                    class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border {{ $errors->has('name') ? 'border-red-400' : 'border-slate-200 dark:border-slate-600/50' }} text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition">
+                                @error('name')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('contact.form_company') }}</label>
-                                <input type="text" name="company" placeholder="{{ __('contact.form_company_placeholder') }}"
+                                <input type="text" name="company" value="{{ old('company') }}" placeholder="{{ __('contact.form_company_placeholder') }}"
                                     class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border border-slate-200 dark:border-slate-600/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition">
                             </div>
                         </div>
@@ -170,12 +189,13 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('contact.info_email') }} <span class="text-red-500 dark:text-red-400">*</span></label>
-                                <input type="email" name="email" required placeholder="{{ __('contact.form_email_placeholder') }}"
-                                    class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border border-slate-200 dark:border-slate-600/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition">
+                                <input type="email" name="email" value="{{ old('email') }}" required placeholder="{{ __('contact.form_email_placeholder') }}"
+                                    class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border {{ $errors->has('email') ? 'border-red-400' : 'border-slate-200 dark:border-slate-600/50' }} text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition">
+                                @error('email')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('contact.info_phone') }}</label>
-                                <input type="tel" name="phone" placeholder="{{ __('contact.form_phone_placeholder') }}"
+                                <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="{{ __('contact.form_phone_placeholder') }}"
                                     class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border border-slate-200 dark:border-slate-600/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition">
                             </div>
                         </div>
@@ -183,21 +203,416 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('contact.form_message') }} <span class="text-red-500 dark:text-red-400">*</span></label>
                             <textarea name="message" required rows="5" placeholder="{{ __('contact.form_message_placeholder') }}"
-                                class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border border-slate-200 dark:border-slate-600/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition resize-none"></textarea>
+                                class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-[#16275E]/60 border {{ $errors->has('message') ? 'border-red-400' : 'border-slate-200 dark:border-slate-600/50' }} text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent transition resize-none">{{ old('message') }}</textarea>
+                            @error('message')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
                         </div>
 
-                        <button type="submit"
-                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-slate-900 font-bold text-sm transition shadow-lg shadow-blue-500/20 dark:shadow-cyan-500/20 active:scale-95">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        {{-- ── Hidden input CAPTCHA token (diisi JS setelah verifikasi modal) ──── --}}
+                        @php $siteKey = config('services.turnstile.site_key', '') @endphp
+                        @if($siteKey)
+                            <input type="hidden" name="cf-turnstile-response" id="cf-turnstile-token">
+                            {{-- Pesan error jika CAPTCHA belum selesai diverifikasi --}}
+                            <p id="captcha-error" class="hidden -mt-2 text-xs text-red-500 font-semibold">
+                                Harap selesaikan verifikasi CAPTCHA terlebih dahulu.
+                            </p>
+                        @else
+                            {{-- Fallback: Site key belum dikonfigurasi (pesan untuk developer) --}}
+                            <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30">
+                                <p class="text-xs text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2">
+                                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    CAPTCHA belum dikonfigurasi — tambahkan <code class="font-mono bg-amber-100 dark:bg-amber-900/50 px-1 rounded">TURNSTILE_SITE_KEY</code> dan <code class="font-mono bg-amber-100 dark:bg-amber-900/50 px-1 rounded">TURNSTILE_SECRET_KEY</code> di file <code class="font-mono bg-amber-100 dark:bg-amber-900/50 px-1 rounded">.env</code>.
+                                </p>
+                            </div>
+                        @endif
+
+                        <button type="button" id="contact-submit-btn"
+                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-slate-900 font-bold text-sm transition shadow-lg shadow-blue-500/20 dark:shadow-cyan-500/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100">
+                            <svg class="w-4 h-4" id="submit-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z"/>
                             </svg>
-                            {{ __('contact.form_submit') }}
+                            <svg class="w-4 h-4 hidden animate-spin" id="submit-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"/>
+                            </svg>
+                            <span id="submit-label">{{ __('contact.form_submit') }}</span>
                         </button>
                     </form>
+
+                    @push('scripts')
+                    @php $siteKey = config('services.turnstile.site_key', '') @endphp
+                    @if($siteKey)
+                    <script>
+                    (function () {
+                        'use strict';
+
+                        var SITE_KEY     = @json($siteKey);
+                        var widgetId     = null;
+                        var captchaToken = null;
+                        var isSubmitting = false;
+                        var modalOpen    = false;
+
+                        // ── Dark mode detection ─────────────────────────────────────────────────
+                        function getTheme() {
+                            return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                        }
+
+                        // ── Modal helpers ───────────────────────────────────────────────────────
+                        function openModal() {
+                            var overlay = document.getElementById('captcha-modal');
+                            if (!overlay) return;
+                            overlay.classList.remove('hidden');
+                            overlay.classList.add('flex');
+                            document.body.style.overflow = 'hidden';
+                            modalOpen = true;
+
+                            // Sembunyikan pesan error sebelumnya saat modal dibuka kembali
+                            var errBox = document.getElementById('cf-modal-error-box');
+                            if (errBox) errBox.classList.add('hidden');
+
+                            resetModalConfirmBtn();
+
+                            if (typeof turnstile !== 'undefined') {
+                                if (widgetId === null) {
+                                    renderWidget();
+                                } else {
+                                    turnstile.reset(widgetId);
+                                }
+                            }
+                        }
+
+                        function closeModal() {
+                            var overlay = document.getElementById('captcha-modal');
+                            if (!overlay) return;
+                            overlay.classList.add('hidden');
+                            overlay.classList.remove('flex');
+                            document.body.style.overflow = '';
+                            modalOpen = false;
+                        }
+
+                        function resetModalConfirmBtn() {
+                            var btn = document.getElementById('modal-confirm-send-btn');
+                            var icon = document.getElementById('modal-confirm-icon');
+                            var spinner = document.getElementById('modal-confirm-spinner');
+                            var label = document.getElementById('modal-confirm-label');
+                            var statusBox = document.getElementById('cf-status-indicator');
+
+                            if (btn) {
+                                btn.disabled = true;
+                                btn.className = 'w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-200 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 font-bold text-sm cursor-not-allowed transition-all duration-200 shadow-none';
+                            }
+                            if (icon) icon.classList.remove('hidden');
+                            if (spinner) spinner.classList.add('hidden');
+                            if (label) label.textContent = 'Konfirmasi & Kirim Pesan';
+
+                            if (statusBox) {
+                                statusBox.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin text-blue-500 dark:text-cyan-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"></path></svg><span id="cf-status-text">Menunggu verifikasi…</span>';
+                            }
+                        }
+
+                        function enableModalConfirmBtn() {
+                            var btn = document.getElementById('modal-confirm-send-btn');
+                            var statusBox = document.getElementById('cf-status-indicator');
+
+                            if (btn) {
+                                btn.disabled = false;
+                                btn.className = 'w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-slate-900 font-bold text-sm cursor-pointer transition-all duration-200 shadow-lg shadow-blue-500/20 dark:shadow-cyan-500/20 active:scale-95';
+                            }
+
+                            if (statusBox) {
+                                statusBox.innerHTML = '<svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span class="text-emerald-600 dark:text-emerald-400 font-semibold">Keamanan terverifikasi! Silakan klik tombol di bawah.</span>';
+                            }
+                        }
+
+                        // ── Render Turnstile widget (explicit) ─────────────────────────────────
+                        function renderWidget() {
+                            if (typeof turnstile === 'undefined') return;
+                            var container = document.getElementById('cf-turnstile-modal-widget');
+                            if (!container) return;
+
+                            // Bersihkan container jika ada elemen lama
+                            try {
+                                if (widgetId !== null) {
+                                    turnstile.remove(widgetId);
+                                    widgetId = null;
+                                }
+                            } catch (e) {
+                                container.innerHTML = '';
+                            }
+
+                            widgetId = turnstile.render(container, {
+                                sitekey:    SITE_KEY,
+                                theme:      getTheme(),
+                                appearance: 'always',
+                                language:   document.documentElement.lang || 'id',
+                                callback: function (token) {
+                                    captchaToken = token;
+                                    var hidden = document.getElementById('cf-turnstile-token');
+                                    if (hidden) hidden.value = token;
+
+                                    // Aktifkan tombol konfirmasi manual di dalam modal
+                                    enableModalConfirmBtn();
+                                },
+                                'expired-callback': function () {
+                                    captchaToken = null;
+                                    var hidden = document.getElementById('cf-turnstile-token');
+                                    if (hidden) hidden.value = '';
+                                    resetModalConfirmBtn();
+                                    var statusBox = document.getElementById('cf-status-indicator');
+                                    if (statusBox) {
+                                        statusBox.innerHTML = '<span class="text-amber-500 font-semibold">Verifikasi kedaluwarsa. Silakan verifikasi ulang.</span>';
+                                    }
+                                    resetButton();
+                                },
+                                'error-callback': function (errorCode) {
+                                    console.error('Turnstile widget error code:', errorCode);
+                                    captchaToken = null;
+                                    var hidden = document.getElementById('cf-turnstile-token');
+                                    if (hidden) hidden.value = '';
+                                    resetModalConfirmBtn();
+                                    resetButton();
+
+                                    // JANGAN tutup modal, tampilkan pesan informatif kepada pengguna/developer
+                                    var errBox = document.getElementById('cf-modal-error-box');
+                                    var errMsg = document.getElementById('cf-modal-error-msg');
+                                    if (errBox && errMsg) {
+                                        errBox.classList.remove('hidden');
+                                        var host = window.location.hostname || 'domain ini';
+                                        if (errorCode === '110200' || errorCode === '300030' || String(errorCode).includes('domain')) {
+                                            errMsg.textContent = 'Domain "' + host + '" belum didaftarkan di dashboard Cloudflare Turnstile. Silakan tambahkan "' + host + '" pada setting Turnstile Anda.';
+                                        } else if (errorCode === '400020') {
+                                            errMsg.textContent = 'Site Key tidak valid (Kode 400020). Periksa kecocokan site key di file .env.';
+                                        } else {
+                                            errMsg.textContent = 'Gagal memuat CAPTCHA (Kode error: ' + (errorCode || 'unknown') + '). Pastikan domain "' + host + '" sudah didaftarkan di Cloudflare.';
+                                        }
+                                    }
+                                },
+                            });
+                        }
+
+                        function submitForm() {
+                            var form = document.getElementById('contact-form');
+                            if (!form || isSubmitting) return;
+                            if (!form.checkValidity()) {
+                                form.reportValidity();
+                                resetButton();
+                                return;
+                            }
+                            isSubmitting = true;
+                            setLoading();
+                            form.submit();
+                        }
+
+                        function setLoading() {
+                            var btn = document.getElementById('contact-submit-btn');
+                            var icon = document.getElementById('submit-icon');
+                            var spinner = document.getElementById('submit-spinner');
+                            var label = document.getElementById('submit-label');
+                            if (btn) btn.disabled = true;
+                            if (icon) icon.classList.add('hidden');
+                            if (spinner) spinner.classList.remove('hidden');
+                            if (label) label.textContent = 'Mengirim…';
+                        }
+
+                        function resetButton() {
+                            isSubmitting = false;
+                            var btn = document.getElementById('contact-submit-btn');
+                            var icon = document.getElementById('submit-icon');
+                            var spinner = document.getElementById('submit-spinner');
+                            var label = document.getElementById('submit-label');
+                            if (btn) btn.disabled = false;
+                            if (icon) icon.classList.remove('hidden');
+                            if (spinner) spinner.classList.add('hidden');
+                            if (label) label.textContent = '{{ __("contact.form_submit") }}';
+                        }
+
+                        // ── Event Handlers ─────────────────────────────────────────────────────
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var btn = document.getElementById('contact-submit-btn');
+                            var form = document.getElementById('contact-form');
+
+                            // Tangani submit form jika user tekan Enter di input field
+                            if (form) {
+                                form.addEventListener('submit', function (e) {
+                                    if (! captchaToken) {
+                                        e.preventDefault();
+                                        if (btn) btn.click();
+                                    }
+                                });
+                            }
+
+                            if (!btn) return;
+
+                            btn.addEventListener('click', function () {
+                                if (isSubmitting) return;
+
+                                // Validasi form dulu sebelum buka modal
+                                if (form && !form.checkValidity()) {
+                                    form.reportValidity();
+                                    return;
+                                }
+
+                                // Jika token sudah ada (belum expired), langsung submit
+                                if (captchaToken) {
+                                    submitForm();
+                                    return;
+                                }
+
+                                openModal();
+                            });
+
+                            // Tutup modal jika klik overlay (luar box)
+                            var overlay = document.getElementById('captcha-modal');
+                            if (overlay) {
+                                overlay.addEventListener('click', function (e) {
+                                    if (e.target === overlay) {
+                                        closeModal();
+                                        resetButton();
+                                    }
+                                });
+                            }
+
+                            // Tombol tutup modal
+                            var closeBtn = document.getElementById('captcha-modal-close');
+                            if (closeBtn) {
+                                closeBtn.addEventListener('click', function () {
+                                    closeModal();
+                                    resetButton();
+                                });
+                            }
+
+                            // Tombol coba lagi jika error
+                            var retryBtn = document.getElementById('cf-retry-btn');
+                            if (retryBtn) {
+                                retryBtn.addEventListener('click', function () {
+                                    var errBox = document.getElementById('cf-modal-error-box');
+                                    if (errBox) errBox.classList.add('hidden');
+                                    renderWidget();
+                                });
+                            }
+
+                            // Tombol konfirmasi manual di dalam modal
+                            var confirmBtn = document.getElementById('modal-confirm-send-btn');
+                            if (confirmBtn) {
+                                confirmBtn.addEventListener('click', function () {
+                                    if (! captchaToken || isSubmitting) return;
+
+                                    confirmBtn.disabled = true;
+                                    var icon = document.getElementById('modal-confirm-icon');
+                                    var spinner = document.getElementById('modal-confirm-spinner');
+                                    var label = document.getElementById('modal-confirm-label');
+                                    if (icon) icon.classList.add('hidden');
+                                    if (spinner) spinner.classList.remove('hidden');
+                                    if (label) label.textContent = 'Mengirim pesan…';
+
+                                    submitForm();
+                                });
+                            }
+
+                            // ESC key
+                            document.addEventListener('keydown', function (e) {
+                                if (e.key === 'Escape' && modalOpen) {
+                                    closeModal();
+                                    resetButton();
+                                }
+                            });
+                        });
+
+                        // ── SDK onload callback ─────────────────────────────────────────────────
+                        window.onloadTurnstileCallback = function () {
+                            if (modalOpen && widgetId === null) {
+                                renderWidget();
+                            }
+                        };
+
+                        // Fallback jika SDK sudah ready sebelum script ini dieksekusi
+                        if (typeof turnstile !== 'undefined' && modalOpen && widgetId === null) {
+                            renderWidget();
+                        }
+
+                        // ── Re-render saat dark mode berubah ───────────────────────────────────
+                        new MutationObserver(function () {
+                            if (typeof turnstile !== 'undefined' && widgetId !== null) {
+                                turnstile.remove(widgetId);
+                                widgetId = null;
+                                captchaToken = null;
+                                if (modalOpen) renderWidget();
+                            }
+                        }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+                    })();
+                    </script>
+                    @endif
+                    @endpush
                 </div>
             </div>
         </div>
     </section>
+
+    {{-- ===== MODAL CAPTCHA ===== --}}
+    @php $siteKey = config('services.turnstile.site_key', '') @endphp
+    @if($siteKey)
+    <div id="captcha-modal"
+        class="hidden fixed inset-0 z-50 items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+        role="dialog" aria-modal="true" aria-labelledby="captcha-modal-title">
+        <div class="relative w-full max-w-sm bg-white dark:bg-[#0d1b3e] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 flex flex-col items-center gap-5">
+            {{-- Tombol close --}}
+            <button id="captcha-modal-close" type="button"
+                class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition"
+                aria-label="Tutup">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                </svg>
+            </button>
+
+            {{-- Ikon perisai --}}
+            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-500/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600 dark:text-cyan-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+
+            <div class="text-center">
+                <h2 id="captcha-modal-title" class="text-base font-bold text-slate-900 dark:text-white">Verifikasi Keamanan</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Selesaikan verifikasi di bawah untuk mengirim pesan.</p>
+            </div>
+
+            {{-- Widget Turnstile render di sini --}}
+            <div id="cf-turnstile-modal-widget" class="flex justify-center items-center min-h-[65px] w-full"></div>
+
+            {{-- Pesan error jika widget gagal dimuat / domain mismatch --}}
+            <div id="cf-modal-error-box" class="hidden w-full p-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-center">
+                <p id="cf-modal-error-msg" class="text-xs text-red-600 dark:text-red-400 font-medium leading-relaxed"></p>
+                <button type="button" id="cf-retry-btn" class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-red-700 dark:text-red-300 text-xs font-semibold transition">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    Coba Muat Ulang
+                </button>
+            </div>
+
+            {{-- Status & Tombol Konfirmasi Manual --}}
+            <div class="w-full flex flex-col items-center gap-3 pt-1 border-t border-slate-100 dark:border-slate-800">
+                <div id="cf-status-indicator" class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <svg class="w-3.5 h-3.5 animate-spin text-blue-500 dark:text-cyan-400" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"></path>
+                    </svg>
+                    <span id="cf-status-text">Menunggu verifikasi…</span>
+                </div>
+
+                <button type="button" id="modal-confirm-send-btn" disabled
+                    class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-200 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 font-bold text-sm cursor-not-allowed transition-all duration-200 shadow-none">
+                    <svg class="w-4 h-4" id="modal-confirm-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z"/>
+                    </svg>
+                    <svg class="w-4 h-4 hidden animate-spin" id="modal-confirm-spinner" viewBox="0 0 24 24" fill="none">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"/>
+                    </svg>
+                    <span id="modal-confirm-label">Konfirmasi & Kirim Pesan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
 
     {{-- ===== WHY CHOOSE US / FEATURE CARDS ===== --}}
     <section class="py-16 sm:py-24 bg-slate-50 dark:bg-[#070c17] transition-colors duration-300">

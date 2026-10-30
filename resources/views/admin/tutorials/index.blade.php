@@ -49,6 +49,15 @@
                                                 <small class="text-muted text-truncate" style="max-width: 360px;">
                                                     {{ $tutorial->slug }}
                                                 </small>
+                                                @if ($tutorial->document)
+                                                    <div class="mt-1">
+                                                        <a href="{{ $tutorial->document_url }}" target="_blank"
+                                                            class="badge bg-danger-transparent text-danger border border-danger fs-11 text-decoration-none"
+                                                            title="Buka / Unduh Manual PDF">
+                                                            <i class="fe fe-file-text me-1"></i> Manual PDF
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </td>
                                         <td>

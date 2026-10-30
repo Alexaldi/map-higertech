@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Tutorial extends Model
 {
@@ -18,6 +19,7 @@ class Tutorial extends Model
         'excerpt',
         'content',
         'image',
+        'document',
         'video_url',
         'duration',
         'status',
@@ -49,6 +51,51 @@ class Tutorial extends Model
         }
 
         return asset('storage/' . ltrim($this->image, '/'));
+    }
+
+    public function getDocumentUrlAttribute(): ?string
+    {
+        if (! $this->document) {
+            return null;
+        }
+
+        if (str_starts_with($this->document, 'http://') || str_starts_with($this->document, 'https://')) {
+            return $this->document;
+        }
+
+        return asset('storage/' . ltrim($this->document, '/'));
+    }
+
+    public function getDocumentDownloadNameAttribute(): string
+    {
+        $title = trim(preg_replace('/\s+/u', ' ', preg_replace('/[\\\\\/:*?"<>|\x00-\x1F]+/u', ' ', (string) $this->title)));
+
+        return trim('Manual-'.$title).'.pdf';
+    }
+
+    public function getDocumentSizeFormattedAttribute(): ?string
+    {
+        if (! $this->document || str_starts_with($this->document, 'http://') || str_starts_with($this->document, 'https://')) {
+            return null;
+        }
+
+        try {
+            if (! Storage::disk('public')->exists($this->document)) {
+                return null;
+            }
+
+            $bytes = Storage::disk('public')->size($this->document);
+            $units = ['B', 'KB', 'MB', 'GB'];
+            $i = 0;
+            while ($bytes >= 1024 && $i < count($units) - 1) {
+                $bytes /= 1024;
+                $i++;
+            }
+
+            return round($bytes, 2) . ' ' . $units[$i];
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
     public function getDurationTextAttribute(): string
