@@ -36,12 +36,27 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('station-api', fn (Request $request): Limit => Limit::perMinute(60)->by($request->ip()));
-        RateLimiter::for('login', fn (Request $request): Limit => Limit::perMinute(5)->by($request->input('email') . '|' . $request->ip())->response(function () {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terlalu banyak percobaan login. Silakan tunggu 1 menit lagi.',
-            ], 429);
-        }));
+        RateLimiter::for('login', function (Request $request): Limit {
+            return Limit::perMinute(5)
+                ->by(($request->input('email') ?: 'guest') . '|' . $request->ip())
+                ->response(function (Request $request, array $headers) {
+                    $seconds = (int) ($headers['Retry-After'] ?? 60);
+                    $minutes = max(1, (int) ceil($seconds / 60));
+                    $message = "Terlalu banyak percobaan login. Silakan tunggu {$minutes} menit ({$seconds} detik) lagi.";
+
+                    if ($request->expectsJson()) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => $message,
+                        ], 429, $headers);
+                    }
+
+                    return redirect()
+                        ->route('login')
+                        ->withInput($request->only('email'))
+                        ->withErrors(['login' => $message]);
+                });
+        });
         RateLimiter::for('internship-apply', fn (Request $request): Limit => Limit::perMinute(10)->by($request->ip())->response(function () {
             return response()->json([
                 'success' => false,

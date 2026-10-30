@@ -71,6 +71,8 @@ Route::middleware(['auth', 'prevent-back'])
     ->name('admin.')
     ->group(function () {
 
+    Route::get('/', fn () => redirect()->route('admin.dashboard'));
+
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
     Route::resource('users', UsersController::class);

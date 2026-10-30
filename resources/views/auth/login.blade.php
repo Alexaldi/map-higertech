@@ -214,9 +214,12 @@
                         </div>
 
                         @if($errors->has('login'))
-                            <p class="mt-3 text-xs font-medium text-red-500">
-                                {{ $errors->first('login') }}
-                            </p>
+                            <div class="mt-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                                <svg class="w-4 h-4 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                                <span class="font-medium">{{ $errors->first('login') }}</span>
+                            </div>
                         @endif
 
                         {{-- Submit Button --}}
