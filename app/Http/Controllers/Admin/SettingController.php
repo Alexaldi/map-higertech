@@ -49,11 +49,14 @@ class SettingController extends Controller
             'navbar_show_project' => ['nullable', 'in:0,1'],
             'navbar_show_articles' => ['nullable', 'in:0,1'],
             'navbar_show_download' => ['nullable', 'in:0,1'],
+            'footer_app_active' => ['nullable', 'in:0,1'],
+            'footer_app_url' => ['nullable', 'url', 'max:500'],
         ], [
             'contact_email.required' => 'Email kontak wajib diisi.',
             'contact_email.email' => 'Format email kontak tidak valid.',
             'contact_phone.required' => 'Nomor telepon wajib diisi.',
             'social_links.*.url.url' => 'Format URL media sosial tidak valid.',
+            'footer_app_url.url' => 'Format URL aplikasi Google Play tidak valid.',
         ]);
 
         if ($request->has('wa_admin_notification')) {
@@ -68,6 +71,11 @@ class SettingController extends Controller
             if ($request->has($navKey)) {
                 $validated[$navKey] = $request->input($navKey) === '1' ? '1' : '0';
             }
+        }
+
+        if ($request->has('footer_app_present')) {
+            $validated['footer_app_active'] = $request->boolean('footer_app_active') ? '1' : '0';
+            $validated['footer_app_url'] = $request->input('footer_app_url');
         }
 
         if ($request->has('social_links_present') || $request->has('social_links')) {

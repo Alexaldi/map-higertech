@@ -42,14 +42,8 @@
                                         </li>
                                         <li>
                                             <button class="nav-link btn btn-outline-primary" data-bs-toggle="tab"
-                                                data-bs-target="#tab-address" type="button" role="tab">
-                                                <i class="fe fe-map-pin me-1"></i> Alamat & Profil
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="nav-link btn btn-outline-primary" data-bs-toggle="tab"
-                                                data-bs-target="#tab-social" type="button" role="tab">
-                                                <i class="fe fe-share-2 me-1"></i> Media Sosial
+                                                data-bs-target="#tab-footer" type="button" role="tab">
+                                                <i class="fe fe-layout me-1"></i> Footer
                                             </button>
                                         </li>
                                         <li>
@@ -182,86 +176,160 @@
                                         </div>
                                     </div>
 
-                                    {{-- Tab 2: Alamat & Profil --}}
-                                    <div class="tab-pane" id="tab-address" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <label for="contact_address"
-                                                    class="form-label font-weight-semibold">Alamat Workshop / Lab
-                                                    R&D</label>
-                                                <textarea class="form-control @error('contact_address') is-invalid @enderror" id="contact_address"
-                                                    name="contact_address" rows="3" placeholder="Masukkan alamat lengkap">{{ old('contact_address', $settings['contact_address'] ?? '') }}</textarea>
-                                                <small class="text-muted">Ditampilkan pada bagian workshop info di
-                                                    footer.</small>
-                                                @error('contact_address')
-                                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
-                                                @enderror
+                                    {{-- Tab 2: Footer (Alamat, Profil, Aplikasi Mobile, & Media Sosial) --}}
+                                    <div class="tab-pane" id="tab-footer" role="tabpanel" style="min-height: 380px;">
+                                        {{-- 1. Alamat & Profil --}}
+                                        <div class="card border shadow-none mb-4">
+                                            <div class="card-header bg-light py-2 px-3 border-bottom">
+                                                <h6 class="mb-0 font-weight-bold text-dark">
+                                                    <i class="fe fe-map-pin me-1 text-primary"></i> Alamat & Ringkasan Profil
+                                                </h6>
                                             </div>
+                                            <div class="card-body p-3">
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="contact_address"
+                                                            class="form-label font-weight-semibold">Alamat Workshop / Lab
+                                                            R&D</label>
+                                                        <textarea class="form-control @error('contact_address') is-invalid @enderror" id="contact_address"
+                                                            name="contact_address" rows="2" placeholder="Masukkan alamat lengkap">{{ old('contact_address', $settings['contact_address'] ?? '') }}</textarea>
+                                                        <small class="text-muted">Ditampilkan pada bagian workshop info di
+                                                            footer.</small>
+                                                        @error('contact_address')
+                                                            <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
 
-                                            <div class="col-md-12 mb-3">
-                                                <label for="footer_about" class="form-label font-weight-semibold">Teks
-                                                    Ringkasan Profil (Footer About)</label>
-                                                <textarea class="form-control @error('footer_about') is-invalid @enderror" id="footer_about" name="footer_about"
-                                                    rows="3" placeholder="Masukkan ringkasan profil">{{ old('footer_about', $settings['footer_about'] ?? '') }}</textarea>
-                                                <small class="text-muted">Ditampilkan di bawah logo Higertech pada
-                                                    footer.</small>
-                                                @error('footer_about')
-                                                    <div class="text-danger mt-1 fs-12">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- Tab 3: Media Sosial --}}
-                                    <div class="tab-pane" id="tab-social" role="tabpanel" style="min-height: 380px;">
-                                        <input type="hidden" name="social_links_present" value="1">
-                                        <div
-                                            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                                            <div>
-                                                <h5 class="mb-1 font-weight-bold">Kelola Akun Media Sosial</h5>
-                                                <p class="text-muted fs-12 mb-0">Pilih icon dari stok platform yang
-                                                    tersedia, beri nama label, dan cantumkan URL tautan. Anda dapat menambah
-                                                    atau menghapus media sosial kapan saja.</p>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-1">
-                                                <button type="button"
-                                                    class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5"
-                                                    onclick="addSocialRow()">
-                                                    <i class="fe fe-plus"></i> Tambah Media Sosial
-                                                </button>
-                                                <div class="dropdown">
-                                                    <button type="button"
-                                                        class="btn btn-outline-primary btn-sm dropdown-toggle dropdown-toggle-split"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        title="Pilih platform spesifik">
-                                                        <span class="visually-hidden">Pilih Platform</span>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end shadow-lg p-2.5 border-0"
-                                                        style="width: 300px; max-height: 280px; overflow-y: auto; z-index: 1060;">
-                                                        <div
-                                                            class="text-muted fs-11 font-weight-semibold text-uppercase tracking-wider border-bottom pb-1 mb-2 px-1">
-                                                            Pilih Platform Medsos:</div>
-                                                        <div class="row g-1">
-                                                            @foreach ($availablePlatforms as $platKey => $plat)
-                                                                <div class="col-6">
-                                                                    <button type="button"
-                                                                        class="btn btn-sm btn-outline-light text-dark border w-100 d-flex align-items-center gap-2 p-1.5 fs-12 text-start rounded-2"
-                                                                        onclick="addSocialRow('{{ $platKey }}')">
-                                                                        <span
-                                                                            class="d-inline-flex align-items-center justify-content-center flex-shrink-0"
-                                                                            style="width: 20px; height: 20px;">
-                                                                            {!! $plat['icon'] !!}
-                                                                        </span>
-                                                                        <span
-                                                                            class="text-truncate">{{ $plat['name'] }}</span>
-                                                                    </button>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
+                                                    <div class="col-md-12">
+                                                        <label for="footer_about" class="form-label font-weight-semibold">Teks
+                                                            Ringkasan Profil (Footer About)</label>
+                                                        <textarea class="form-control @error('footer_about') is-invalid @enderror" id="footer_about" name="footer_about"
+                                                            rows="2" placeholder="Masukkan ringkasan profil">{{ old('footer_about', $settings['footer_about'] ?? '') }}</textarea>
+                                                        <small class="text-muted">Ditampilkan di bawah logo Higertech pada
+                                                            footer.</small>
+                                                        @error('footer_about')
+                                                            <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        {{-- 2. Aplikasi Mobile (Google Play) --}}
+                                        @php
+                                            $appActive = (string) old('footer_app_active', $settings['footer_app_active'] ?? '1') === '1';
+                                            $appUrl = old('footer_app_url', $settings['footer_app_url'] ?? 'https://play.google.com/store/apps/details?id=com.higertech.monitoring');
+                                        @endphp
+                                        <input type="hidden" name="footer_app_present" value="1">
+                                        <div class="card border shadow-none mb-4">
+                                            <div class="card-header bg-light py-2 px-3 border-bottom">
+                                                <h6 class="mb-0 font-weight-bold text-dark">
+                                                    <i class="fe fe-smartphone me-1 text-primary"></i> Tombol Unduh Aplikasi (Google Play)
+                                                </h6>
+                                            </div>
+                                            <div class="card-body p-4">
+                                                <div class="row align-items-center g-3 mb-3">
+                                                    <div class="col-lg-8 col-md-7">
+                                                        <label class="form-label font-weight-semibold fs-13 mb-1">Status Visibilitas di Footer</label>
+                                                        <p class="text-muted fs-12 mb-2">Tentukan apakah tombol badge Google Play ditampilkan atau disembunyikan dari footer publik.</p>
+                                                        <div class="form-check form-switch ps-5">
+                                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                                id="footer_app_active" name="footer_app_active" value="1"
+                                                                style="cursor: pointer; width: 2.2em; height: 1.2em;"
+                                                                {{ $appActive ? 'checked' : '' }}>
+                                                            <label class="form-check-label font-weight-semibold fs-13 ms-2" for="footer_app_active" style="cursor: pointer;">
+                                                                <span id="footer_app_active_label" class="{{ $appActive ? 'text-success' : 'text-muted' }}">
+                                                                    {{ $appActive ? 'Aktif (Tampil di Footer)' : 'Nonaktif (Sembunyi dari Footer)' }}
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-5">
+                                                        <div class="p-3 bg-light rounded-3 border text-center">
+                                                            <span class="d-block text-muted fs-12 font-weight-semibold mb-2">Pratinjau Badge di Footer:</span>
+                                                            <div class="d-flex justify-content-center align-items-center py-1">
+                                                                <img src="{{ asset('images/brand/google-play-badge.png') }}"
+                                                                    alt="Google Play"
+                                                                    style="height: 42px;"
+                                                                    class="rounded shadow-sm">
+                                                            </div>
+                                                            <span id="footer_app_preview_status" class="badge {{ $appActive ? 'bg-success-transparent text-success' : 'bg-danger-transparent text-danger' }} mt-2 fs-11">
+                                                                {{ $appActive ? 'â— Sedang Tampil di Footer' : 'â—‹ Sedang Disembunyikan' }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="footer_app_url" class="form-label font-weight-semibold fs-13 mb-1">Tautan URL Google Play Store</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="fe fe-link"></i></span>
+                                                            <input type="url"
+                                                                class="form-control @error('footer_app_url') is-invalid @enderror"
+                                                                id="footer_app_url" name="footer_app_url"
+                                                                value="{{ $appUrl }}"
+                                                                placeholder="https://play.google.com/store/apps/details?id=...">
+                                                        </div>
+                                                        <small class="text-muted">Target tautan ketika pengunjung mengklik badge Google Play di footer (otomatis terbuka di tab baru).</small>
+                                                        @error('footer_app_url')
+                                                            <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- 3. Media Sosial --}}
+                                        <div class="card border shadow-none mb-0">
+                                            <div class="card-header bg-light py-2 px-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                                <div>
+                                                    <h6 class="mb-0 font-weight-bold text-dark">
+                                                        <i class="fe fe-share-2 me-1 text-primary"></i> Kelola Akun Media Sosial
+                                                    </h6>
+                                                    <p class="text-muted fs-11 mb-0">Pilih icon platform, beri nama label, dan cantumkan URL tautan.</p>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    <button type="button"
+                                                        class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5"
+                                                        onclick="addSocialRow()">
+                                                        <i class="fe fe-plus"></i> Tambah Media Sosial
+                                                    </button>
+                                                    <div class="dropdown">
+                                                        <button type="button"
+                                                            class="btn btn-outline-primary btn-sm dropdown-toggle dropdown-toggle-split"
+                                                            data-bs-toggle="dropdown" aria-expanded="false"
+                                                            title="Pilih platform spesifik">
+                                                            <span class="visually-hidden">Pilih Platform</span>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-end shadow-lg p-2.5 border-0"
+                                                            style="width: 300px; max-height: 280px; overflow-y: auto; z-index: 1060;">
+                                                            <div
+                                                                class="text-muted fs-11 font-weight-semibold text-uppercase tracking-wider border-bottom pb-1 mb-2 px-1">
+                                                                Pilih Platform Medsos:</div>
+                                                            <div class="row g-1">
+                                                                @foreach ($availablePlatforms as $platKey => $plat)
+                                                                    <div class="col-6">
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-outline-light text-dark border w-100 d-flex align-items-center gap-2 p-1.5 fs-12 text-start rounded-2"
+                                                                            onclick="addSocialRow('{{ $platKey }}')">
+                                                                            <span
+                                                                                class="d-inline-flex align-items-center justify-content-center flex-shrink-0"
+                                                                                style="width: 20px; height: 20px;">
+                                                                                {!! $plat['icon'] !!}
+                                                                            </span>
+                                                                            <span
+                                                                                class="text-truncate">{{ $plat['name'] }}</span>
+                                                                        </button>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body p-3">
+                                                <input type="hidden" name="social_links_present" value="1">
 
                                         <div id="social-rows-container" class="d-flex flex-column gap-3">
                                             @foreach ($socialLinks ?? [] as $index => $item)
@@ -398,6 +466,8 @@
                                             </button>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
                                     {{-- Tab 4: Menu Navbar --}}
                                     <div class="tab-pane" id="tab-navbar" role="tabpanel">
@@ -872,6 +942,34 @@
 
             const firstServerError = settingsForm.querySelector('.is-invalid');
             if (firstServerError) showSettingsTabFor(firstServerError);
+
+            // Toggle teks label visibilitas aplikasi Google Play
+            const appSwitch = document.getElementById('footer_app_active');
+            const appLabel = document.getElementById('footer_app_active_label');
+            const appStatus = document.getElementById('footer_app_preview_status');
+            if (appSwitch) {
+                appSwitch.addEventListener('change', function () {
+                    if (this.checked) {
+                        if (appLabel) {
+                            appLabel.textContent = 'Aktif (Tampil di Footer)';
+                            appLabel.className = 'text-success';
+                        }
+                        if (appStatus) {
+                            appStatus.className = 'badge bg-success-transparent text-success mt-2 fs-11';
+                            appStatus.textContent = '● Sedang Tampil di Footer';
+                        }
+                    } else {
+                        if (appLabel) {
+                            appLabel.textContent = 'Nonaktif (Sembunyi dari Footer)';
+                            appLabel.className = 'text-muted';
+                        }
+                        if (appStatus) {
+                            appStatus.className = 'badge bg-danger-transparent text-danger mt-2 fs-11';
+                            appStatus.textContent = '○ Sedang Disembunyikan';
+                        }
+                    }
+                });
+            }
         </script>
     @endpush
 @endsection

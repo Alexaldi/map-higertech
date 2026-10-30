@@ -4,7 +4,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
 
             {{-- Brand Info --}}
-            <div class="lg:col-span-5 space-y-4">
+            <div class="lg:col-span-4 space-y-4">
                 <a href="{{ route('home') }}" aria-label="Higertech">
                     <picture>
                         <source srcset="{{ asset('images/brand/higertech-logo.webp') }}" type="image/webp">
@@ -94,8 +94,8 @@
                 </ul>
             </div>
 
-            {{-- Social --}}
-            <div class="lg:col-span-2 space-y-4">
+            {{-- Social & Mobile App --}}
+            <div class="lg:col-span-3 space-y-4">
                 <h3 class="text-slate-900 dark:text-white font-bold text-sm tracking-wide">
                     {{ __('landing.footer_social') }}</h3>
                 <div class="flex items-center gap-2.5 flex-wrap">
@@ -116,6 +116,21 @@
                         </svg>
                     </a>
                 </div>
+
+                {{-- Unduh Aplikasi Android (Google Play) --}}
+                @if(setting('footer_app_active', '1') == '1' && setting('footer_app_url', 'https://play.google.com/store/apps/details?id=com.higertech.monitoring'))
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <a href="{{ setting('footer_app_url', 'https://play.google.com/store/apps/details?id=com.higertech.monitoring') }}"
+                            target="_blank" rel="noopener noreferrer"
+                            class="inline-block transition-transform hover:scale-105 active:scale-95"
+                            title="Temukan di Google Play">
+                            <img src="{{ asset('images/brand/google-play-badge.png') }}"
+                                alt="Temukan di Google Play"
+                                class="h-10 w-auto object-contain rounded-lg shadow-sm"
+                                loading="lazy">
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
 
