@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -42,21 +43,38 @@ class DeviceApiLogController extends Controller
             ->paginate($perPage)
             ->withQueryString();
 
+        $wrapId = DB::connection()->getQueryGrammar()->wrap('payload->id');
+
         $counts = DeviceApiLog::query()
             ->selectRaw(
                 "COUNT(*) AS total,
                 SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) AS success,
                 SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) AS failed,
-                COUNT(DISTINCT sub_domain) AS subdomains"
+                COUNT(DISTINCT sub_domain) AS subdomains,
+                COUNT(DISTINCT NULLIF({$wrapId}, '')) AS devices"
             )
             ->first();
 
         $stats = [
-            'total'      => (int) $counts->total,
-            'success'    => (int) $counts->success,
-            'failed'     => (int) $counts->failed,
-            'subdomains' => (int) $counts->subdomains,
+            'total'      => (int) ($counts->total ?? 0),
+            'success'    => (int) ($counts->success ?? 0),
+            'failed'     => (int) ($counts->failed ?? 0),
+            'subdomains' => (int) ($counts->subdomains ?? 0),
+            'devices'    => (int) ($counts->devices ?? 0),
         ];
+
+        // Ringkasan metrik per subdomain balai (Total ID, Diteruskan, Error)
+        $subdomainStats = DeviceApiLog::query()
+            ->selectRaw(
+                "sub_domain,
+                COUNT(*) AS total_requests,
+                SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) AS success_requests,
+                SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) AS failed_requests,
+                COUNT(DISTINCT NULLIF({$wrapId}, '')) AS total_devices"
+            )
+            ->groupBy('sub_domain')
+            ->orderByDesc('total_requests')
+            ->get();
 
         $search = $filters['q'];
         $perPageOptions = self::PER_PAGE_OPTIONS;
@@ -64,7 +82,7 @@ class DeviceApiLogController extends Controller
         $pdfMaxRows = self::PDF_MAX_ROWS;
 
         return view('admin.device-logs.index', compact(
-            'logs', 'stats', 'search', 'filters', 'hasFilters', 'perPage', 'perPageOptions', 'pdfMaxRows'
+            'logs', 'stats', 'subdomainStats', 'search', 'filters', 'hasFilters', 'perPage', 'perPageOptions', 'pdfMaxRows'
         ));
     }
 
@@ -194,12 +212,36 @@ class DeviceApiLogController extends Controller
     {
         return DeviceApiLog::query()
             ->when($filters['q'] !== '', function (Builder $query) use ($filters) {
-                $like = '%' . $filters['q'] . '%';
-                $query->where(function (Builder $q) use ($like) {
-                    $q->where('sub_domain', 'like', $like)
-                        ->orWhere('ip_address', 'like', $like)
-                        ->orWhere('status_code', 'like', $like)
-                        ->orWhere('payload', 'like', $like);
+                $rawTerm = $filters['q'];
+                $like = '%' . $rawTerm . '%';
+                $lowerLike = '%' . mb_strtolower($rawTerm, 'UTF-8') . '%';
+                $isIpSearch = str_contains($rawTerm, '.');
+                $isNumeric = is_numeric($rawTerm);
+                $wrapId = DB::connection()->getQueryGrammar()->wrap('payload->id');
+
+                $query->where(function (Builder $q) use ($like, $lowerLike, $rawTerm, $isIpSearch, $isNumeric, $wrapId) {
+                    // 1. Subdomain matching (case-insensitive)
+                    $q->whereRaw('LOWER(sub_domain) LIKE ?', [$lowerLike])
+                        // 2. ID Alat matching (case-insensitive di payload->id)
+                        ->orWhereRaw("LOWER({$wrapId}) LIKE ?", [$lowerLike]);
+
+                    // 3. Fallback search ke seluruh JSON payload (case-insensitive)
+                    if (DB::connection()->getDriverName() === 'sqlite') {
+                        $q->orWhereRaw('LOWER(payload) LIKE ?', [$lowerLike]);
+                    } else {
+                        $q->orWhereRaw('LOWER(CAST(payload AS CHAR)) LIKE ?', [$lowerLike]);
+                    }
+
+                    // 4. IP address HANYA dicari jika kata kunci mengandung titik '.' (format IP)
+                    // Mencegah kata kunci angka murni seperti '177' mencocokkan IP sembarang alat lain
+                    if ($isIpSearch) {
+                        $q->orWhere('ip_address', 'like', $like);
+                    }
+
+                    // 5. Kode status HTTP HANYA jika berupa 3 digit kode HTTP valid
+                    if ($isNumeric && strlen($rawTerm) === 3 && in_array((int) $rawTerm, [200, 400, 401, 403, 404, 429, 500, 502, 503, 504], true)) {
+                        $q->orWhere('status_code', (int) $rawTerm);
+                    }
                 });
             })
             ->when($filters['status'] !== '', fn (Builder $query) => $query->where('status', $filters['status']))

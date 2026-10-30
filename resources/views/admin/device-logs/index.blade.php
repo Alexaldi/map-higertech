@@ -63,8 +63,14 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="mb-1 text-white-50">Subdomain Balai</h6>
-                            <h2 class="mb-0 text-white font-weight-bold">{{ number_format($stats['subdomains']) }}</h2>
+                            <h6 class="mb-1 text-white-50">Subdomain & Alat</h6>
+                            <div class="d-flex align-items-baseline gap-2">
+                                <h2 class="mb-0 text-white font-weight-bold">{{ number_format($stats['subdomains']) }}</h2>
+                                <span class="fs-12 text-white-50">Subdomain</span>
+                            </div>
+                            <small class="d-block text-white mt-1 fs-11 opacity-75">
+                                <i class="fe fe-cpu me-1"></i><strong>{{ number_format($stats['devices'] ?? 0) }}</strong> Total ID Terdaftar
+                            </small>
                         </div>
                         <div class="ms-auto">
                             <span class="avatar avatar-md bg-white-transparent rounded-circle">
@@ -75,6 +81,90 @@
                 </div>
             </div>
         </div>
+
+        <!-- Subdomain Breakdown Cards -->
+        @if (isset($subdomainStats) && $subdomainStats->isNotEmpty())
+            <div class="col-12 col-sm-12 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div>
+                            <h3 class="card-title mb-0">
+                                <i class="fe fe-grid me-1 text-primary"></i> Statistik Per Subdomain Balai
+                            </h3>
+                            <p class="fs-12 text-muted mb-0 mt-1">Rincian total ID alat, request berhasil diteruskan, dan request gagal untuk setiap subdomain instansi</p>
+                        </div>
+                        <span class="badge bg-primary-transparent text-primary fs-12 px-2.5 py-1">
+                            {{ $subdomainStats->count() }} Subdomain Aktif
+                        </span>
+                    </div>
+                    <div class="card-body pb-3">
+                        <div class="row g-3">
+                            @foreach ($subdomainStats as $sub)
+                                @php
+                                    $isSelected = ($filters['q'] === $sub->sub_domain);
+                                @endphp
+                                <div class="col-sm-6 col-md-4 col-xl-3">
+                                    <div class="card border mb-0 h-100 shadow-none {{ $isSelected ? 'border-primary bg-primary-transparent' : 'bg-light' }}"
+                                         style="border-radius: 8px; transition: all 0.2s ease;">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                                <div class="d-flex align-items-center text-truncate me-2">
+                                                    <span class="avatar avatar-sm bg-white text-primary rounded-circle border shadow-xs me-2 flex-shrink-0">
+                                                        <i class="fe fe-server fs-12"></i>
+                                                    </span>
+                                                    <div class="text-truncate">
+                                                        <h6 class="mb-0 fw-bold text-dark text-truncate" title="{{ $sub->sub_domain }}">
+                                                            {{ $sub->sub_domain }}
+                                                        </h6>
+                                                        <small class="text-muted fs-11 text-truncate d-block">{{ $sub->sub_domain }}.higertech.com</small>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-white text-dark border fs-11 flex-shrink-0" title="Jumlah ID alat terdaftar di subdomain ini">
+                                                    <i class="fe fe-cpu me-1 text-primary"></i>{{ number_format($sub->total_devices) }} ID
+                                                </span>
+                                            </div>
+
+                                            <div class="p-2 bg-white rounded border fs-12 mb-2">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="text-muted fs-11">Total Request:</span>
+                                                    <span class="fw-bold font-monospace text-dark">{{ number_format($sub->total_requests) }}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="text-success fs-11"><i class="fe fe-check me-1"></i>Diteruskan:</span>
+                                                    <span class="fw-semibold font-monospace text-success">{{ number_format($sub->success_requests) }}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="{{ $sub->failed_requests > 0 ? 'text-danger' : 'text-muted' }} fs-11">
+                                                        <i class="fe {{ $sub->failed_requests > 0 ? 'fe-alert-triangle' : 'fe-check-circle' }} me-1"></i>Error / Gagal:
+                                                    </span>
+                                                    <span class="fw-semibold font-monospace {{ $sub->failed_requests > 0 ? 'text-danger' : 'text-muted' }}">
+                                                        {{ number_format($sub->failed_requests) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-end">
+                                                @if ($isSelected)
+                                                    <a href="{{ route('admin.device-logs.index', array_filter(request()->except(['q', 'page']))) }}"
+                                                       class="btn btn-xs btn-primary w-100" title="Hapus filter subdomain">
+                                                        <i class="fe fe-check me-1"></i> Sedang Difilter (Reset)
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('admin.device-logs.index', array_merge(array_filter(request()->except(['page'])), ['q' => $sub->sub_domain])) }}"
+                                                       class="btn btn-xs btn-outline-primary w-100" title="Filter log hanya untuk {{ $sub->sub_domain }}">
+                                                        <i class="fe fe-filter me-1"></i> Filter Subdomain
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <!-- Main Table -->
         <div class="col-12 col-sm-12">
@@ -146,10 +236,11 @@
                             </div>
 
                             <label for="log-search" class="mb-0">Cari:</label>
-                            <div class="input-group input-group-sm" style="width: 260px;">
+                            <div class="input-group input-group-sm" style="width: 275px;">
                                 <input type="text" name="q" id="log-search" class="form-control"
-                                    placeholder="Subdomain / IP / ID alat..." value="{{ $search }}">
-                                <button type="submit" class="btn btn-primary"><i class="fe fe-search"></i></button>
+                                    placeholder="Cari ID alat, subdomain, IP..." value="{{ $search }}"
+                                    title="Cari ID alat, subdomain balai, atau IP address">
+                                <button type="submit" class="btn btn-primary" title="Cari"><i class="fe fe-search"></i></button>
                                 @if ($hasFilters)
                                     <a href="{{ route('admin.device-logs.index', ['per_page' => $perPage]) }}" class="btn btn-light"
                                         title="Reset filter"><i class="fe fe-x"></i></a>

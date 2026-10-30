@@ -260,4 +260,87 @@ class DeviceApiLogTest extends TestCase
         $responseClear->assertRedirect(route('admin.device-logs.index'));
         $this->assertDatabaseCount('device_api_logs', 0);
     }
+
+    public function test_admin_dashboard_shows_subdomain_stats_and_total_device_counts(): void
+    {
+        $admin = User::create([
+            'name'     => 'Super Admin',
+            'email'    => 'admin@higertech.test',
+            'password' => bcrypt('password'),
+        ]);
+
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabbwscitarum',
+            'payload'     => ['id' => 'HGT101'],
+            'status_code' => 200,
+            'status'      => 'success',
+        ]);
+
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabbwscitarum',
+            'payload'     => ['id' => 'HGT102'],
+            'status_code' => 500,
+            'status'      => 'failed',
+        ]);
+
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabwspapuabarat',
+            'payload'     => ['id' => 'HGT103'],
+            'status_code' => 200,
+            'status'      => 'success',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.device-logs.index'));
+
+        $response->assertOk();
+        $response->assertSee('Statistik Per Subdomain Balai');
+        $response->assertSee('Total ID Terdaftar');
+        $response->assertSee('hkabbwscitarum');
+        $response->assertSee('hkabwspapuabarat');
+    }
+
+    public function test_search_device_by_partial_or_case_insensitive_keyword(): void
+    {
+        $admin = User::create([
+            'name'     => 'Super Admin',
+            'email'    => 'admin@higertech.test',
+            'password' => bcrypt('password'),
+        ]);
+
+        // Alat yang dicari (ID HGT177, IP tidak ada 177)
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabbwscitarum',
+            'payload'     => ['id' => 'HGT177', 'rain' => 0.0],
+            'ip_address'  => '10.0.0.1',
+            'status_code' => 200,
+            'status'      => 'success',
+        ]);
+
+        // Alat lain yang kebetulan IP-nya ada 177
+        DeviceApiLog::create([
+            'sub_domain'  => 'hkabwsmalut',
+            'payload'     => ['id' => 'HGT111', 'rain' => 0.0],
+            'ip_address'  => '182.1.177.55',
+            'status_code' => 200,
+            'status'      => 'success',
+        ]);
+
+        // 1. Pencarian 'Hgt177' (huruf kecil dari HP) harus menemukan HGT177
+        $res1 = $this->actingAs($admin)->get(route('admin.device-logs.index', ['q' => 'Hgt177']));
+        $res1->assertOk();
+        $res1->assertSee('HGT177');
+        $res1->assertDontSee('HGT111');
+
+        // 2. Pencarian angka '177' harus menemukan HGT177 dan TIDAK mencocokkan IP HGT111
+        $res2 = $this->actingAs($admin)->get(route('admin.device-logs.index', ['q' => '177']));
+        $res2->assertOk();
+        $res2->assertSee('HGT177');
+        $res2->assertDontSee('HGT111');
+
+        // 3. Pencarian IP dengan titik '177.55' harus menemukan log berdasarkan IP
+        $res3 = $this->actingAs($admin)->get(route('admin.device-logs.index', ['q' => '177.55']));
+        $res3->assertOk();
+        $res3->assertSee('HGT111');
+        $res3->assertDontSee('HGT177');
+    }
 }

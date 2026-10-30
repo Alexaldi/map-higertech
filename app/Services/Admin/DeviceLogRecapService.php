@@ -189,10 +189,13 @@ class DeviceLogRecapService
             ->where('created_at', '>=', Carbon::parse($filters['from'], self::TIMEZONE)->startOfDay()->timezone($appTimezone))
             ->where('created_at', '<=', Carbon::parse($filters['to'], self::TIMEZONE)->endOfDay()->timezone($appTimezone))
             ->when($filters['q'] !== '', function (Builder $query) use ($filters) {
-                $like = '%' . $filters['q'] . '%';
-                $query->where(function (Builder $q) use ($like) {
-                    $q->where('sub_domain', 'like', $like)
-                        ->orWhere('payload->id', 'like', $like);
+                $rawTerm = $filters['q'];
+                $lowerLike = '%' . mb_strtolower($rawTerm, 'UTF-8') . '%';
+                $wrapId = DB::connection()->getQueryGrammar()->wrap('payload->id');
+
+                $query->where(function (Builder $q) use ($lowerLike, $wrapId) {
+                    $q->whereRaw('LOWER(sub_domain) LIKE ?', [$lowerLike])
+                        ->orWhereRaw("LOWER({$wrapId}) LIKE ?", [$lowerLike]);
                 });
             });
     }
