@@ -46,7 +46,7 @@ npm run build
 
 Akses web:
 * 🗺️ **Peta WebGIS:** [http://localhost:8000/map](http://localhost:8000/map)
-* 📊 **Panel Admin:** [http://localhost:8000/admin](http://localhost:8000/admin) (Login: `admin@gmail.com` / `password`)
+* 📊 **Panel Admin:** [http://localhost:8000/admin](http://localhost:8000/admin) (Gunakan akun admin yang dikonfigurasi saat seeder)
 * 📡 **Log Telemetri IoT:** [http://localhost:8000/admin/device-logs](http://localhost:8000/admin/device-logs)
 
 ---

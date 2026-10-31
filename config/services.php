@@ -44,10 +44,10 @@ return [
     ],
 
     'pos_monitoring' => [
-        'base_url' => env('POS_MONITORING_BASE_URL', 'http://103.183.75.71:5000'),
-        'username' => env('POS_MONITORING_USERNAME', 'm0n1tor_st4tion'),
-        'password' => env('POS_MONITORING_PASSWORD', 'H1gertech.1dua3'),
-        'timeout' => (int) env('POS_MONITORING_TIMEOUT', 30),
+        'base_url' => env('POS_MONITORING_BASE_URL'),
+        'username' => env('POS_MONITORING_USERNAME'),
+        'password' => env('POS_MONITORING_PASSWORD'),
+        'timeout'  => (int) env('POS_MONITORING_TIMEOUT', 30),
     ],
 
     /*
