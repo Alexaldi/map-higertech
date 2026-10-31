@@ -23,9 +23,9 @@ class PosMonitoringService
         ?string $password = null,
         ?int $timeout = null
     ) {
-        $this->baseUrl = rtrim($baseUrl ?? config('services.pos_monitoring.base_url', 'http://103.183.75.71:5000'), '/');
-        $this->username = $username ?? config('services.pos_monitoring.username', 'm0n1tor_st4tion');
-        $this->password = $password ?? config('services.pos_monitoring.password', 'H1gertech.1dua3');
+        $this->baseUrl = rtrim((string) ($baseUrl ?? config('services.pos_monitoring.base_url') ?? 'http://103.183.75.71:5000'), '/');
+        $this->username = (string) ($username ?? config('services.pos_monitoring.username') ?? '');
+        $this->password = (string) ($password ?? config('services.pos_monitoring.password') ?? '');
         $this->timeout = $timeout ?? (int) config('services.pos_monitoring.timeout', 30);
     }
 

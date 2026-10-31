@@ -58,7 +58,7 @@ services:
     container_name: higertech_mysql
     restart: unless-stopped
     ports:
-      - "3307:3306"       # 3307 di host supaya tidak konflik sama MySQL Windows
+      - "127.0.0.1:3307:3306"       # 127.0.0.1 agar tidak bisa diakses dari IP publik luar VPS
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -80,7 +80,7 @@ services:
     container_name: higertech_redis
     restart: unless-stopped
     ports:
-      - "6380:6379"       # 6380 di host supaya tidak konflik sama Redis lain
+      - "127.0.0.1:6380:6379"       # 127.0.0.1 agar aman dari scanning internet
     command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
@@ -107,13 +107,34 @@ services:
     networks:
       - higertech_net
 
+  # ---- Task Scheduler ----
+  # Menjalankan task terjadwal otomatis (stations:sync tiap 15 menit, dll)
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: higertech_scheduler
+    restart: unless-stopped
+    command: sh -c "while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done"
+    volumes:
+      - .:/var/www/html
+      - ./storage:/var/www/html/storage
+      - /var/www/html/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - higertech_net
+
   # ---- GOWA (WhatsApp Gateway) ----
   gowa:
     image: aldinokemal2104/go-whatsapp-web-multidevice:latest
     container_name: higertech_gowa
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     environment:
       - APP_PORT=3000
       - APP_BASIC_AUTH=${GOWA_BASIC_AUTH_USERNAME}:${GOWA_BASIC_AUTH_PASSWORD}

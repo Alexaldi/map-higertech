@@ -23,7 +23,7 @@ class StationResource extends JsonResource
             'village_name' => $this->village_name,
             'device_id' => $this->device_id,
             'device_status' => $this->device_status,
-            'installation_date' => $this->created_at ? $this->created_at->translatedFormat('j F Y') : '1 Desember 2025',
+            'installation_date' => $this->installation_date ?? null,
             'reading_at' => $this->reading_at?->toIso8601String(),
             'latest_reading' => $this->latest_reading,
         ];

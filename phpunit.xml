@@ -37,5 +37,7 @@
         <env name="GOWA_API_URL" value="http://localhost:3000"/>
         <env name="GOWA_BASIC_AUTH_USERNAME" value="testadmin"/>
         <env name="GOWA_BASIC_AUTH_PASSWORD" value="testpassword"/>
+        <env name="POS_MONITORING_USERNAME" value="testuser"/>
+        <env name="POS_MONITORING_PASSWORD" value="testpass"/>
     </php>
 </phpunit>

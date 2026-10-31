@@ -34,6 +34,12 @@ Thumbs.db
 /docs/laporan/
 /docs/Template laporan/
 
+# Capstone & Data Riset Lapangan (CCTV, Log, Konteks)
+*capstone*
+*Capstone*
+docs/citarum_*
+docs/citarum_cctv_preview/
+
 # AI, Assistant & LLM Context / Tools
 /.gemini
 /.antigravity

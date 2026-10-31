@@ -43,9 +43,16 @@ export const buildPopup = (station = {}, now = new Date()) => {
         : '<span class="station-popup__no-data">Data realtime belum tersedia</span>';
 
     const deviceId = station.device_id || `HGT${station.id || '-'}`;
-    const installDate = station.installation_date || '-';
     const managerName = station.balai_name || '-';
     const locationText = formatLocation(station);
+    const deviceStatus = (station.device_status || 'online').toLowerCase();
+    const isOnline = deviceStatus === 'online';
+    const statusLabel = isOnline ? 'Online' : 'Offline';
+    const statusColor = isOnline ? '#10b981' : '#ef4444';
+    const thirdMetaLabel = station.installation_date ? 'INSTALASI' : 'STATUS ALAT';
+    const thirdMetaVal = station.installation_date
+        ? escapeHtml(station.installation_date)
+        : `<span style="color:${statusColor};font-weight:800;">${escapeHtml(statusLabel)}</span>`;
 
     return `
         <article class="station-popup">
@@ -98,8 +105,8 @@ export const buildPopup = (station = {}, now = new Date()) => {
                         <strong class="station-popup__meta-text">${escapeHtml(relativeTime(station.reading_at, now))}</strong>
                     </div>
                     <div class="station-popup__meta-cell">
-                        <span class="station-popup__label">INSTALASI</span>
-                        <strong class="station-popup__meta-text">${escapeHtml(installDate)}</strong>
+                        <span class="station-popup__label">${thirdMetaLabel}</span>
+                        <strong class="station-popup__meta-text">${thirdMetaVal}</strong>
                     </div>
                 </div>
             </div>
