@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Dokumen Kebutuhan Teknis & Permohonan Data Capstone Project 2026</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #1e293b;
+      line-height: 1.4;
+      font-size: 9.5pt;
+      margin: 0;
+      padding: 0;
+    }
+    .header-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-bottom: 2.5px double #0284c7;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .header-table td {
+      vertical-align: middle;
+    }
+    .inst-title {
+      font-size: 11.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .inst-subtitle {
+      font-size: 8.5pt;
+      color: #475569;
+      margin: 1px 0 0 0;
+    }
+    .doc-badge {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 700;
+      font-size: 8pt;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #bae6fd;
+      text-transform: uppercase;
+    }
+    h1 {
+      font-size: 12.5pt;
+      font-weight: 800;
+      text-align: center;
+      color: #0f172a;
+      margin: 8px 0 2px 0;
+      text-transform: uppercase;
+      line-height: 1.25;
+    }
+    .doc-sub {
+      text-align: center;
+      font-size: 9pt;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+    .meta-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+    }
+    .meta-table td {
+      padding: 2px 4px;
+      vertical-align: top;
+    }
+    .meta-table td.label {
+      width: 20%;
+      font-weight: 600;
+      color: #475569;
+    }
+    .meta-table td.colon {
+      width: 2%;
+      color: #475569;
+    }
+    .meta-table td.val {
+      width: 78%;
+      color: #0f172a;
+    }
+    h2 {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #0369a1;
+      border-left: 3.5px solid #0284c7;
+      padding-left: 6px;
+      margin: 12px 0 6px 0;
+      text-transform: uppercase;
+    }
+    p {
+      margin: 0 0 6px 0;
+      text-align: justify;
+    }
+    table.content-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 10px 0;
+      font-size: 8.5pt;
+    }
+    table.content-table th, table.content-table td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 6px;
+      text-align: left;
+    }
+    table.content-table th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+      text-align: center;
+    }
+    .highlight-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 5px;
+      padding: 6px 10px;
+      margin: 8px 0;
+      font-size: 8pt;
+    }
+    .req-list {
+      margin: 4px 0 8px 16px;
+      padding: 0;
+      font-size: 8.5pt;
+    }
+    .req-list li {
+      margin-bottom: 5px;
+      text-align: justify;
+    }
+    .req-title {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+    .sign-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 8.5pt;
+    }
+    .sign-table td {
+      width: 33.3%;
+      text-align: center;
+      vertical-align: top;
+      padding: 6px 4px;
+    }
+    .sign-space {
+      height: 48px;
+    }
+    .sign-name {
+      font-weight: 700;
+      text-decoration: underline;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- KOP HEADER -->
+  <table class="header-table">
+    <tr>
+      <td>
+        <div class="inst-title">UNIVERSITAS KOMPUTER INDONESIA (UNIKOM)</div>
+        <div class="inst-subtitle">Fakultas Teknik dan Ilmu Komputer &bull; Program Studi Teknik Informatika</div>
+        <div class="inst-subtitle">Jl. Dipati Ukur No. 112-116, Lebakgede, Kecamatan Coblong, Kota Bandung</div>
+      </td>
+      <td style="text-align: right; width: 140px;">
+        <span class="doc-badge">Dokumen Teknis</span>
+      </td>
+    </tr>
+  </table>
+
+  <h1>DOKUMEN KEBUTUHAN TEKNIS & PERMOHONAN DATA</h1>
+  <div class="doc-sub">Program Kolaborasi Capstone Project / Magang Skripsi MBKM 2026<br>Mitra Industri: <strong>PT Higertech Karya Sinergi</strong></div>
+
+  <!-- META IDENTITAS -->
+  <div class="meta-box">
+    <table class="meta-table">
+      <tr>
+        <td class="label">Judul Proyek</td>
+        <td class="colon">:</td>
+        <td class="val"><strong>Klasifikasi Risiko Sumbatan Aliran Sungai Berbasis Segmentasi Sampah pada Citra CCTV dan Data Telemetri Hidrologi</strong></td>
+      </tr>
+      <tr>
+        <td class="label">Problem Owner</td>
+        <td class="colon">:</td>
+        <td class="val">PT Higertech Karya Sinergi (Bapak Andri Gunawan, S.Kom. &amp; Bapak Handy)</td>
+      </tr>
+      <tr>
+        <td class="label">Dosen Pembimbing</td>
+        <td class="colon">:</td>
+        <td class="val">Hanhan Maulana, M.Kom., Ph.D. (Gilang, Rizky) &amp; Riani Lubis, S.T., M.T. (Raditya)</td>
+      </tr>
+      <tr>
+        <td class="label">Tim Pengembang</td>
+        <td class="colon">:</td>
+        <td class="val">
+          1. <strong>Gilang Aldiano</strong> (10123404) &ndash; Computer Vision Engineer<br>
+          2. <strong>Raditya Rizqullah Anwar</strong> (10123395) &ndash; Machine Learning Engineer<br>
+          3. <strong>Rizky Faturohman</strong> (10123391) &ndash; Software Engineer
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>1. Ringkasan Eksekutif & Urgensi Sistem</h2>
+  <p>
+    Sistem telemetri Early Warning System (EWS) hidrologi yang dioperasikan PT Higertech Karya Sinergi saat ini mencatat kenaikan Tinggi Muka Air (TMA) melalui sensor AWLR. Namun, sistem belum dapat membedakan secara otomatis apakah kenaikan muka air disebabkan oleh murni debit limpasan hujan dari hulu (ARR) atau akibat <em>backwater effect</em> karena aliran tertahan timbunan sampah terapung di pintu air dan saringan polder.
+  </p>
+  <p>
+    Tim Capstone membangun prototipe cerdas terintegrasi: mengukur persentase luas tutupan sampah (%) via segmentasi semantik citra CCTV (Gilang - CV), memfusikan data tersebut dengan sensor AWLR dan ARR untuk mendeteksi anomali dan mengklasifikasikan 4 level risiko sumbatan (Raditya - ML), serta menyajikan dashboard pemantauan otomatis 24/7 (Rizky - SE).
+  </p>
+
+  <h2>2. Penetapan 2 Pos Pantau Kunci & 1 Sensor Hujan Pendukung</h2>
+  <p>
+    Berdasarkan audit visual terhadap seluruh 10 kamera CCTV aktif di jaringan Citarum dan analisis kedekatan radius hidrologis, tim memusatkan lokus penelitian ke kawasan episentrum banjir Dayeuhkolot &ndash; Baleendah:
+  </p>
+
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama Pos & Lokasi</th>
+        <th>Perangkat Terpasang</th>
+        <th>Koordinat (Lat, Lon)</th>
+        <th>Peran dalam Riset</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center;"><strong>1</strong></td>
+        <td><strong>Kolam Retensi Cieunteung</strong><br><small>Baleendah, Kab. Bandung</small></td>
+        <td>
+          &bull; CCTV: <code>cam-09</code><br>
+          &bull; AWLR: <code>HGT662</code> (Kolam)<br>
+          &bull; AWLR: <code>HGT663</code> (Outlet)
+        </td>
+        <td>-6.991944,<br>107.627444</td>
+        <td>
+          <strong>Pos Utama Modul CV:</strong> Sudut pandang 90% air terbuka luas, minim halangan pohon. Episentrum penampungan banjir luapan Citarum Hulu.
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><strong>2</strong></td>
+        <td><strong>Polder Cisangkuy Out</strong><br><small>Baleendah, Kab. Bandung</small></td>
+        <td>
+          &bull; CCTV: <code>cam-03</code><br>
+          &bull; AWLR: <code>HGT431</code> (Polder)
+        </td>
+        <td>-6.990828,<br>107.625517</td>
+        <td>
+          <strong>Pos Pendamping CV & Polder:</strong> Aliran keluar anak sungai Cisangkuy di kolong jembatan baja. Jarak sensor AWLR hanya 10 meter dari tiang kamera.
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><strong>+</strong></td>
+        <td><strong>PCH Bojongsoang</strong><br><small>Pos Penakar Hujan (ARR)</small></td>
+        <td>
+          &bull; ARR: <code>HGT201</code><br>
+          <small>(Tipping Bucket)</small>
+        </td>
+        <td>-6.989112,<br>107.631192</td>
+        <td>
+          <strong>Sensor Hujan Utama (Fusi ML):</strong> Jarak hanya <strong>520 meter</strong> dari Cieunteung dan 600 meter dari Cisangkuy. Menjadi variabel acuan curah hujan lokal.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-card">
+    <strong>Karakteristik Transmisi Data (Fakta Empiris Server Higertech):</strong><br>
+    Sensor AWLR (<code>HGT662</code>, <code>HGT663</code>, <code>HGT431</code>) dan ARR (<code>HGT201</code>) terbukti mentransmisikan data telemetri secara periodik tepat <strong>setiap 5 menit (300 detik) sekali</strong> dengan status aktif/online. Hal ini memungkinkan sinkronisasi data yang presisi antara citra CCTV dan nilai sensor.
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2>3. Rincian Permohonan Kebutuhan Teknis ke PT Higertech</h2>
+  <p>
+    Untuk mendukung penyelesaian Capstone Project dan mencapai indikator keberhasilan akademik yang disyaratkan program studi, tim memohon dukungan teknis berikut:
+  </p>
+
+  <ol class="req-list">
+    <li>
+      <span class="req-title">Dump Data Historis Sensor Telemetri (Format .CSV / .XLSX):</span>
+      <br>Dibutuhkan data deret waktu (<em>time-series</em>) berinterval 5–15 menit untuk stasiun:
+      <ul>
+        <li>AWLR Kolam Retensi Cieunteung (<code>HGT662</code> & <code>HGT663</code>) &ndash; Parameter: <code>readingAt</code>, <code>waterLevel</code> (mdpl).</li>
+        <li>AWLR Polder Cisangkuy (<code>HGT431</code>) &ndash; Parameter: <code>readingAt</code>, <code>waterLevel</code> (mdpl).</li>
+        <li>ARR Curah Hujan Bojongsoang (<code>HGT201</code>) &ndash; Parameter: <code>readingAt</code>, <code>rainfall</code> (mm), <code>intensity</code>.</li>
+      </ul>
+      <strong>Periode Data yang Dimohon:</strong> Minimal 3–6 bulan ke belakang (rentang Oktober 2025 s.d. Maret 2026), diutamakan mencakup data kejadian curah hujan ekstrem / banjir Oktober 2025 untuk data latih supervised model ML Raditya.
+    </li>
+    <li>
+      <span class="req-title">Izin & Akses Pengambilan Frame CCTV Mentah (Raw Stream):</span>
+      <br>Hasil audit sistem menunjukkan bahwa snapshot publik (<code>/api/snapshot/*.jpg</code>) saat ini telah tertanam kotak teks analitik (<em>"Sampah : bersih"</em>) dan watermark bawaan, yang berisiko merusak akurasi model AI baru. Oleh karena itu, tim memohon:
+      <ul>
+        <li>Izin akses penarikan frame terjadwal via stream mentah WebRTC WHEP (<code>/mtx/cam9/raw/whep</code> dan <code>/mtx/cam2/rawfull/whep</code>), atau</li>
+        <li>Akses arsip dump citra mentah (<em>raw snapshots</em>) berkala pos Cieunteung dan Cisangkuy untuk kebutuhan anotasi 300–500 frame dataset Computer Vision Gilang.</li>
+      </ul>
+    </li>
+    <li>
+      <span class="req-title">Informasi Batas Ambang Status Siaga & Elevasi Fisik:</span>
+      <br>Konfirmasi batas elevasi Siaga 1, Siaga 2, Siaga 3, serta elevasi nol peilschaal lokal pada pos Cieunteung dan Cisangkuy guna mengkalibrasi model klasifikasi risiko dan visualisasi grafik dashboard.
+    </li>
+  </ol>
+
+  <h2>4. Manfaat Balik bagi PT Higertech Karya Sinergi</h2>
+  <p>
+    Seluruh luaran yang dihasilkan dalam proyek ini akan diserahkan kepada pihak mitra, meliputi:
+  </p>
+  <ul style="margin: 4px 0 10px 16px; padding: 0; font-size: 8.5pt;">
+    <li><strong>Modul Segmentasi Sampah Berbasis AI:</strong> Model Computer Vision siap pakai dengan metrik mIoU &ge; 0.70 yang mampu mengestimasi persentase luas tutupan sampah secara akurat pada siang, malam, dan kondisi hujan.</li>
+    <li><strong>Algoritma Cerdas Klasifikasi Risiko:</strong> Fusi sensor multivariat yang mampu memisahkan anomali kenaikan air murni akibat kiriman hujan hulu vs akibat sumbatan sampah.</li>
+    <li><strong>Prototipe Dashboard Monitoring & REST API:</strong> Kode sumber aplikasi web monitoring responsif berbasis Laravel, PostgreSQL, dan FastAPI untuk memperkuat portofolio produk EWS Higertech.</li>
+  </ul>
+
+  <!-- TANDA TANGAN -->
+  <table class="sign-table">
+    <tr>
+      <td>
+        Bandung, 4 November 2026<br>
+        <strong>Perwakilan Tim Capstone,</strong>
+        <div class="sign-space"></div>
+        <span class="sign-name">Gilang Aldiano</span><br>
+        NIM: 10123404
+      </td>
+      <td>
+        Menyetujui,<br>
+        <strong>Dosen Pembimbing,</strong>
+        <div class="sign-space"></div>
+        <span class="sign-name">Hanhan Maulana, M.Kom., Ph.D.</span><br>
+        NIP: 4127.70.027
+      </td>
+      <td>
+        Mengetahui & Menyetujui,<br>
+        <strong>Direktur PT Higertech,</strong>
+        <div class="sign-space"></div>
+        <span class="sign-name">Andri Gunawan, S.Kom.</span><br>
+        Pimpinan Mitra
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

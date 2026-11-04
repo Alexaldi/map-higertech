@@ -67,6 +67,14 @@ RUN composer dump-autoload --optimize
 # npm build (for Vite assets)
 RUN npm ci && npm run build
 
+# Ensure storage skeleton directories exist
+RUN mkdir -p /var/www/html/storage/app/public \
+             /var/www/html/storage/app/private \
+             /var/www/html/storage/framework/cache/data \
+             /var/www/html/storage/framework/sessions \
+             /var/www/html/storage/framework/views \
+             /var/www/html/storage/logs
+
 # Fix permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache

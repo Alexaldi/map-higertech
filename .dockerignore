@@ -18,12 +18,11 @@ yarn-error.log
 public/build
 public/hot
 
-# Laravel cache (dibuat ulang di container)
+# Laravel cache & uploads (dibuat ulang / di-mount via volume)
 bootstrap/cache/*.php
-storage/framework/cache
-storage/framework/sessions
-storage/framework/views
-storage/logs/*.log
+storage/app/
+storage/framework/
+storage/logs/
 
 # Test & Dev tools
 tests

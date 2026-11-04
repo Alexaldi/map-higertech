@@ -36,6 +36,15 @@ class TutorialController extends Controller
             ->with('success', 'Tutorial berhasil ditambahkan.');
     }
 
+    public function show(Tutorial $tutorial): RedirectResponse
+    {
+        if ($tutorial->status !== 'published') {
+            return redirect()->route('admin.tutorials.edit', $tutorial);
+        }
+
+        return redirect()->route('tutorials.show', $tutorial->slug);
+    }
+
     public function edit(Tutorial $tutorial): View
     {
         return view('admin.tutorials.form', compact('tutorial'));
