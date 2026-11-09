@@ -9,6 +9,10 @@
     <meta name="description" content="@yield('description', 'Platform akuisisi data lapangan real-time untuk pemantauan muka air banjir, curah hujan otomatis, dan stasiun cuaca.')">
     <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon.png') }}">
 
+    {{-- Google AdSense Verification & Auto Ads --}}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2665647920252289"
+        crossorigin="anonymous"></script>
+
     {{-- Preconnect & Non-blocking Google Fonts to eliminate render blocking --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
