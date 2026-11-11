@@ -29,7 +29,16 @@ class TutorialController extends Controller
     {
         $validated = $this->validatedData($request);
 
-        $this->tutorialService->create($validated, $request->file('image'), $request->file('document'));
+        try {
+            $this->tutorialService->create($validated, $request->file('image'), $request->file('document'));
+        } catch (\Throwable $e) {
+            report($e);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Gagal menyimpan tutorial: ' . $e->getMessage());
+        }
 
         return redirect()
             ->route('admin.tutorials.index')
@@ -54,7 +63,16 @@ class TutorialController extends Controller
     {
         $validated = $this->validatedData($request, $tutorial->id);
 
-        $this->tutorialService->update($tutorial, $validated, $request->file('image'), $request->file('document'));
+        try {
+            $this->tutorialService->update($tutorial, $validated, $request->file('image'), $request->file('document'));
+        } catch (\Throwable $e) {
+            report($e);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Gagal memperbarui tutorial: ' . $e->getMessage());
+        }
 
         return redirect()
             ->route('admin.tutorials.index')

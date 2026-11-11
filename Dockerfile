@@ -67,8 +67,12 @@ RUN composer dump-autoload --optimize
 # npm build (for Vite assets)
 RUN npm ci && npm run build
 
-# Ensure storage skeleton directories exist
-RUN mkdir -p /var/www/html/storage/app/public \
+# Ensure storage skeleton directories exist (termasuk subdirektori upload)
+RUN mkdir -p /var/www/html/storage/app/public/articles \
+             /var/www/html/storage/app/public/products \
+             /var/www/html/storage/app/public/products/brochures \
+             /var/www/html/storage/app/public/tutorials \
+             /var/www/html/storage/app/public/tutorials/documents \
              /var/www/html/storage/app/private \
              /var/www/html/storage/framework/cache/data \
              /var/www/html/storage/framework/sessions \
@@ -79,6 +83,12 @@ RUN mkdir -p /var/www/html/storage/app/public \
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Entrypoint: create dirs + fix permissions on every container start
+# (penting karena volume mount dari host menimpa permission dari build)
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 9000
+ENTRYPOINT ["entrypoint.sh"]
 CMD ["php-fpm"]
 

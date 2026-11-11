@@ -109,12 +109,28 @@ class TutorialService
 
     public function uploadImage(UploadedFile $file): string
     {
-        return $file->store('tutorials', 'public');
+        Storage::disk('public')->makeDirectory('tutorials');
+
+        $path = $file->store('tutorials', 'public');
+
+        if ($path === false) {
+            throw new \RuntimeException('Gagal menyimpan gambar sampul tutorial ke storage server.');
+        }
+
+        return $path;
     }
 
     public function uploadDocument(UploadedFile $file): string
     {
-        return $file->store('tutorials/documents', 'public');
+        Storage::disk('public')->makeDirectory('tutorials/documents');
+
+        $path = $file->store('tutorials/documents', 'public');
+
+        if ($path === false) {
+            throw new \RuntimeException('Gagal menyimpan dokumen PDF tutorial ke storage server.');
+        }
+
+        return $path;
     }
 
     public function deleteImageFile(?string $path): void
