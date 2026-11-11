@@ -190,10 +190,19 @@
                                     <input type="file" class="form-control @error('image') is-invalid @enderror"
                                         id="image" name="image" accept="image/png,image/jpeg,image/webp,image/svg+xml"
                                         onchange="previewTutorialImage(this)">
-                                    <small class="text-muted d-block mt-1">Disarankan gambar rasio horizontal/landscape (16:9), format PNG, JPG, atau WEBP, maks 3MB.</small>
+                                    <small class="text-muted d-block mt-1">Disarankan gambar rasio horizontal/landscape (16:9), format PNG, JPG, WEBP, atau SVG, maks 5MB.</small>
                                     @error('image')
                                         <div class="text-danger mt-1 fs-12">{{ $message }}</div>
                                     @enderror
+
+                                    @if (isset($tutorial) && $tutorial->image)
+                                        <div class="form-check mt-2 mb-2">
+                                            <input class="form-check-input" type="checkbox" name="remove_image" id="remove_image" value="1" {{ old('remove_image') ? 'checked' : '' }}>
+                                            <label class="form-check-label text-danger fs-12 font-weight-semibold" for="remove_image">
+                                                Hapus gambar sampul saat ini (akan kembali menggunakan sampul default)
+                                            </label>
+                                        </div>
+                                    @endif
 
                                     {{-- Preview Box --}}
                                     <div id="image-empty-notice" class="text-muted fs-12 mt-2" style="{{ isset($tutorial) && $tutorial->image ? 'display:none;' : '' }}">
@@ -332,6 +341,8 @@
             }
         }
 
+        const existingImageUrl = "{{ isset($tutorial) && $tutorial->image ? $tutorial->image_url : '' }}";
+
         function previewTutorialImage(input) {
             const container = document.getElementById('image-preview-container');
             const preview = document.getElementById('image-preview-img');
@@ -346,6 +357,12 @@
                     }
                 }
                 reader.readAsDataURL(input.files[0]);
+            } else if (existingImageUrl) {
+                preview.src = existingImageUrl;
+                container.style.display = '';
+                if (emptyNotice) {
+                    emptyNotice.style.display = 'none';
+                }
             } else {
                 container.style.display = 'none';
                 if (emptyNotice) {

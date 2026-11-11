@@ -45,10 +45,12 @@ class TutorialService
     {
         $data['slug'] = $this->generateUniqueSlug($data['slug'] ?? $data['title']);
 
+        unset($data['image']);
         if ($imageFile) {
             $data['image'] = $this->uploadImage($imageFile);
         }
 
+        unset($data['document'], $data['remove_document'], $data['remove_image']);
         if ($documentFile) {
             $data['document'] = $this->uploadDocument($documentFile);
         }
@@ -70,11 +72,16 @@ class TutorialService
             $tutorial->id
         );
 
+        unset($data['image']);
         if ($imageFile) {
             $this->deleteImageFile($tutorial->image);
             $data['image'] = $this->uploadImage($imageFile);
+        } elseif (! empty($data['remove_image'])) {
+            $this->deleteImageFile($tutorial->image);
+            $data['image'] = null;
         }
 
+        unset($data['document']);
         if ($documentFile) {
             $this->deleteDocumentFile($tutorial->document);
             $data['document'] = $this->uploadDocument($documentFile);
@@ -83,7 +90,7 @@ class TutorialService
             $data['document'] = null;
         }
 
-        unset($data['remove_document']);
+        unset($data['remove_image'], $data['remove_document']);
 
         if (($data['status'] ?? 'published') === 'published' && empty($tutorial->published_at) && empty($data['published_at'])) {
             $data['published_at'] = now();
@@ -112,15 +119,27 @@ class TutorialService
 
     public function deleteImageFile(?string $path): void
     {
-        if ($path && ! str_starts_with($path, 'images/') && Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
+        if (! $path || str_starts_with($path, 'images/') || str_starts_with($path, 'assets/')) {
+            return;
+        }
+
+        $cleanPath = preg_replace('#^/?storage/#', '', $path);
+
+        if (Storage::disk('public')->exists($cleanPath)) {
+            Storage::disk('public')->delete($cleanPath);
         }
     }
 
     public function deleteDocumentFile(?string $path): void
     {
-        if ($path && Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
+        if (! $path) {
+            return;
+        }
+
+        $cleanPath = preg_replace('#^/?storage/#', '', $path);
+
+        if (Storage::disk('public')->exists($cleanPath)) {
+            Storage::disk('public')->delete($cleanPath);
         }
     }
 

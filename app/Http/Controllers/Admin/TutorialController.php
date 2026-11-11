@@ -81,7 +81,8 @@ class TutorialController extends Controller
             'type' => ['nullable', 'string', 'max:100'],
             'excerpt' => ['nullable', 'string'],
             'content' => ['nullable', 'string'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,svg', 'max:3072'],
+            'image' => ['nullable', 'file', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120'],
+            'remove_image' => ['sometimes', 'boolean'],
             'document' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
             'remove_document' => ['sometimes', 'boolean'],
             'video_url' => ['nullable', 'url', 'max:255'],
@@ -91,10 +92,12 @@ class TutorialController extends Controller
             'published_at' => ['nullable', 'date'],
         ], [
             'title.required' => 'Judul tutorial wajib diisi.',
-            'image.image' => 'File harus berupa gambar valid.',
+            'image.file' => 'File harus berupa file valid.',
+            'image.uploaded' => 'Gagal mengunggah gambar sampul. Pastikan ukuran file tidak melebihi batas upload server.',
             'image.mimes' => 'Format gambar yang diizinkan: JPG, JPEG, PNG, WEBP, SVG.',
-            'image.max' => 'Ukuran gambar maksimal 3MB.',
+            'image.max' => 'Ukuran gambar maksimal 5MB.',
             'document.file' => 'Dokumen harus berupa file valid.',
+            'document.uploaded' => 'Gagal mengunggah dokumen. Pastikan ukuran file tidak melebihi batas upload server.',
             'document.mimes' => 'Dokumen / manual instalasi harus berformat PDF.',
             'document.max' => 'Ukuran file dokumen / manual instalasi maksimal 10MB.',
             'video_url.url' => 'URL video harus berupa alamat URL yang valid.',
@@ -102,6 +105,7 @@ class TutorialController extends Controller
         ]);
 
         $validated['is_featured'] = $request->boolean('is_featured');
+        $validated['remove_image'] = $request->boolean('remove_image');
         $validated['remove_document'] = $request->boolean('remove_document');
 
         return $validated;

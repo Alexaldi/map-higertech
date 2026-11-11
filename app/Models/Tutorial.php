@@ -46,11 +46,13 @@ class Tutorial extends Model
             return $this->image;
         }
 
-        if (str_starts_with($this->image, 'images/')) {
-            return asset($this->image);
+        if (str_starts_with($this->image, 'images/') || str_starts_with($this->image, 'assets/')) {
+            return asset(ltrim($this->image, '/'));
         }
 
-        return asset('storage/' . ltrim($this->image, '/'));
+        $cleanPath = preg_replace('#^/?storage/#', '', $this->image);
+
+        return asset('storage/' . ltrim($cleanPath, '/'));
     }
 
     public function getDocumentUrlAttribute(): ?string
@@ -63,7 +65,9 @@ class Tutorial extends Model
             return $this->document;
         }
 
-        return asset('storage/' . ltrim($this->document, '/'));
+        $cleanPath = preg_replace('#^/?storage/#', '', $this->document);
+
+        return asset('storage/' . ltrim($cleanPath, '/'));
     }
 
     public function getDocumentDownloadNameAttribute(): string
